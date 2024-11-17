@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <bitset>
+#include <stdexcept> // For better exception handling
 
 // Function to clean and normalize the sequence (step 1)
 std::string cleanSequence(const std::string& sequence) {
@@ -23,7 +24,7 @@ unsigned char nucleotideTo2Bit(char nucleotide) {
         case 'C': return 0b01;
         case 'G': return 0b10;
         case 'T': case 'U': return 0b11;
-        default: return 0b00; // Default case for safety
+        default: throw std::runtime_error("Error: Invalid nucleotide encountered.");
     }
 }
 
@@ -53,7 +54,7 @@ std::string encodeSequenceToASCII(const std::string& sequence) {
     return encoded;
 }
 
-// Function to read input DNA/RNA sequence file and extract raw sequence
+// Function to validate file content and read sequence
 std::string readSequenceFromFile(const std::string& filename) {
     std::ifstream infile(filename);
     if (!infile.is_open()) {
@@ -63,17 +64,29 @@ std::string readSequenceFromFile(const std::string& filename) {
     std::string line, rawSequence;
     while (std::getline(infile, line)) {
         // Skip headers or metadata lines in FASTA/FASTQ
-        if (line[0] != '>' && line[0] != '@' && line[0] != '+') {
-            rawSequence += line;
+        if (line.empty()) continue;
+        if (line[0] == '>' || line[0] == '@' || line[0] == '+') {
+            continue;
         }
+        for (char c : line) {
+            if (!std::isprint(c) || std::isspace(c)) {
+                throw std::runtime_error("Error: Invalid character found in sequence.");
+            }
+        }
+        rawSequence += line;
     }
+
+    if (rawSequence.empty()) {
+        throw std::runtime_error("Error: No valid sequence data found in file.");
+    }
+
     infile.close();
     return rawSequence;
 }
 
 int main() {
     try {
-        std::string filename = "input.fasta"; // Change filename to test other formats like lfqc, fastq, etc.
+        std::string filename = "input.fasta"; // Change filename to test other formats like FASTQ, etc.
         std::string rawSequence = readSequenceFromFile(filename);
 
         std::string cleanedSequence = cleanSequence(rawSequence);
@@ -95,5 +108,3 @@ int main() {
 
     return 0;
 }
-
-//test 
