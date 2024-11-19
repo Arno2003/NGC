@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <bitset>
-#include <stdexcept> // For better exception handling
+#include <filesystem>
+#include <exception>
+
+namespace fs = std::filesystem;
 
 // Function to clean and normalize the sequence (step 1)
 std::string cleanSequence(const std::string& sequence) {
@@ -84,23 +85,47 @@ std::string readSequenceFromFile(const std::string& filename) {
     return rawSequence;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <sequence_file_path>" << std::endl;
+        return 1;
+    }
+
     try {
-        std::string filename = "input.fasta"; // Change filename to test other formats like FASTQ, etc.
+        std::cout << "Reading sequence file..." << std::endl;
+        std::string filename = argv[1]; // Get file path from command line
         std::string rawSequence = readSequenceFromFile(filename);
 
+        std::cout << "Cleaning and normalizing sequence..." << std::endl;
         std::string cleanedSequence = cleanSequence(rawSequence);
+
+        std::cout << "Encoding sequence to ASCII format..." << std::endl;
         std::string encodedSequence = encodeSequenceToASCII(cleanedSequence);
 
-        // Output the results
-        std::cout << "Cleaned Sequence: " << cleanedSequence << std::endl;
-        std::cout << "Encoded Sequence (Extended ASCII): " << encodedSequence << std::endl;
+        // Ensure the output directory exists
+        fs::path outputDir = "..//data//raw_seq";
+        try {
+            if (!fs::exists(outputDir)) {
+                fs::create_directories(outputDir);
+            }
+        } catch (const std::exception& e) {
+            throw std::runtime_error("Error: Failed to create output directory: " + std::string(e.what()));
+        }
 
-        // Optionally save encoded sequence to a file
-        std::ofstream outfile("encoded_output.txt", std::ios::binary);
+        // Generate output file name
+        fs::path inputFilePath = filename;
+        std::string outputFilename = inputFilePath.stem().string() + "_raw" + inputFilePath.extension().string();
+        fs::path outputFilePath = outputDir / outputFilename;
+
+        std::cout << "Saving encoded sequence to file..." << std::endl;
+        std::ofstream outfile(outputFilePath, std::ios::binary);
+        if (!outfile.is_open()) {
+            throw std::runtime_error("Error: Cannot open output file for writing.");
+        }
         outfile.write(encodedSequence.c_str(), encodedSequence.size());
         outfile.close();
-        std::cout << "Encoded sequence saved to encoded_output.txt" << std::endl;
+
+        std::cout << "Encoded sequence successfully saved to " << outputFilePath << std::endl;
 
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
