@@ -54,27 +54,22 @@ void compressSequence(std::string sequence) {
     }
 }
 
-int main() {
-    std::string fileName = "AbCd.co";  // File to process
-    std::string outputFileName = "AbCd.gc";
-    std::string command = "./geco -c " + fileName + " -o " + outputFileName + " -t22";
-
-    std::cout << "Executing: " << command << std::endl;
-
-    int retCode = system(command.c_str()); // Execute the command
-
-    if (retCode == 0) {
-        std::cout << "Command executed successfully." << std::endl;
-    } else {
-        std::cerr << "Error executing command. Return code: " << retCode << std::endl;
-    }
-
-    return 0;
-}
-
 void bzip2Comp(string str){
     string fileName = str;
     string command = "./bzip2 " + fileName + "-9 -k";
+    int retCode = system(command.c_str()); //execute command
+
+    if(retCode == 0){
+        cout << "Command executed successfully.." << endl;
+    } 
+    else{
+        cerr << "Error executing command.. Return code: " << retCode << endl;
+    }
+}
+
+void paq8Comp(string str){
+    string fileName = str;
+    string command = "./paq8px -8 " + fileName + "compress/";
     int retCode = system(command.c_str()); //execute command
 
     if(retCode == 0){
