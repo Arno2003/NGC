@@ -71,3 +71,16 @@ int main() {
 
     return 0;
 }
+
+void bzip2Comp(string str){
+    string fileName = str;
+    string command = "./bzip2 " + fileName + "-9 -k";
+    int retCode = system(command.c_str()); //execute command
+
+    if(retCode == 0){
+        cout << "Command executed successfully.." << endl;
+    } 
+    else{
+        cerr << "Error executing command.. Return code: " << retCode << endl;
+    }
+}
