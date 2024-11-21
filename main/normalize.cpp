@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <exception>
 
+extern void compressSequence(std::string sequence);
+
 namespace fs = std::filesystem;
 
 // Function to clean and normalize the sequence (step 1)
@@ -126,6 +128,9 @@ int main(int argc, char* argv[]) {
         outfile.close();
 
         std::cout << "Encoded sequence successfully saved to " << outputFilePath << std::endl;
+        
+        // Compress the raw file according to user choice..
+        compressSequence(outputFilename);
 
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
