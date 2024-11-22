@@ -11,15 +11,15 @@ void compressSequence(std::string sequence) {
     switch (choice) {
         case 1:
             cout << "Compressing using 7zip..." << endl;
-            // Add 7zip compression logic here
+            zip7Comp(sequence);
             break;
         case 2:
             cout << "Compressing using PAQ8..." << endl;
-            // Add PAQ8 compression logic here
+            paq8Comp(sequence);
             break;
         case 3:
             cout << "Compressing using BSC..." << endl;
-            // Add BSC compression logic here
+            bscComp(sequence);
             break;
         case 4:
             cout << "Compressing using GZIP..." << endl;
@@ -31,7 +31,7 @@ void compressSequence(std::string sequence) {
             break;
         case 6:
             cout << "Compressing using BZIP2..." << endl;
-            // Add BZIP2 compression logic here
+            bzip2Comp(sequence);
             break;
         case 7:
             cout << "Compressing using lpaq8..." << endl;
@@ -54,7 +54,7 @@ void compressSequence(std::string sequence) {
     }
 }
 
-void bzip2Comp(string str){
+void bzip2Comp(string str){ //Not tested yet
     string fileName = str;
     string command = "./bzip2 " + fileName + "-9 -k";
     int retCode = system(command.c_str()); //execute command
@@ -67,9 +67,35 @@ void bzip2Comp(string str){
     }
 }
 
-void paq8Comp(string str){
+void paq8Comp(string str){  //Not tested yet
     string fileName = str;
     string command = "./paq8px -8 " + fileName + "compress/";
+    int retCode = system(command.c_str()); //execute command
+
+    if(retCode == 0){
+        cout << "Command executed successfully.." << endl;
+    } 
+    else{
+        cerr << "Error executing command.. Return code: " << retCode << endl;
+    }
+}
+
+void zip7Comp(string str){  // incomplete function.
+    string fileName = str;
+    string command = "7z -8 " + fileName + "compress/";
+    int retCode = system(command.c_str()); //execute command
+
+    if(retCode == 0){
+        cout << "Command executed successfully.." << endl;
+    } 
+    else{
+        cerr << "Error executing command.. Return code: " << retCode << endl;
+    }
+}
+
+void bscComp(string str){  // incomplete function.
+    string fileName = str;
+    string command = "./bsc -8 " + fileName + "compress/";
     int retCode = system(command.c_str()); //execute command
 
     if(retCode == 0){
