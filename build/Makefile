@@ -129,6 +129,30 @@ compression/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/build
 .PHONY : compression/fast
 
+main/denormalize.o: main/denormalize.cpp.o
+.PHONY : main/denormalize.o
+
+# target to build an object file
+main/denormalize.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.o
+.PHONY : main/denormalize.cpp.o
+
+main/denormalize.i: main/denormalize.cpp.i
+.PHONY : main/denormalize.i
+
+# target to preprocess a source file
+main/denormalize.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.i
+.PHONY : main/denormalize.cpp.i
+
+main/denormalize.s: main/denormalize.cpp.s
+.PHONY : main/denormalize.s
+
+# target to generate assembly for a file
+main/denormalize.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.s
+.PHONY : main/denormalize.cpp.s
+
 main/execute.o: main/execute.cpp.o
 .PHONY : main/execute.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... compression"
+	@echo "... main/denormalize.o"
+	@echo "... main/denormalize.i"
+	@echo "... main/denormalize.s"
 	@echo "... main/execute.o"
 	@echo "... main/execute.i"
 	@echo "... main/execute.s"
