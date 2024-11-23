@@ -1,5 +1,9 @@
 # finalYear_journal
 
+for temporary compilation
+g++ -o test test.cpp execute.cpp
+./test <file_path.txt>
+
 7zip or LZMA - done
 PAQ8 - done
 BSC - incomplete
