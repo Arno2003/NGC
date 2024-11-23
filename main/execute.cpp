@@ -10,7 +10,7 @@ string getFileNameWithoutExtension(const string& path) {
     return filePath.stem().string();
 }
 
-void bzip2Comp(string str){ //Not tested successfully
+void bzip2Comp(string str){ //Tested OK - successfully
     string fileName = str;
     string file = getFileNameWithoutExtension(fileName);
     string command = "../executables/bzip2 " + fileName + " -9 -k > ../dna/comp/" + file + ".bz2";
@@ -25,9 +25,10 @@ void bzip2Comp(string str){ //Not tested successfully
     }
 }
 
-void paq8Comp(string str){  //Not tested yet
+void paq8Comp(string str){  //Tested Ok - successfully
     string fileName = str;
-    string command = "./paq8px -8 " + fileName + "compress/";
+    string command = "../executables/paq8px " + fileName + " ../dna/comp/ -8";
+    cout << command << endl;
     int retCode = system(command.c_str()); //execute command
 
     if(retCode == 0){
@@ -38,9 +39,11 @@ void paq8Comp(string str){  //Not tested yet
     }
 }
 
-void zip7Comp(string str){  // incomplete function.
+void zip7Comp(string str){  // Tested OK - Successfully compressed
     string fileName = str;
-    string command = "7z -8 " + fileName + "compress/";
+    string file = getFileNameWithoutExtension(fileName);
+    string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
+    cout << command << endl;
     int retCode = system(command.c_str()); //execute command
 
     if(retCode == 0){
@@ -51,9 +54,11 @@ void zip7Comp(string str){  // incomplete function.
     }
 }
 
-void bscComp(string str){  // incomplete function.
+void bscComp(string str){  // Unable to test - BSC not running
     string fileName = str;
-    string command = "./bsc -8 " + fileName + "compress/";
+    string file = getFileNameWithoutExtension(fileName);
+    string command = "../executables/bsc " + fileName + " ../dna/comp/" + file + ".bsc -ca -e2 -l";
+    cout << command << endl;
     int retCode = system(command.c_str()); //execute command
 
     if(retCode == 0){
@@ -72,15 +77,15 @@ void compressSequence(std::string sequence) {
     switch (choice) {
         case 1:
             cout << "Compressing using 7zip..." << endl;
-            zip7Comp(sequence);
+            zip7Comp(sequence); //Tested OK - Successfully compressed
             break;
         case 2:
             cout << "Compressing using PAQ8..." << endl;
-            paq8Comp(sequence);
+            paq8Comp(sequence); //Tested OK - successfully
             break;
         case 3:
             cout << "Compressing using BSC..." << endl;
-            bscComp(sequence);
+            bscComp(sequence);  // Unable to test - BSC not running
             break;
         case 4:
             cout << "Compressing using GZIP..." << endl;
@@ -92,7 +97,7 @@ void compressSequence(std::string sequence) {
             break;
         case 6:
             cout << "Compressing using BZIP2..." << endl;
-            bzip2Comp(sequence);
+            bzip2Comp(sequence);    //Tested OK - successfully
             break;
         case 7:
             cout << "Compressing using lpaq8..." << endl;
