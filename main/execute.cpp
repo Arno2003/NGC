@@ -13,7 +13,7 @@ string getFileNameWithoutExtension(const string& path) {
 void bzip2Comp(string str){ //Tested OK - successfully
     string fileName = str;
     string file = getFileNameWithoutExtension(fileName);
-    string command = "../executables/bzip2 " + fileName + " -9 -k > ../dna/comp/" + file + ".bz2";
+    string command = "../executables/bzip2 -c " + fileName + " -9 -k > ../dna/comp/" + file + ".bz2";
     cout << command << endl;
     int retCode = system(command.c_str()); //execute command
 

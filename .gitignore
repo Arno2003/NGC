@@ -2,3 +2,4 @@
 *.o
 dna
 main/test.cpp
+main/main
