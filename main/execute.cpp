@@ -3,9 +3,18 @@
 #include <string>
 using namespace std;
 
-void bzip2Comp(string str){ //Not tested yet
+#include <filesystem>
+
+string getFileNameWithoutExtension(const string& path) {
+    std::filesystem::path filePath(path);
+    return filePath.stem().string();
+}
+
+void bzip2Comp(string str){ //Not tested successfully
     string fileName = str;
-    string command = "./bzip2 " + fileName + "-9 -k";
+    string file = getFileNameWithoutExtension(fileName);
+    string command = "../executables/bzip2 " + fileName + " -9 -k > ../dna/comp/" + file + ".bz2";
+    cout << command << endl;
     int retCode = system(command.c_str()); //execute command
 
     if(retCode == 0){
