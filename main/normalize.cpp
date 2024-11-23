@@ -1,55 +1,27 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cctype>
 #include <filesystem>
 #include <exception>
+#include <algorithm>
+#include <unordered_map>
 
-namespace fs = std::filesystem;
-
-// Function to read sequence from FASTA or FASTQ file
-std::string readSequenceFromFile(const std::string& filename) {
-    std::ifstream infile(filename);
-    if (!infile.is_open()) {
-        throw std::runtime_error("Error: Cannot open file " + filename);
-    }
-
-    std::string line;
-    std::string rawSequence;
-    bool isSequenceLine = false;
-
-    while (std::getline(infile, line)) {
-        if (line.empty()) continue;
-
-        if (line[0] == '>') {
-            // FASTA header line
-            continue;
-        } else if (line[0] == '@') {
-            // FASTQ header line
-            isSequenceLine = true;
-            continue;
-        } else if (line[0] == '+') {
-            // FASTQ separator line
-            isSequenceLine = false;
-            continue;
-        } else {
-            if (isSequenceLine || line[0] != '@') {
-                rawSequence += line;
-            }
-        }
-    }
-
-    infile.close();
-    return rawSequence;
+// Placeholder for the external function definition
+void compressSequence(const std::string& filepath) {
+    // Implement compression logic or link with the appropriate library
+    std::cout << "Compressing sequence: " << filepath << std::endl;
+    // Example placeholder action
 }
+
+// Namespace alias
+namespace fs = std::filesystem;
 
 // Function to clean and normalize the sequence
 std::string cleanSequence(const std::string& sequence) {
     std::string cleaned;
     for (char nucleotide : sequence) {
         nucleotide = std::toupper(static_cast<unsigned char>(nucleotide)); // Convert to uppercase
-        if (nucleotide == 'A' || nucleotide == 'C' || nucleotide == 'G' ||
-            nucleotide == 'T' || nucleotide == 'U') {
+        if (nucleotide == 'A' || nucleotide == 'C' || nucleotide == 'G' || nucleotide == 'T' || nucleotide == 'U') {
             cleaned += nucleotide;
         }
     }
@@ -62,9 +34,8 @@ unsigned char nucleotideTo2Bit(char nucleotide) {
         case 'A': return 0b00;
         case 'C': return 0b01;
         case 'G': return 0b10;
-        case 'T': return 0b11;
-        case 'U': return 0b11;
-        default: throw std::runtime_error("Error: Invalid nucleotide encountered.");
+        case 'T': case 'U': return 0b11;
+        default: throw std::invalid_argument("Invalid nucleotide encountered.");
     }
 }
 
@@ -94,12 +65,32 @@ std::string encodeSequenceToASCII(const std::string& sequence) {
     return encoded;
 }
 
-// Function to apply general-purpose encoder (e.g., compression)
-void applyGeneralPurposeEncoder(const std::string& filepath) {
-    // Placeholder for actual compression logic
-    std::cout << "Applying general-purpose encoder to " << filepath << "..." << std::endl;
-    // Implement compression logic here or call external tool
-    // Example: system(("gzip " + filepath).c_str());
+// Function to read sequence from file and validate
+std::string readSequenceFromFile(const std::string& filename) {
+    std::ifstream infile(filename);
+    if (!infile.is_open()) {
+        throw std::runtime_error("Cannot open file: " + filename);
+    }
+
+    std::string line, rawSequence;
+    while (std::getline(infile, line)) {
+        if (line.empty()) continue;
+        if (line[0] == '>' || line[0] == '@' || line[0] == '+') continue; // Skip headers
+
+        for (char c : line) {
+            if (!std::isprint(static_cast<unsigned char>(c)) || std::isspace(static_cast<unsigned char>(c))) {
+                throw std::runtime_error("Invalid character found in sequence.");
+            }
+        }
+        rawSequence += line;
+    }
+
+    if (rawSequence.empty()) {
+        throw std::runtime_error("No valid sequence data found in file.");
+    }
+
+    infile.close();
+    return rawSequence;
 }
 
 int main(int argc, char* argv[]) {
@@ -109,35 +100,54 @@ int main(int argc, char* argv[]) {
     }
 
     try {
-        // Step 1: Read sequence from file
+        // Step 1: Input file
         std::string inputFilePath = argv[1];
+        if (!fs::exists(inputFilePath)) {
+            throw std::runtime_error("Input file does not exist: " + inputFilePath);
+        }
+
         std::cout << "Reading sequence from file..." << std::endl;
         std::string rawSequence = readSequenceFromFile(inputFilePath);
 
-        // Step 2: Clean and normalize sequence
+        // Step 2: Clean sequence
         std::cout << "Cleaning and normalizing sequence..." << std::endl;
         std::string cleanedSequence = cleanSequence(rawSequence);
 
-        // Step 3: Encode sequence into 2-bit ASCII format
+        // Step 3: Encode sequence
         std::cout << "Encoding sequence into 2-bit ASCII format..." << std::endl;
         std::string encodedSequence = encodeSequenceToASCII(cleanedSequence);
 
-        // Step 4: Save encoded sequence to file
-        fs::path outputFilePath = "encoded_sequence.bin";
+        // Step 4: Ensure output directory exists
+        fs::path outputDir = "data/raw_seq";
+        try {
+            if (!fs::exists(outputDir)) {
+                fs::create_directories(outputDir);
+            }
+        } catch (const fs::filesystem_error& e) {
+            throw std::runtime_error("Unable to create directory " + outputDir.string() + ": " + e.what());
+        }
+
+        // Step 5: Save encoded sequence
+        fs::path inputFileName = fs::path(inputFilePath).stem();
+        fs::path outputFilePath = outputDir / (inputFileName.string() + "_raw");
+        std::cout << "Saving encoded sequence to file: " << outputFilePath << std::endl;
         std::ofstream outfile(outputFilePath, std::ios::binary);
         if (!outfile.is_open()) {
-            throw std::runtime_error("Error: Cannot open output file for writing.");
+            throw std::runtime_error("Cannot open output file for writing.");
         }
-        outfile.write(encodedSequence.data(), encodedSequence.size());
+        outfile.write(encodedSequence.c_str(), encodedSequence.size());
         outfile.close();
 
-        // Step 5: Apply general-purpose encoder
-        applyGeneralPurposeEncoder(outputFilePath.string());
+        // Step 6: Call compressSequence
+        std::cout << "Compressing encoded sequence..." << std::endl;
+        compressSequence(outputFilePath.string());
 
         std::cout << "Process completed successfully!" << std::endl;
-
+    } catch (const std::invalid_argument& ia) {
+        std::cerr << "Invalid argument error: " << ia.what() << std::endl;
+        return 1;
     } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
 
