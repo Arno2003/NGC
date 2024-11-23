@@ -69,6 +69,21 @@ void bscComp(string str){  // Unable to test - BSC not running
     }
 }
 
+void gzipComp(string str){  // Tested OK - Successfully compressed
+    string fileName = str;
+    string file = getFileNameWithoutExtension(fileName);
+    string command = "gzip -9 -c " + fileName + " > ../dna/comp/" + file + ".gz";
+    cout << command << endl;
+    int retCode = system(command.c_str()); //execute command
+
+    if(retCode == 0){
+        cout << "Command executed successfully.." << endl;
+    } 
+    else{
+        cerr << "Error executing command.. Return code: " << retCode << endl;
+    }
+}
+
 
 void compressSequence(std::string sequence) {
     int choice = 10;
@@ -89,7 +104,7 @@ void compressSequence(std::string sequence) {
             break;
         case 4:
             cout << "Compressing using GZIP..." << endl;
-            // Add GZIP compression logic here
+            gzipComp(sequence); //Tested OK - Successfully compressed
             break;
         case 5:
             cout << "Compressing using ZSTD..." << endl;
