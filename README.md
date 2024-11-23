@@ -5,7 +5,7 @@ PAQ8
 BSC
 GZIP
 ZSTD
-BZIP2
+BZIP2 - done
 lpaq8, zpaq - (from LFQC)
 Huffman
 
