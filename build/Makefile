@@ -129,6 +129,54 @@ compression/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/build
 .PHONY : compression/fast
 
+main/compNormalize.o: main/compNormalize.cpp.o
+.PHONY : main/compNormalize.o
+
+# target to build an object file
+main/compNormalize.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.o
+.PHONY : main/compNormalize.cpp.o
+
+main/compNormalize.i: main/compNormalize.cpp.i
+.PHONY : main/compNormalize.i
+
+# target to preprocess a source file
+main/compNormalize.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.i
+.PHONY : main/compNormalize.cpp.i
+
+main/compNormalize.s: main/compNormalize.cpp.s
+.PHONY : main/compNormalize.s
+
+# target to generate assembly for a file
+main/compNormalize.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.s
+.PHONY : main/compNormalize.cpp.s
+
+main/decompNormalize.o: main/decompNormalize.cpp.o
+.PHONY : main/decompNormalize.o
+
+# target to build an object file
+main/decompNormalize.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/decompNormalize.cpp.o
+.PHONY : main/decompNormalize.cpp.o
+
+main/decompNormalize.i: main/decompNormalize.cpp.i
+.PHONY : main/decompNormalize.i
+
+# target to preprocess a source file
+main/decompNormalize.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/decompNormalize.cpp.i
+.PHONY : main/decompNormalize.cpp.i
+
+main/decompNormalize.s: main/decompNormalize.cpp.s
+.PHONY : main/decompNormalize.s
+
+# target to generate assembly for a file
+main/decompNormalize.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/decompNormalize.cpp.s
+.PHONY : main/decompNormalize.cpp.s
+
 main/denormalize.o: main/denormalize.cpp.o
 .PHONY : main/denormalize.o
 
@@ -153,29 +201,29 @@ main/denormalize.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.s
 .PHONY : main/denormalize.cpp.s
 
-main/execute.o: main/execute.cpp.o
-.PHONY : main/execute.o
+main/mgc.o: main/mgc.cpp.o
+.PHONY : main/mgc.o
 
 # target to build an object file
-main/execute.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/execute.cpp.o
-.PHONY : main/execute.cpp.o
+main/mgc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/mgc.cpp.o
+.PHONY : main/mgc.cpp.o
 
-main/execute.i: main/execute.cpp.i
-.PHONY : main/execute.i
+main/mgc.i: main/mgc.cpp.i
+.PHONY : main/mgc.i
 
 # target to preprocess a source file
-main/execute.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/execute.cpp.i
-.PHONY : main/execute.cpp.i
+main/mgc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/mgc.cpp.i
+.PHONY : main/mgc.cpp.i
 
-main/execute.s: main/execute.cpp.s
-.PHONY : main/execute.s
+main/mgc.s: main/mgc.cpp.s
+.PHONY : main/mgc.s
 
 # target to generate assembly for a file
-main/execute.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/execute.cpp.s
-.PHONY : main/execute.cpp.s
+main/mgc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/mgc.cpp.s
+.PHONY : main/mgc.cpp.s
 
 main/normalize.o: main/normalize.cpp.o
 .PHONY : main/normalize.o
@@ -210,12 +258,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... compression"
+	@echo "... main/compNormalize.o"
+	@echo "... main/compNormalize.i"
+	@echo "... main/compNormalize.s"
+	@echo "... main/decompNormalize.o"
+	@echo "... main/decompNormalize.i"
+	@echo "... main/decompNormalize.s"
 	@echo "... main/denormalize.o"
 	@echo "... main/denormalize.i"
 	@echo "... main/denormalize.s"
-	@echo "... main/execute.o"
-	@echo "... main/execute.i"
-	@echo "... main/execute.s"
+	@echo "... main/mgc.o"
+	@echo "... main/mgc.i"
+	@echo "... main/mgc.s"
 	@echo "... main/normalize.o"
 	@echo "... main/normalize.i"
 	@echo "... main/normalize.s"
