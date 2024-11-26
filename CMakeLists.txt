@@ -14,6 +14,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 # Add the executable by specifying the source files
 add_executable(compression
     main/normalize.cpp
-    main/execute.cpp
+    main/compNormalize.cpp
     main/denormalize.cpp
+    main/mgc.cpp 
+    main/decompNormalize.cpp
 )
