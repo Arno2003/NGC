@@ -9,6 +9,26 @@ string getFileNameWithoutExtension(const string& path) {
     return filePath.stem().string();
 }
 
+void zpaqDecomp(string str) { // Add ZPAQ Decompression Logic
+    try {
+        string fileName = str;
+        string file = getFileNameWithoutExtension(fileName);
+        string command = "../executables/zpaq x " + fileName + " -to main/data/decompressed_seq/";
+        cout << command << endl;
+        int retCode = system(command.c_str()); // execute command
+
+        if (retCode == 0) {
+            cout << "ZPAQ decompression executed successfully." << endl;
+        } else {
+            cerr << "Error executing ZPAQ decompression. Return code: " << retCode << endl;
+        }
+    } catch (const std::exception& e) {
+        cerr << "Exception in zpaqDecomp: " << e.what() << endl;
+    } catch (...) {
+        cerr << "Unknown exception in zpaqDecomp." << endl;
+    }
+}
+
 void bzip2Decomp(string str) { // Tested OK - successfully
     try {
         string fileName = str;
@@ -143,8 +163,8 @@ void decompressSequence(std::string sequence) {
                 // Add lpaq8 compression logic here
                 break;
             case 8:
-                cout << "Compressing using zpaq..." << endl;
-                // Add zpaq compression logic here
+                cout << "Decompressing using ZPAQ..." << endl;
+                zpaqDecomp(sequence);
                 break;
             case 9:
                 cout << "Compressing using Huffman..." << endl;

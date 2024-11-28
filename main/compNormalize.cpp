@@ -9,6 +9,26 @@ string getFileNameWithoutExtension(const string& path) {
     return filePath.stem().string();
 }
 
+void zpaqComp(string str) { // New zpaq compression method
+    try {
+        string fileName = str;
+        string file = getFileNameWithoutExtension(fileName);
+        string command = "../executables/zpaq add ../temp/" + file + ".zpaq " + fileName + " -method 5";
+        cout << command << endl;
+        int retCode = system(command.c_str()); // execute command
+
+        if (retCode == 0) {
+            cout << "zpaq compression executed successfully." << endl;
+        } else {
+            cerr << "Error executing zpaq compression. Return code: " << retCode << endl;
+        }
+    } catch (const std::exception& e) {
+        cerr << "Exception in zpaqComp: " << e.what() << endl;
+    } catch (...) {
+        cerr << "Unknown exception in zpaqComp." << endl;
+    }
+}
+
 void bzip2Comp(string str) { // Tested OK - successfully
     try {
         string fileName = str;
@@ -144,7 +164,7 @@ void compressSequence(std::string sequence) {
                 break;
             case 8:
                 cout << "Compressing using zpaq..." << endl;
-                // Add zpaq compression logic here
+                zpaqComp(sequence); // Call the new zpaqComp method
                 break;
             case 9:
                 cout << "Compressing using Huffman..." << endl;
