@@ -31,3 +31,21 @@ cd build
 compile using:
 cmake ..
 make
+
+
+
+BSC-
+To run BSC first .tar file is needed.
+To convert a file in .tar use command
+tar -cvf path_to_outputFile.tar path_to_inputFile.txt
+
+then use BSC for compression
+./bsc e path_to_outputFile.tar outputBscFile.bsc -e2
+
+to decompress
+./bsc d OutputBscFile.bsc tarOutputFile.tar
+
+to decompress .tar to .txt 
+tar -xvf ./tarOutputFile.tar 
+Optional - change output tar directory using -C
+tar -xvf ./tarOutputFile.tar -C ../dna/
