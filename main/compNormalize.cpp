@@ -98,7 +98,7 @@ void bscComp(string str) { // Tested OK - BSC running successfully
         string fileName = str;  // full file path with name
         string file = getFileNameWithoutExtension(fileName);    // only name of file
         string filePath = getDirectoryName(fileName);   //only path of file
-        string command1 = "tar -cvf ../dna/raw/" + file + ".tar -C " + filePath + " " + file + ;   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt (not same as ../source/file.txt) // -C directory instances setup
+        string command1 = "tar -cvf ../dna/raw/" + file + ".tar -C " + filePath + " " + file + ".txt";   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt (not same as ../source/file.txt) // -C directory instances setup
         string command2 = "../executables/bsc e ../dna/raw/" + file + ".tar ../dna/comp/" + file + ".bsc -e2";
         cout << command1 << endl << command2 << endl;
         int retCode1 = system(command1.c_str()); // execute command
@@ -139,52 +139,55 @@ void gzipComp(string str) { // Tested OK - Successfully compressed
 void compressSequence(std::string sequence) {
     try {
         int choice = 10;
-        cout << "Choose the compression method: \n1 for 7zip\n2 for PAQ8\n3 for BSC\n4 for GZIP\n5 for ZSTD\n6 for BZIP2\n7 for lpaq8\n8 for zpaq\n9 for Huffman\n0 to exit\n";
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                cout << "Compressing using 7zip..." << endl;
-                zip7Comp(sequence); // Tested OK - Successfully compressed
-                break;
-            case 2:
-                cout << "Compressing using PAQ8..." << endl;
-                paq8Comp(sequence); // Tested OK - successfully
-                break;
-            case 3:
-                cout << "Compressing using BSC..." << endl;
-                bscComp(sequence); // Unable to test - BSC not running
-                break;
-            case 4:
-                cout << "Compressing using GZIP..." << endl;
-                gzipComp(sequence); // Tested OK - Successfully compressed
-                break;
-            case 5:
-                cout << "Compressing using ZSTD..." << endl;
-                // Add ZSTD compression logic here
-                break;
-            case 6:
-                cout << "Compressing using BZIP2..." << endl;
-                bzip2Comp(sequence); // Tested OK - successfully
-                break;
-            case 7:
-                cout << "Compressing using lpaq8..." << endl;
-                // Add lpaq8 compression logic here
-                break;
-            case 8:
-                cout << "Compressing using zpaq..." << endl;
-                zpaqComp(sequence); // Call the new zpaqComp method
-                break;
-            case 9:
-                cout << "Compressing using Huffman..." << endl;
-                // Add Huffman compression logic here
-                break;
-            case 0:
-                cout << "Exiting..." << endl;
-                return;
-            default:
-                cout << "Invalid choice. Exiting..." << endl;
-                return;
+        while(choice){
+            cout << "Choose the compression method: \n1 for 7zip\n2 for PAQ8\n3 for BSC\n4 for GZIP\n5 for ZSTD\n6 for BZIP2\n7 for lpaq8\n8 for zpaq\n9 for Huffman\n0 to exit\n";
+            cin >> choice;
+            switch (choice) {
+                case 1:
+                    cout << "Compressing using 7zip..." << endl;
+                    zip7Comp(sequence); // Tested OK - Successfully compressed
+                    break;
+                case 2:
+                    cout << "Compressing using PAQ8..." << endl;
+                    paq8Comp(sequence); // Tested OK - successfully
+                    break;
+                case 3:
+                    cout << "Compressing using BSC..." << endl;
+                    bscComp(sequence); // Unable to test - BSC not running
+                    break;
+                case 4:
+                    cout << "Compressing using GZIP..." << endl;
+                    gzipComp(sequence); // Tested OK - Successfully compressed
+                    break;
+                case 5:
+                    cout << "Compressing using ZSTD..." << endl;
+                    // Add ZSTD compression logic here
+                    break;
+                case 6:
+                    cout << "Compressing using BZIP2..." << endl;
+                    bzip2Comp(sequence); // Tested OK - successfully
+                    break;
+                case 7:
+                    cout << "Compressing using lpaq8..." << endl;
+                    // Add lpaq8 compression logic here
+                    break;
+                case 8:
+                    cout << "Compressing using zpaq..." << endl;
+                    zpaqComp(sequence); // Call the new zpaqComp method
+                    break;
+                case 9:
+                    cout << "Compressing using Huffman..." << endl;
+                    // Add Huffman compression logic here
+                    break;
+                case 0:
+                    cout << "Exiting..." << endl;
+                    return;
+                default:
+                    cout << "Invalid choice. Exiting..." << endl;
+                    return;
+            }
         }
+        
     } catch (const std::exception& e) {
         cerr << "Exception in compressSequence: " << e.what() << endl;
     } catch (...) {
