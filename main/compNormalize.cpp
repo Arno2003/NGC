@@ -9,6 +9,11 @@ string getFileNameWithoutExtension(const string& path) {
     return filePath.stem().string();
 }
 
+string getDirectoryName(const string& path) {
+    std::filesystem::path filePath(path);
+    return filePath.parent_path().string();
+}
+
 void zpaqComp(string str) { // New zpaq compression method
     try {
         string fileName = str;
@@ -88,18 +93,21 @@ void zip7Comp(string str) { // Tested OK - Successfully compressed
     }
 }
 
-void bscComp(string str) { // Unable to test - BSC not running
+void bscComp(string str) { // Tested OK - BSC running successfully
     try {
-        string fileName = str;
-        string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/bsc " + fileName + " ../dna/comp/" + file + ".bsc -ca -e2 -l";
-        cout << command << endl;
-        int retCode = system(command.c_str()); // execute command
+        string fileName = str;  // full file path with name
+        string file = getFileNameWithoutExtension(fileName);    // only name of file
+        string filePath = getDirectoryName(fileName);   //only path of file
+        string command1 = "tar -cvf ../dna/raw/" + file + ".tar -C " + filePath + " " + file + ;   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt (not same as ../source/file.txt) // -C directory instances setup
+        string command2 = "../executables/bsc e ../dna/raw/" + file + ".tar ../dna/comp/" + file + ".bsc -e2";
+        cout << command1 << endl << command2 << endl;
+        int retCode1 = system(command1.c_str()); // execute command
+        int retCode2 = system(command2.c_str()); // execute command
 
-        if (retCode == 0) {
+        if (retCode1 == 0 && retCode2 == 0) {
             cout << "Command executed successfully." << endl;
         } else {
-            cerr << "Error executing command. Return code: " << retCode << endl;
+            cerr << "Error executing command. Return code: " << retCode1 << " " << retCode2 << endl;
         }
     } catch (const std::exception& e) {
         cerr << "Exception in bscComp: " << e.what() << endl;
