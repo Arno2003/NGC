@@ -9,7 +9,12 @@ string getFileNameWithoutExtension(const string& path) {
     return filePath.stem().string();
 }
 
-void zpaqDecomp(string str) { // Add ZPAQ Decompression Logic
+string getDirectoryName(const string& path) {
+    std::filesystem::path filePath(path);
+    return filePath.parent_path().string();
+}
+
+void zpaqDecomp(string str) { // Not coded yet
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -29,11 +34,11 @@ void zpaqDecomp(string str) { // Add ZPAQ Decompression Logic
     }
 }
 
-void bzip2Decomp(string str) { // Tested OK - successfully
+void bzip2Decomp(string str) { // Not tested yet
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/bzip2 -d " + fileName + " -9 -k > ../dna/comp/" + file + ".bz2";
+        string command = "../executables/bzip2 -d -k ../dna/comp/" + file + ".bz2 -c > ../dna/decomp/" + fileName;
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -49,10 +54,11 @@ void bzip2Decomp(string str) { // Tested OK - successfully
     }
 }
 
-void paq8Decomp(string str) { // Tested OK - successfully
+void paq8Decomp(string str) { // Not tested yet
     try {
         string fileName = str;
-        string command = "../executables/paq8px " + fileName + " ../dna/comp/ -8";
+        string file = getFileNameWithoutExtension(fileName);
+        string command = "../executables/paq8px -d ../dna/comp/" + file + ".txt.paq8px208fix1 ../dna/decomp/";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -68,11 +74,11 @@ void paq8Decomp(string str) { // Tested OK - successfully
     }
 }
 
-void zip7Decomp(string str) { // Tested OK - Successfully compressed
+void zip7Decomp(string str) { // Not tested yet
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
+        string command = "7z e ../dna/comp/" + file + ".7z -o../dna/decomp/ -y";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -88,7 +94,7 @@ void zip7Decomp(string str) { // Tested OK - Successfully compressed
     }
 }
 
-void bscDecomp(string str) { // Unable to test - BSC not running
+void bscDecomp(string str) { // Not coded yet
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -108,7 +114,7 @@ void bscDecomp(string str) { // Unable to test - BSC not running
     }
 }
 
-void gzipDecomp(string str) { // Tested OK - Successfully compressed
+void gzipDecomp(string str) { // Not coded yet
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
