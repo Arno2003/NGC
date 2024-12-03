@@ -6,7 +6,7 @@ g++ -o test test.cpp execute.cpp
 
 7zip or LZMA - done
 PAQ8 - done
-BSC - incomplete
+BSC - done
 GZIP -> mriganka
 ZSTD -> arnab
 BZIP2 - done
