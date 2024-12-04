@@ -98,7 +98,7 @@ void bscComp(string str) { // Tested OK - BSC running successfully
         string fileName = str;  // full file path with name
         string file = getFileNameWithoutExtension(fileName);    // only name of file
         string filePath = getDirectoryName(fileName);   //only path of file
-        string command1 = "tar -cvf ../dna/raw/" + file + ".tar -C " + filePath + " " + file + ".txt";   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt (not same as ../source/file.txt) // -C directory instances setup
+        string command1 = "tar -cvf ../dna/raw/" + file + ".tar -C " + filePath + " " + file + ".txt";   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt
         string command2 = "../executables/bsc e ../dna/raw/" + file + ".tar ../dna/comp/" + file + ".bsc -e2";
         cout << command1 << endl << command2 << endl;
         int retCode1 = system(command1.c_str()); // execute command
@@ -136,6 +136,27 @@ void gzipComp(string str) { // Tested OK - Successfully compressed
     }
 }
 
+// New ZSTD compression method
+void zstdComp(string str) {
+    try {
+        string fileName = str;
+        string file = getFileNameWithoutExtension(fileName);
+        string command = "zstd -o ../dna/comp/" + file + ".zst " + fileName;
+        cout << command << endl;
+        int retCode = system(command.c_str()); // execute command
+
+        if (retCode == 0) {
+            cout << "ZSTD compression executed successfully." << endl;
+        } else {
+            cerr << "Error executing ZSTD compression. Return code: " << retCode << endl;
+        }
+    } catch (const std::exception& e) {
+        cerr << "Exception in zstdComp: " << e.what() << endl;
+    } catch (...) {
+        cerr << "Unknown exception in zstdComp." << endl;
+    }
+}
+
 void compressSequence(std::string sequence) {
     try {
         int choice = 10;
@@ -161,7 +182,7 @@ void compressSequence(std::string sequence) {
                     break;
                 case 5:
                     cout << "Compressing using ZSTD..." << endl;
-                    // Add ZSTD compression logic here
+                    zstdComp(sequence); // Added ZSTD compression logic
                     break;
                 case 6:
                     cout << "Compressing using BZIP2..." << endl;
