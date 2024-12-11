@@ -34,11 +34,11 @@ void zpaqDecomp(string str) { // Implemented ZPAQ decompression - test not compl
     }
 }
 
-void bzip2Decomp(string str) { // Implemented BZIP2 decompression - test not complete
+void bzip2Decomp(string str) { // Implemented BZIP2 decompression - test ok success
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/bzip2 -d -k ../dna/comp/" + file + ".bz2 -c > ../dna/decomp/" + file;
+        string command = "../executables/bzip2 -d -k ../dna/comp/" + file + ".bz2 -c > ../dna/decomp/" + file + ".txt";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -54,11 +54,11 @@ void bzip2Decomp(string str) { // Implemented BZIP2 decompression - test not com
     }
 }
 
-void paq8Decomp(string str) { // Implemented PAQ8 decompression - test not complete
+void paq8Decomp(string str) { // Implemented PAQ8 decompression - test ok success
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/paq8px -d ../dna/comp/" + file + ".paq8px208fix1 ../dna/decomp/";
+        string command = "../executables/paq8px -d ../dna/comp/" + file + ".txt.paq8px208fix1 ../dna/decomp/";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -74,7 +74,7 @@ void paq8Decomp(string str) { // Implemented PAQ8 decompression - test not compl
     }
 }
 
-void zip7Decomp(string str) { // Implemented 7zip decompression - test not complete
+void zip7Decomp(string str) { // Implemented 7zip decompression - test OK success
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -94,7 +94,7 @@ void zip7Decomp(string str) { // Implemented 7zip decompression - test not compl
     }
 }
 
-void bscDecomp(string str) { // Implemented BSC decompression - test not complete
+void bscDecomp(string str) { // Implemented BSC decompression - test ok success
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -116,11 +116,11 @@ void bscDecomp(string str) { // Implemented BSC decompression - test not complet
     }
 }
 
-void gzipDecomp(string str) { // Implemented GZIP decompression - test not complete
+void gzipDecomp(string str) { // Implemented GZIP decompression - test ok success
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "gzip -d -k ../dna/comp/" + file + ".gz -c > ../dna/decomp/" + file;
+        string command = "gzip -d -k ../dna/comp/" + file + ".gz -c > ../dna/decomp/" + file + ".txt";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
