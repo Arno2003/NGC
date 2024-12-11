@@ -49,3 +49,17 @@ to decompress .tar to .txt
 tar -xvf ./tarOutputFile.tar 
 Optional - change output tar directory using -C
 tar -xvf ./tarOutputFile.tar -C ../dna/
+
+to install gzip for system go to this website
+https://ftp.gnu.org/gnu/gzip/
+downlaod version gzip-1.13.tar.xz
+then decompress 
+xz -d file1.tar.xz
+tar -xf file1.tar
+
+then change diretory to ./gzip-1.13 and run the following commands.
+./configure
+make
+sudo make install
+
+

@@ -137,11 +137,11 @@ void gzipComp(string str) { // Tested OK - Successfully compressed
 }
 
 // New ZSTD compression method
-void zstdComp(string str) {
+void zstdComp(string str) { // Added ZSTD compression logic -- is tested ? // confirm and modify
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "zstd -o ../dna/comp/" + file + ".zst " + fileName;
+        string command = "zstd -o -k ../dna/comp/" + file + ".zst " + fileName;
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 

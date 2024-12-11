@@ -14,7 +14,7 @@ string getDirectoryName(const string& path) {
     return filePath.parent_path().string();
 }
 
-void zpaqDecomp(string str) { // Implemented ZPAQ decompression
+void zpaqDecomp(string str) { // Implemented ZPAQ decompression - test not complete
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -34,7 +34,7 @@ void zpaqDecomp(string str) { // Implemented ZPAQ decompression
     }
 }
 
-void bzip2Decomp(string str) { // Implemented BZIP2 decompression
+void bzip2Decomp(string str) { // Implemented BZIP2 decompression - test not complete
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -54,7 +54,7 @@ void bzip2Decomp(string str) { // Implemented BZIP2 decompression
     }
 }
 
-void paq8Decomp(string str) { // Implemented PAQ8 decompression
+void paq8Decomp(string str) { // Implemented PAQ8 decompression - test not complete
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -74,7 +74,7 @@ void paq8Decomp(string str) { // Implemented PAQ8 decompression
     }
 }
 
-void zip7Decomp(string str) { // Implemented 7zip decompression
+void zip7Decomp(string str) { // Implemented 7zip decompression - test not complete
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -94,7 +94,7 @@ void zip7Decomp(string str) { // Implemented 7zip decompression
     }
 }
 
-void bscDecomp(string str) { // Implemented BSC decompression
+void bscDecomp(string str) { // Implemented BSC decompression - test not complete
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -116,7 +116,7 @@ void bscDecomp(string str) { // Implemented BSC decompression
     }
 }
 
-void gzipDecomp(string str) { // Implemented GZIP decompression
+void gzipDecomp(string str) { // Implemented GZIP decompression - test not complete
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
@@ -137,7 +137,7 @@ void gzipDecomp(string str) { // Implemented GZIP decompression
 }
 
 // New ZSTD decompression method
-void zstdDecomp(string str) {
+void zstdDecomp(string str) {   // yet to implement - not complete // if ok modify comment
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
