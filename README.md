@@ -63,3 +63,20 @@ make
 sudo make install
 
 
+
+
+
+
+At the end of completion - create "compNormalize.h" file and include "" it to decompNormalize.cpp, remove declaration of getFileNameWithoutException() and getDirectoryName() defination and declaration from decompNormalize.cpp or it would create errors during compilation.
+>>>>
+
+
+#ifndef COMPNORMALIZE_H
+#define COMPNORMALIZE_H
+
+#include <string>
+
+std::string getFileNameWithoutExtension(const std::string& filename);
+std::string getDirectoryName(const std::string& path);
+
+#endif // COMPNORMALIZE_H
