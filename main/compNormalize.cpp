@@ -137,13 +137,17 @@ void gzipComp(string str) { // Tested OK - Successfully compressed
 }
 
 // New ZSTD compression method
-void zstdComp(string str) { // Added ZSTD compression logic -- is tested ? // confirm and modify
+void zstdComp(string str) {
     try {
-        string fileName = str;
-        string file = getFileNameWithoutExtension(fileName);
-        string command = "zstd -o -k ../dna/comp/" + file + ".zst " + fileName;
+        string fileName = str; // Full input file path
+        string file = getFileNameWithoutExtension(fileName); // File name without extension
+        string outputPath = "../dna/comp/" + file + ".zst"; // Output file path
+
+        // Correct command syntax
+        string command = "zstd -k " + fileName + " -o " + outputPath;
         cout << command << endl;
-        int retCode = system(command.c_str()); // execute command
+
+        int retCode = system(command.c_str()); // Execute the command
 
         if (retCode == 0) {
             cout << "ZSTD compression executed successfully." << endl;
@@ -156,6 +160,8 @@ void zstdComp(string str) { // Added ZSTD compression logic -- is tested ? // co
         cerr << "Unknown exception in zstdComp." << endl;
     }
 }
+
+
 
 void compressSequence(std::string sequence) {
     try {
