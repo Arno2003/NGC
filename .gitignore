@@ -1,3 +1,9 @@
 .vscode
 *.o
 main/test
+main/main
+dna/raw/seq*
+dna/comp/seq*
+dna/decomp/seq*
+dna/denorm/seq*
+dna/norm/seq*
