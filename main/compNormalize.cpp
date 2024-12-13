@@ -144,7 +144,7 @@ void zstdComp(string str) {
         string outputPath = "../dna/comp/" + file + ".zst"; // Output file path
 
         // Correct command syntax
-        string command = "zstd -k " + fileName + " -o " + outputPath;
+        string command = "../executables/zstd -k " + fileName + " -o " + outputPath;
         cout << command << endl;
 
         int retCode = system(command.c_str()); // Execute the command
