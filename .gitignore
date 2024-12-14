@@ -1,5 +1,7 @@
 .vscode
 *.o
+#dna
+dna/*/*
 main/test
 main/main
 dna/raw/seq*
