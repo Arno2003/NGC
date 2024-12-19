@@ -2,17 +2,18 @@
 #include <cstdlib> // For system()
 #include <string>
 #include <filesystem>
+#include "defs.h"
 using namespace std;
 
-string getFileNameWithoutExtension(const string& path) {
-    std::filesystem::path filePath(path);
-    return filePath.stem().string();
-}
+// string getFileNameWithoutExtension(const string& path) {
+//     std::filesystem::path filePath(path);
+//     return filePath.stem().string();
+// }
 
-string getDirectoryName(const string& path) {
-    std::filesystem::path filePath(path);
-    return filePath.parent_path().string();
-}
+// string getDirectoryName(const string& path) {
+//     std::filesystem::path filePath(path);
+//     return filePath.parent_path().string();
+// }
 
 void zpaqDecomp(string str) { // Implemented ZPAQ decompression - test not complete
     try {
