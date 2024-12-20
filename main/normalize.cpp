@@ -76,6 +76,7 @@ std::string readSequenceFromFile(const std::string& filename) {
     while (std::getline(infile, line)) {
         if (line.empty()) continue;
         if (line[0] == '>' || line[0] == '@' || line[0] == '+') continue; // Skip headers
+        if (line[0] == '+')  
 
         for (char c : line) {
             if (!std::isprint(static_cast<unsigned char>(c)) || std::isspace(static_cast<unsigned char>(c))) {
