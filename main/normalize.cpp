@@ -118,10 +118,10 @@ std::string readSequenceFromFile(const std::string& filename) {
         for (char c : line) {
             if (!std::isprint(static_cast<unsigned char>(c)) ||
                 std::isspace(static_cast<unsigned char>(c))) {
-                throw std::runtime_error("Invalid character found in sequence.");
+                    continue;
             }
+            rawSequence += c;
         }
-        rawSequence += line;
     }
 
     if (rawSequence.empty()) {
@@ -153,7 +153,7 @@ void normalize(int argc, char* argv[]) {
         std::string encodedSequence = encodeSequenceToASCII(cleanedSequence);
 
         // Output directory "dna/norm"
-        fs::path outputDir = "dna/norm";
+        fs::path outputDir = "../dna/norm";
         if (!fs::exists(outputDir)) {
             fs::create_directories(outputDir);
         }

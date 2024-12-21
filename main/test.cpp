@@ -16,6 +16,6 @@ int main(int argc, char* argv[]){
     //compressSequence(inputFilePath);
     //decompressSequence(inputFilePath);
     const char* argv2[] = {inputFilePath.c_str(), argv[2]};
-    denormalize(3, argv);
+    //denormalize(3, argv);
     return 0;
 }
