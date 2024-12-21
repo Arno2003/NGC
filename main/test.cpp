@@ -9,6 +9,7 @@ extern void denormalize(int argc, char* argv[]);
 
 int main(int argc, char* argv[]){
     string str = argv[1];
+    cout << str << endl;
     string file = getFileNameWithoutExtension(str);
     normalize(2, argv);
     string inputFilePath = "../dna/norm/" + file + "_raw.txt";
