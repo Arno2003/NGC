@@ -157,7 +157,3 @@ void normalize(int argc, char* argv[]) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
-int main(int argc, char* argv[]) {
-    normalize(argc, argv);
-    return 0;
-}
