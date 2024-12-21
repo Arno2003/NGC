@@ -4,6 +4,7 @@ using namespace std;
 extern void decompressSequence(string);
 extern void compressSequence(string);
 extern void normalize(int argc, char* argv[]);
+extern void denormalize(int argc, char* argv[]);
 
 
 int main(int argc, char* argv[]){
@@ -13,5 +14,6 @@ int main(int argc, char* argv[]){
     string inputFilePath = "../dna/norm/" + file + ".txt";
     compressSequence(inputFilePath);
     decompressSequence(inputFilePath);
+    denormalize(2, argv);
     return 0;
 }
