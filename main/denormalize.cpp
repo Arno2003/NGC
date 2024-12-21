@@ -56,11 +56,11 @@ void denormalize(int argc, char* argv[]) {
     auto startTime = std::chrono::steady_clock::now();
 
     try {
-        if (argc < 3) {
-            std::cerr << "Usage: " << argv[0] << " <encoded_sequence_file_path> <flag>\n"
-                      << "  flag: 1->DNA, 2->RNA\n";
-            return;
-        }
+        // if (argc < 3) {
+        //     std::cerr << "Usage: " << argv[0] << " <encoded_sequence_file_path> <flag>\n"
+        //               << "  flag: 1->DNA, 2->RNA\n";
+        //     return;
+        // }
         std::string inputFilePath = argv[1];
         int flag = std::stoi(argv[2]);
         bool isDNA = (flag == 1);
