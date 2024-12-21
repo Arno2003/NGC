@@ -5,6 +5,7 @@
 #include <exception>
 #include <algorithm>
 #include <unordered_map>
+#include "defs.h"
 
 // Placeholder for the external function definition
 void compressSequence(const std::string& filepath) {
@@ -14,16 +15,16 @@ void compressSequence(const std::string& filepath) {
 
 namespace fs = std::filesystem;
 
-// Function to detect file type based on extension
-std::string detectFileType(const std::string& filename) {
-    size_t dotPos = filename.find_last_of('.');
-    if (dotPos == std::string::npos) return "raw";
-    std::string ext = filename.substr(dotPos + 1);
-    // Basic checks for known extensions
-    if (ext == "fasta" || ext == "fa")    return "fasta";
-    if (ext == "fastq" || ext == "fq")    return "fastq";
-    return "raw";
-}
+// // Function to detect file type based on extension
+// std::string detectFileType(const std::string& filename) {
+//     size_t dotPos = filename.find_last_of('.');
+//     if (dotPos == std::string::npos) return "raw";
+//     std::string ext = filename.substr(dotPos + 1);
+//     // Basic checks for known extensions
+//     if (ext == "fasta" || ext == "fa")    return "fasta";
+//     if (ext == "fastq" || ext == "fq")    return "fastq";
+//     return "raw";
+// }
 
 // Function to clean and normalize the sequence
 std::string cleanSequence(const std::string& sequence) {

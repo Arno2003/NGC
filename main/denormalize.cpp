@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <chrono>
 #include <sys/resource.h>
+#include "defs.h"
 
 namespace fs = std::filesystem;
 
@@ -24,15 +25,15 @@ std::vector<unsigned char> decodeASCIIToBytes(const std::string& asciiStr) {
     return bytes;
 }
 
-// Helper function to detect file type based on extension
-std::string detectFileType(const std::string& filename) {
-    size_t dotPos = filename.find_last_of('.');
-    if (dotPos == std::string::npos) return "raw";
-    std::string ext = filename.substr(dotPos + 1);
-    if (ext == "fasta" || ext == "fa")  return "fasta";
-    if (ext == "fastq" || ext == "fq")  return "fastq";
-    return "raw";
-}
+// // Helper function to detect file type based on extension
+// std::string detectFileType(const std::string& filename) {
+//     size_t dotPos = filename.find_last_of('.');
+//     if (dotPos == std::string::npos) return "raw";
+//     std::string ext = filename.substr(dotPos + 1);
+//     if (ext == "fasta" || ext == "fa")  return "fasta";
+//     if (ext == "fastq" || ext == "fq")  return "fastq";
+//     return "raw";
+// }
 
 // Decode 2-bit packed bytes into nucleotides (DNA or RNA)
 std::string decodeBytesToSequence(const std::vector<unsigned char>& byte_data, bool isDNA) {
