@@ -106,7 +106,8 @@ void denormalize(int argc, char* argv[]) {
         decompressSequence(inputFilePath);
 
         // Step 5: Ensure output directory exists
-        fs::path outputDir = "data/denorm";
+        // fs::path outputDir = "data/denorm";
+        fs::path outputDir = "../dna/denorm";
         try {
             if (!fs::exists(outputDir)) {
                 fs::create_directories(outputDir);
