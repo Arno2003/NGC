@@ -118,7 +118,7 @@ void denormalize(int argc, char* argv[]) {
         }
 
         // Step 6: Write the denormalized sequence to a file
-        fs::path outputFilePath = outputDir / (fs::path(inputFilePath).stem().string() + "_denorm");
+        fs::path outputFilePath = outputDir / (fs::path(inputFilePath).stem().string() + "_denorm.txt");
         std::ofstream outfile(outputFilePath);
         if (!outfile.is_open()) {
             throw std::runtime_error("Cannot open output file for writing.");
