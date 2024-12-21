@@ -118,7 +118,8 @@ void normalize(int argc, char* argv[]) {
         std::string encodedSequence = encodeSequenceToASCII(cleanedSequence);
 
         // Step 4: Ensure output directory exists
-        fs::path outputDir = "data/raw_seq";
+        // fs::path outputDir = "data/norm";
+        fs::path outputDir = "../dna/norm";
         try {
             if (!fs::exists(outputDir)) {
                 fs::create_directories(outputDir);
