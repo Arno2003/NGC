@@ -95,6 +95,9 @@ std::string readSequenceFromFile(const std::string& filename) {
     }
 
     infile.close();
+    std::cout << "Sequence read successfully." << std::endl;
+    std::cout << "Sequence length: " << rawSequence.size() << std::endl;
+    std::cout << "RAW sequence : " << rawSequence << std::endl;
     return rawSequence;
 }
 void normalize(int argc, char* argv[]) {
@@ -153,4 +156,8 @@ void normalize(int argc, char* argv[]) {
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+}
+int main(int argc, char* argv[]) {
+    normalize(argc, argv);
+    return 0;
 }
