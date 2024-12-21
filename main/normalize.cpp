@@ -130,7 +130,7 @@ void normalize(int argc, char* argv[]) {
 
         // Step 5: Save encoded sequence
         fs::path inputFileName = fs::path(inputFilePath).stem();
-        fs::path outputFilePath = outputDir / (inputFileName.string() + "_raw");
+        fs::path outputFilePath = outputDir / (inputFileName.string() + "_raw.txt");
         std::cout << "Saving encoded sequence to file: " << outputFilePath << std::endl;
         std::ofstream outfile(outputFilePath, std::ios::binary);
         if (!outfile.is_open()) {
