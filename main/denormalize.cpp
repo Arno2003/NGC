@@ -7,7 +7,6 @@
 #include <chrono>
 #include <sys/resource.h>
 
-// Namespace alias
 namespace fs = std::filesystem;
 
 // Placeholder for the external decompressSequence function
@@ -25,7 +24,17 @@ std::vector<unsigned char> decodeASCIIToBytes(const std::string& asciiStr) {
     return bytes;
 }
 
-// Helper function to decode 2-bit packed bytes into nucleotides (DNA or RNA)
+// Helper function to detect file type based on extension
+std::string detectFileType(const std::string& filename) {
+    size_t dotPos = filename.find_last_of('.');
+    if (dotPos == std::string::npos) return "raw";
+    std::string ext = filename.substr(dotPos + 1);
+    if (ext == "fasta" || ext == "fa")  return "fasta";
+    if (ext == "fastq" || ext == "fq")  return "fastq";
+    return "raw";
+}
+
+// Decode 2-bit packed bytes into nucleotides (DNA or RNA)
 std::string decodeBytesToSequence(const std::vector<unsigned char>& byte_data, bool isDNA) {
     std::string sequence;
     for (auto byte : byte_data) {
@@ -35,9 +44,7 @@ std::string decodeBytesToSequence(const std::vector<unsigned char>& byte_data, b
                 case 0b00: sequence += 'A'; break;
                 case 0b01: sequence += 'C'; break;
                 case 0b10: sequence += 'G'; break;
-                case 0b11:
-                    sequence += (isDNA ? 'T' : 'U');
-                    break;
+                case 0b11: sequence += (isDNA ? 'T' : 'U'); break;
                 default:
                     throw std::runtime_error("Invalid 2-bit encoding.");
             }
@@ -50,18 +57,19 @@ std::string decodeBytesToSequence(const std::vector<unsigned char>& byte_data, b
     return sequence;
 }
 
-// Rename main() to denormalize() so it can be reused
+// Denormalize function
 void denormalize(int argc, char* argv[]) {
-    // Track time and memory usage
     auto startTime = std::chrono::steady_clock::now();
 
     try {
-        // if (argc < 3) {
-        //     std::cerr << "Usage: " << argv[0] << " <encoded_sequence_file_path> <flag>\n"
-        //               << "  flag: 1->DNA, 2->RNA\n";
-        //     return;
-        // }
+        if (argc < 3) {
+            std::cerr << "Usage: " << argv[0] << " <encoded_sequence_file_path> <flag>\n"
+                      << "  flag: 1->DNA, 2->RNA\n";
+            return;
+        }
+
         std::string inputFilePath = argv[1];
+        // Additional logic: use the flag to check if file is DNA or RNA
         int flag = std::stoi(argv[2]);
         bool isDNA = (flag == 1);
 
@@ -69,52 +77,61 @@ void denormalize(int argc, char* argv[]) {
             throw std::runtime_error("Input file does not exist: " + inputFilePath);
         }
 
-        // Step 1: Read file and skip lines if necessary (fastq or fasta headers)
+        // Detect file type
+        std::string fileType = detectFileType(inputFilePath);
+
+        // Step 1: Read file and skip lines for FASTQ/FASTA if needed
         std::ifstream infile(inputFilePath, std::ios::binary);
         if (!infile.is_open()) {
             throw std::runtime_error("Cannot open file: " + inputFilePath);
         }
 
-        std::string line;
-        std::string ascii_sequence;
+        std::string line, ascii_sequence;
+        bool skipNextLine = false; // For fastq '+' logic
         while (std::getline(infile, line)) {
-            if (line.empty()) continue;
-            if (line[0] == '+') {
-                // Skip this line and the next line
-                if (!std::getline(infile, line)) break;
+            if (skipNextLine) {
+                skipNextLine = false;
                 continue;
             }
-            if (line[0] == '@' || line[0] == '>') {
-                // Skip header line
+            if (line.empty()) {
                 continue;
             }
-            // Accumulate the rest of the data
+
+            if (fileType == "fastq") {
+                if (line[0] == '@') {
+                    continue; // skip line
+                }
+                if (line[0] == '+') {
+                    skipNextLine = true;
+                    continue;
+                }
+            } else if (fileType == "fasta") {
+                if (line[0] == '>') {
+                    continue; // skip line
+                }
+            }
+            // raw: no skipping
+
             ascii_sequence += line;
         }
         infile.close();
 
-        // Step 2: Decode extended ASCII to bytes
+        // Step 2: Convert extended ASCII to bytes
         std::cout << "Decoding extended ASCII to bytes..." << std::endl;
         std::vector<unsigned char> byte_data = decodeASCIIToBytes(ascii_sequence);
 
-        // Step 3: Decode bytes to nucleotide sequence
+        // Step 3: Decode bytes to nucleotide sequence (DNA or RNA)
         std::cout << "Decoding bytes to nucleotide sequence..." << std::endl;
         std::string nucleotide_sequence = decodeBytesToSequence(byte_data, isDNA);
 
-        // Step 4: Call decompressSequence (to be implemented)
+        // Step 4: Decompress if needed
         std::cout << "Calling decompressSequence..." << std::endl;
         decompressSequence(inputFilePath);
 
         // Step 5: Ensure output directory exists
-        // fs::path outputDir = "data/denorm";
         fs::path outputDir = "../dna/denorm";
-        try {
-            if (!fs::exists(outputDir)) {
-                fs::create_directories(outputDir);
-            }
-        } catch (const fs::filesystem_error& e) {
-            throw std::runtime_error(
-                "Unable to create directory " + outputDir.string() + ": " + e.what());
+        if (!fs::exists(outputDir)) {
+            fs::create_directories(outputDir);
         }
 
         // Step 6: Write the denormalized sequence to a file
@@ -126,14 +143,13 @@ void denormalize(int argc, char* argv[]) {
         outfile << nucleotide_sequence;
         outfile.close();
 
-        // Display final result
         std::cout << "Denormalized sequence written to: " << outputFilePath << std::endl;
 
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
-    // Time and memory usage
+    // Report time & memory usage
     auto endTime = std::chrono::steady_clock::now();
     struct rusage usage;
     getrusage(RUSAGE_SELF, &usage);
@@ -143,3 +159,4 @@ void denormalize(int argc, char* argv[]) {
               << " ms" << std::endl;
     std::cout << "Max resident set size: " << usage.ru_maxrss << " KB" << std::endl;
 }
+
