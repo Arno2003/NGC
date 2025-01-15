@@ -5,41 +5,112 @@
 #include <exception>
 #include <algorithm>
 #include <unordered_map>
-#include "defs.h"
 
-// Placeholder for the external function definition
-void compressSequence(const std::string& filepath) {
-    std::cout << "Compressing sequence: " << filepath << std::endl;
-    // Example placeholder action
+// Function to detect file type based on extension
+std::string detectFileType(const std::string& filename) {
+    size_t dotPos = filename.find_last_of('.');
+    if (dotPos == std::string::npos) return "raw";
+    std::string ext = filename.substr(dotPos + 1);
+    // Basic checks for known extensions
+    if (ext == "fasta" || ext == "fa")    return "fasta";
+    if (ext == "fastq" || ext == "fq")    return "fastq";
+    return "raw";
 }
 
-namespace fs = std::filesystem;
-
-// // Function to detect file type based on extension
-// std::string detectFileType(const std::string& filename) {
-//     size_t dotPos = filename.find_last_of('.');
-//     if (dotPos == std::string::npos) return "raw";
-//     std::string ext = filename.substr(dotPos + 1);
-//     // Basic checks for known extensions
-//     if (ext == "fasta" || ext == "fa")    return "fasta";
-//     if (ext == "fastq" || ext == "fq")    return "fastq";
-//     return "raw";
-// }
-
-// Function to clean and normalize the sequence
-std::string cleanSequence(const std::string& sequence) {
+// Function to clean and validate the sequence line
+std::string cleanSequence(const std::string& line) {
     std::string cleaned;
-    for (char nucleotide : sequence) {
-        nucleotide = std::toupper(static_cast<unsigned char>(nucleotide));
-        if (nucleotide == 'A' || nucleotide == 'C' || nucleotide == 'G' ||
-            nucleotide == 'T' || nucleotide == 'U') {
-            cleaned += nucleotide;
+    cleaned.reserve(line.length());
+    for (char nucleotide : line) {
+        char upperNucleotide = std::toupper(static_cast<unsigned char>(nucleotide));
+        if (upperNucleotide == 'A' || upperNucleotide == 'C' ||
+            upperNucleotide == 'G' || upperNucleotide == 'T' ||
+            upperNucleotide == 'U') {
+            cleaned += upperNucleotide;
         }
+        // Optionally, handle or log invalid characters
     }
     return cleaned;
 }
 
-// Convert nucleotide to 2-bit encoding
+// Structure to hold encoded data and residual nucleotides
+struct EncodedResult {
+    std::string encodedBytes;
+    std::string residual;
+};
+
+// Function to extract raw sequence from a file
+std::string extractRawSequence(const std::string& filepath) {
+    std::ifstream infile(filepath);
+    if (!infile.is_open()) {
+        throw std::runtime_error("Unable to open file: " + filepath);
+    }
+
+    std::string fileType = detectFileType(filepath);
+    std::string line;
+    std::string rawSequence;
+    bool skipNext = false; // Flag to skip the next line (used for FASTQ quality scores)
+    int lineCount = 0;
+
+    while (std::getline(infile, line)) {
+        lineCount++;
+        std::cout << "Processing line " << lineCount << std::endl;
+        if (skipNext) {
+            std::cout << "Skipping quality score line." << std::endl;
+            skipNext = false;
+            continue; // Skip the quality score line in FASTQ
+        }
+
+        if (fileType == "fastq") {
+            if (line.empty()) {
+                std::cout << "Empty line encountered. Skipping." << std::endl;
+                continue; // Skip empty lines
+            }
+            char firstChar = line[0];
+            if (firstChar == '@') {
+                std::cout << "Header line detected. Skipping." << std::endl;
+                continue; // Skip header lines
+            }
+            else if (firstChar == '+') {
+                std::cout << "Separator line detected. Skipping this and the next line." << std::endl;
+                skipNext = true;
+                continue; // Skip separator and quality score lines
+            }
+            else {
+                std::cout << "Sequence line detected." << std::endl;
+                std::string cleaned = cleanSequence(line);
+                rawSequence += cleaned;
+            }
+        }
+        else if (fileType == "fasta") {
+            if (line.empty()) {
+                std::cout << "Empty line encountered. Skipping." << std::endl;
+                continue; // Skip empty lines
+            }
+            char firstChar = line[0];
+            if (firstChar == '>') {
+                std::cout << "Header line detected. Skipping." << std::endl;
+                continue; // Skip header lines
+            }
+            else {
+                std::cout << "Sequence line detected." << std::endl;
+                std::string cleaned = cleanSequence(line);
+                rawSequence += cleaned;
+            }
+        }
+        else { // raw
+            std::cout << "Assuming raw sequence data." << std::endl;
+            std::string cleaned = cleanSequence(line);
+            rawSequence += cleaned;
+        }
+    }
+
+    infile.close();
+    std::cout << "Raw sequence extraction completed." << std::endl;
+    return rawSequence;
+}
+
+// Function to convert a nucleotide to its 2-bit representation
 unsigned char nucleotideTo2Bit(char nucleotide) {
     switch (nucleotide) {
         case 'A': return 0b00;
@@ -47,139 +118,108 @@ unsigned char nucleotideTo2Bit(char nucleotide) {
         case 'G': return 0b10;
         case 'T':
         case 'U': return 0b11;
-        default: throw std::invalid_argument("Invalid nucleotide encountered.");
+        default:
+            throw std::invalid_argument("Invalid nucleotide: " + std::string(1, nucleotide));
     }
 }
 
-// Encode sequence into 2-bit ASCII format
-std::string encodeSequenceToASCII(const std::string& sequence) {
-    std::string encoded;
+// Function to encode the raw sequence into 2-bit encoding
+EncodedResult encodeSequenceTo2Bit(const std::string& sequence) {
+    EncodedResult result;
+    result.encodedBytes.reserve(sequence.length() / 4); // Reserve space for efficiency
+    std::string residual;
+    residual.reserve(3); // Maximum of 3 residual characters
+
     unsigned char currentByte = 0;
     int bitPosition = 0;
 
-    for (char nucleotide : sequence) {
+    for (size_t i = 0; i < sequence.length(); ++i) {
+        char nucleotide = sequence[i];
         unsigned char bits = nucleotideTo2Bit(nucleotide);
         currentByte |= (bits << (6 - bitPosition * 2));
         bitPosition++;
+
         if (bitPosition == 4) {
-            encoded += static_cast<char>(currentByte);
+            result.encodedBytes += static_cast<char>(currentByte);
             currentByte = 0;
             bitPosition = 0;
         }
     }
+
+    // Handle residual nucleotides if sequence length is not a multiple of 4
     if (bitPosition > 0) {
-        encoded += static_cast<char>(currentByte);
+        // Instead of padding, we store the residual nucleotides separately
+        for (int j = 0; j < bitPosition; ++j) {
+            unsigned char bits = (currentByte >> (6 - j * 2)) & 0b11;
+            switch (bits) {
+                case 0b00: residual += 'A'; break;
+                case 0b01: residual += 'C'; break;
+                case 0b10: residual += 'G'; break;
+                case 0b11: residual += 'T'; break;
+                default: // This should never happen
+                    throw std::runtime_error("Unexpected error during encoding.");
+            }
+        }
+        result.residual = residual;
     }
-    return encoded;
+
+    return result;
 }
 
-// Read and parse sequence from file based on file type
-std::string readSequenceFromFile(const std::string& filename) {
-    std::ifstream infile(filename);
-    if (!infile.is_open()) {
-        throw std::runtime_error("Cannot open file: " + filename);
+// Function to write the encoded sequence and residual to a file
+void writeEncodedSequence(const EncodedResult& encodedResult, const std::string& outputPath) {
+    std::ofstream outfile(outputPath, std::ios::binary);
+    if (!outfile.is_open()) {
+        throw std::runtime_error("Unable to open output file: " + outputPath);
     }
 
-    std::string fileType = detectFileType(filename);
-    std::string line, rawSequence;
-    bool skipNextLine = false;  // For fastq '+' logic
+    // Write the encoded bytes
+    outfile.write(encodedResult.encodedBytes.c_str(), encodedResult.encodedBytes.size());
+    std::cout << "Encoded bytes written: " << encodedResult.encodedBytes.size() << " bytes" << std::endl;
 
-    while (std::getline(infile, line)) {
-        if (skipNextLine) {
-            // Skip this line and reset the flag
-            skipNextLine = false;
-            continue;
-        }
-
-        if (line.empty()) {
-            continue;
-        }
-
-        // FASTQ rules
-        if (fileType == "fastq") {
-            // Skip lines starting with '@'
-            if (line[0] == '@') {
-                continue;
-            }
-            // Skip line starting with '+' AND skip next line
-            if (line[0] == '+') {
-                skipNextLine = true;
-                continue;
-            }
-        }
-        // FASTA rule: skip lines starting with '>'
-        else if (fileType == "fasta") {
-            if (line[0] == '>') {
-                continue;
-            }
-        }
-        // RAW: no skipping
-
-        // Validate characters (optional, can comment out if undesired)
-        for (char c : line) {
-            if (!std::isprint(static_cast<unsigned char>(c)) ||
-                std::isspace(static_cast<unsigned char>(c))) {
-                    continue;
-            }
-            rawSequence += c;
-        }
+    // If there are residual nucleotides, write a newline and then the residuals
+    if (!encodedResult.residual.empty()) {
+        std::cout << "Residual nucleotides detected: " << encodedResult.residual.size() << " characters" << std::endl;
+        // Write a newline character (Unix-style)
+        char newline = '\n';
+        outfile.write(&newline, 1);
+        // Write residual nucleotides as plain text
+        outfile.write(encodedResult.residual.c_str(), encodedResult.residual.size());
+        std::cout << "Residual nucleotides written to the next line." << std::endl;
     }
 
-    if (rawSequence.empty()) {
-        throw std::runtime_error("No valid sequence data found in file.");
-    }
-
-    infile.close();
-    std::cout << "Sequence read successfully." << std::endl;
-    std::cout << "Sequence length: " << rawSequence.size() << std::endl;
-    std::cout << "RAW sequence : " << rawSequence << std::endl;
-    return rawSequence;
+    outfile.close();
+    std::cout << "Encoded sequence written to " << outputPath << std::endl;
 }
 
-// Main normalization function
-void normalize(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
+    if (argc < 3) {
+        std::cerr << "Usage: normalize <input_file> <output_file>" << std::endl;
+        return 1;
+    }
+
+    std::string inputFilePath = argv[1];
+    std::string outputFilePath = argv[2];
+
     try {
-        std::string inputFilePath = argv[1];
-        if (!fs::exists(inputFilePath)) {
-            throw std::runtime_error("Input file does not exist: " + inputFilePath);
+        std::cout << "Starting raw sequence extraction from " << inputFilePath << std::endl;
+        std::string rawSequence = extractRawSequence(inputFilePath);
+        std::cout << "Extracted Sequence Length: " << rawSequence.length() << " nucleotides" << std::endl;
+
+        std::cout << "Starting 2-bit encoding of the sequence." << std::endl;
+        EncodedResult encodedResult = encodeSequenceTo2Bit(rawSequence);
+        std::cout << "Encoded Bytes Length: " << encodedResult.encodedBytes.length() << " bytes" << std::endl;
+        if (!encodedResult.residual.empty()) {
+            std::cout << "Residual Nucleotides Length: " << encodedResult.residual.length() << " characters" << std::endl;
         }
 
-        std::cout << "Reading sequence from file..." << std::endl;
-        std::string rawSequence = readSequenceFromFile(inputFilePath);
-
-        std::cout << "Cleaning and normalizing sequence..." << std::endl;
-        std::string cleanedSequence = cleanSequence(rawSequence);
-
-        std::cout << "Encoding sequence into 2-bit ASCII format..." << std::endl;
-        std::string encodedSequence = encodeSequenceToASCII(cleanedSequence);
-
-        // Output directory "dna/norm"
-        fs::path outputDir = "../dna/norm";
-        if (!fs::exists(outputDir)) {
-            fs::create_directories(outputDir);
-        }
-
-        // Generate output file name
-        fs::path inputFileName = fs::path(inputFilePath).stem();
-        fs::path outputFilePath = outputDir / (inputFileName.string() + "_raw.txt");
-        std::cout << "Saving encoded sequence to file: " << outputFilePath << std::endl;
-
-        std::ofstream outfile(outputFilePath, std::ios::binary);
-        if (!outfile.is_open()) {
-            throw std::runtime_error("Cannot open output file for writing.");
-        }
-        outfile.write(encodedSequence.c_str(), encodedSequence.size());
-        outfile.close();
-
-        std::cout << "Compressing encoded sequence..." << std::endl;
-        compressSequence(outputFilePath.string());
-
-        std::cout << "Process completed successfully!" << std::endl;
-    }
-    catch (const std::invalid_argument& ia) {
-        std::cerr << "Invalid argument error: " << ia.what() << std::endl;
+        writeEncodedSequence(encodedResult, outputFilePath);
+        std::cout << "Normalization process completed successfully." << std::endl;
     }
     catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << "Error during normalization: " << e.what() << std::endl;
+        return 1;
     }
+
+    return 0;
 }
