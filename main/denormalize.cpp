@@ -3,6 +3,7 @@
 #include <string>
 #include <exception>
 #include <vector>
+#include <cstdint> // For fixed-width integer types
 
 // Function to decode 2-bit representation to nucleotide
 char twoBitToNucleotide(unsigned char bits) {
@@ -22,23 +23,58 @@ std::string denormalizeSequence(const std::string& filepath) {
         throw std::runtime_error("Unable to open file: " + filepath);
     }
 
-    std::vector<char> encodedBytes;
-    std::string residual;
-    std::string reconstructed;
+    // Determine the file size
+    infile.seekg(0, std::ios::end);
+    std::streampos fileSize = infile.tellg();
+    infile.seekg(0, std::ios::beg);
 
-    // Read encoded bytes up to newline
-    char byte;
-    while (infile.get(byte)) {
-        if (byte == '\n') {
-            break;
-        }
-        encodedBytes.push_back(byte);
+    if (fileSize < 1) {
+        throw std::runtime_error("Encoded file is empty.");
+    }
+
+    // Read residualCount (last byte)
+    uint8_t residualCount = 0;
+    infile.seekg(-1, std::ios::end);
+    infile.read(reinterpret_cast<char*>(&residualCount), sizeof(residualCount));
+
+    if (residualCount > 3) {
+        throw std::runtime_error("Invalid residual nucleotide count: " + std::to_string(residualCount));
+    }
+
+    // Calculate the position where residual nucleotides start
+    std::int64_t residualPos = static_cast<std::int64_t>(fileSize) - 1 - residualCount;
+    if (residualPos < 0) {
+        throw std::runtime_error("File too small to contain residual nucleotides as per residual count.");
     }
 
     // Read residual nucleotides
-    std::getline(infile, residual);
+    std::string residual;
+    if (residualCount > 0) {
+        residual.resize(residualCount);
+        infile.seekg(residualPos, std::ios::beg);
+        infile.read(&residual[0], residualCount);
+        if (infile.gcount() != residualCount) {
+            throw std::runtime_error("Error reading residual nucleotides.");
+        }
+    }
+
+    // Read encodedBytes
+    size_t encodedBytesSize = residualPos;
+    std::vector<char> encodedBytes(encodedBytesSize);
+    if (encodedBytesSize > 0) {
+        infile.seekg(0, std::ios::beg);
+        infile.read(encodedBytes.data(), encodedBytesSize);
+        if (static_cast<size_t>(infile.gcount()) != encodedBytesSize) {
+            throw std::runtime_error("Error reading encoded bytes.");
+        }
+    }
+
+    infile.close();
 
     // Decode each byte into four nucleotides
+    std::string reconstructed;
+    reconstructed.reserve(static_cast<size_t>(encodedBytesSize) * 4 + residual.size());
+
     for (char encodedByte : encodedBytes) {
         unsigned char ub = static_cast<unsigned char>(encodedByte);
         for (int shift = 6; shift >= 0; shift -= 2) {
@@ -47,10 +83,9 @@ std::string denormalizeSequence(const std::string& filepath) {
         }
     }
 
-    // Append residual nucleotides
+    // Append residual nucleotides as-is
     reconstructed += residual;
 
-    infile.close();
     return reconstructed;
 }
 
