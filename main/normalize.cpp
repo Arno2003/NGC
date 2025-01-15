@@ -5,6 +5,7 @@
 #include <exception>
 #include <algorithm>
 #include <unordered_map>
+#include <cstdint> // For fixed-width integer types
 
 // Function to detect file type based on extension
 std::string detectFileType(const std::string& filename) {
@@ -21,6 +22,7 @@ std::string detectFileType(const std::string& filename) {
 std::string cleanSequence(const std::string& line) {
     std::string cleaned;
     cleaned.reserve(line.length());
+    int invalidCount = 0;
     for (char nucleotide : line) {
         char upperNucleotide = std::toupper(static_cast<unsigned char>(nucleotide));
         if (upperNucleotide == 'A' || upperNucleotide == 'C' ||
@@ -28,7 +30,14 @@ std::string cleanSequence(const std::string& line) {
             upperNucleotide == 'U') {
             cleaned += upperNucleotide;
         }
-        // Optionally, handle or log invalid characters
+        else {
+            invalidCount++;
+            // Optionally, log the invalid character
+            // std::cerr << "Invalid character '" << nucleotide << "' skipped." << std::endl;
+        }
+    }
+    if (invalidCount > 0) {
+        std::cout << "Warning: " << invalidCount << " invalid characters skipped in a line." << std::endl;
     }
     return cleaned;
 }
@@ -36,8 +45,82 @@ std::string cleanSequence(const std::string& line) {
 // Structure to hold encoded data and residual nucleotides
 struct EncodedResult {
     std::string encodedBytes;
+    uint8_t residualCount; // Number of residual nucleotides
     std::string residual;
 };
+
+// Function to convert a nucleotide to its 2-bit representation
+unsigned char nucleotideTo2Bit(char nucleotide) {
+    switch (nucleotide) {
+        case 'A': return 0b00;
+        case 'C': return 0b01;
+        case 'G': return 0b10;
+        case 'T':
+        case 'U': return 0b11;
+        default:
+            throw std::invalid_argument("Invalid nucleotide: " + std::string(1, nucleotide));
+    }
+}
+
+// Function to encode the raw sequence into 2-bit encoding
+EncodedResult encodeSequenceTo2Bit(const std::string& sequence) {
+    EncodedResult result;
+    result.encodedBytes.reserve(sequence.length() / 4); // Reserve space for efficiency
+    result.residualCount = 0;
+    result.residual.reserve(3); // Maximum of 3 residual characters
+
+    unsigned char currentByte = 0;
+    int bitPosition = 0;
+
+    for (size_t i = 0; i < sequence.length(); ++i) {
+        char nucleotide = sequence[i];
+        unsigned char bits = nucleotideTo2Bit(nucleotide);
+        currentByte |= (bits << (6 - bitPosition * 2));
+        bitPosition++;
+
+        if (bitPosition == 4) {
+            result.encodedBytes += static_cast<char>(currentByte);
+            currentByte = 0;
+            bitPosition = 0;
+        }
+    }
+
+    // Handle residual nucleotides if sequence length is not a multiple of 4
+    if (bitPosition > 0) {
+        size_t residualStart = sequence.length() - bitPosition;
+        for (int j = 0; j < bitPosition; ++j) {
+            result.residual += sequence[residualStart + j];
+        }
+        result.residualCount = static_cast<uint8_t>(bitPosition);
+    }
+
+    return result;
+}
+
+// Function to write the encoded sequence and residual to a file with metadata
+void writeEncodedSequence(const EncodedResult& encodedResult, const std::string& outputPath) {
+    std::ofstream outfile(outputPath, std::ios::binary);
+    if (!outfile.is_open()) {
+        throw std::runtime_error("Unable to open output file: " + outputPath);
+    }
+
+    // Write the encoded bytes
+    outfile.write(encodedResult.encodedBytes.c_str(), encodedResult.encodedBytes.size());
+    std::cout << "Encoded bytes written: " << encodedResult.encodedBytes.size() << " bytes" << std::endl;
+
+    // Write residual nucleotides (if any)
+    if (encodedResult.residualCount > 0) {
+        outfile.write(encodedResult.residual.c_str(), encodedResult.residual.size());
+        std::cout << "Residual nucleotides written: " << encodedResult.residual.size() << " characters" << std::endl;
+    }
+
+    // Write residual count as a single byte
+    outfile.write(reinterpret_cast<const char*>(&encodedResult.residualCount), sizeof(encodedResult.residualCount));
+    std::cout << "Residual nucleotide count written: " << static_cast<int>(encodedResult.residualCount) << std::endl;
+
+    outfile.close();
+    std::cout << "Encoded sequence written to " << outputPath << std::endl;
+}
 
 // Function to extract raw sequence from a file
 std::string extractRawSequence(const std::string& filepath) {
@@ -110,88 +193,6 @@ std::string extractRawSequence(const std::string& filepath) {
     return rawSequence;
 }
 
-// Function to convert a nucleotide to its 2-bit representation
-unsigned char nucleotideTo2Bit(char nucleotide) {
-    switch (nucleotide) {
-        case 'A': return 0b00;
-        case 'C': return 0b01;
-        case 'G': return 0b10;
-        case 'T':
-        case 'U': return 0b11;
-        default:
-            throw std::invalid_argument("Invalid nucleotide: " + std::string(1, nucleotide));
-    }
-}
-
-// Function to encode the raw sequence into 2-bit encoding
-EncodedResult encodeSequenceTo2Bit(const std::string& sequence) {
-    EncodedResult result;
-    result.encodedBytes.reserve(sequence.length() / 4); // Reserve space for efficiency
-    std::string residual;
-    residual.reserve(3); // Maximum of 3 residual characters
-
-    unsigned char currentByte = 0;
-    int bitPosition = 0;
-
-    for (size_t i = 0; i < sequence.length(); ++i) {
-        char nucleotide = sequence[i];
-        unsigned char bits = nucleotideTo2Bit(nucleotide);
-        currentByte |= (bits << (6 - bitPosition * 2));
-        bitPosition++;
-
-        if (bitPosition == 4) {
-            result.encodedBytes += static_cast<char>(currentByte);
-            currentByte = 0;
-            bitPosition = 0;
-        }
-    }
-
-    // Handle residual nucleotides if sequence length is not a multiple of 4
-    if (bitPosition > 0) {
-        // Instead of padding, we store the residual nucleotides separately
-        for (int j = 0; j < bitPosition; ++j) {
-            unsigned char bits = (currentByte >> (6 - j * 2)) & 0b11;
-            switch (bits) {
-                case 0b00: residual += 'A'; break;
-                case 0b01: residual += 'C'; break;
-                case 0b10: residual += 'G'; break;
-                case 0b11: residual += 'T'; break;
-                default: // This should never happen
-                    throw std::runtime_error("Unexpected error during encoding.");
-            }
-        }
-        result.residual = residual;
-    }
-
-    return result;
-}
-
-// Function to write the encoded sequence and residual to a file
-void writeEncodedSequence(const EncodedResult& encodedResult, const std::string& outputPath) {
-    std::ofstream outfile(outputPath, std::ios::binary);
-    if (!outfile.is_open()) {
-        throw std::runtime_error("Unable to open output file: " + outputPath);
-    }
-
-    // Write the encoded bytes
-    outfile.write(encodedResult.encodedBytes.c_str(), encodedResult.encodedBytes.size());
-    std::cout << "Encoded bytes written: " << encodedResult.encodedBytes.size() << " bytes" << std::endl;
-
-    // If there are residual nucleotides, write a newline and then the residuals
-    if (!encodedResult.residual.empty()) {
-        std::cout << "Residual nucleotides detected: " << encodedResult.residual.size() << " characters" << std::endl;
-        // Write a newline character (Unix-style)
-        char newline = '\n';
-        outfile.write(&newline, 1);
-        // Write residual nucleotides as plain text
-        outfile.write(encodedResult.residual.c_str(), encodedResult.residual.size());
-        std::cout << "Residual nucleotides written to the next line." << std::endl;
-    }
-
-    outfile.close();
-    std::cout << "Encoded sequence written to " << outputPath << std::endl;
-}
-
 int main(int argc, char* argv[]) {
     if (argc < 3) {
         std::cerr << "Usage: normalize <input_file> <output_file>" << std::endl;
@@ -209,8 +210,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Starting 2-bit encoding of the sequence." << std::endl;
         EncodedResult encodedResult = encodeSequenceTo2Bit(rawSequence);
         std::cout << "Encoded Bytes Length: " << encodedResult.encodedBytes.length() << " bytes" << std::endl;
-        if (!encodedResult.residual.empty()) {
-            std::cout << "Residual Nucleotides Length: " << encodedResult.residual.length() << " characters" << std::endl;
+        if (encodedResult.residualCount > 0) {
+            std::cout << "Residual Nucleotides Length: " << static_cast<int>(encodedResult.residualCount) << " characters" << std::endl;
         }
 
         writeEncodedSequence(encodedResult, outputFilePath);
