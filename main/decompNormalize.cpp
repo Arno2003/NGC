@@ -39,7 +39,8 @@ void bzip2Decomp(string str) { // Implemented BZIP2 decompression - test ok succ
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/bzip2 -d -k ../dna/comp/" + file + ".bz2 -c > ../dna/decomp/" + file + ".txt";
+        string fileExtension = getFileExtension(fileName);
+        string command = "../executables/bzip2 -d -k ../dna/comp/" + file + ".bz2 -c > ../dna/decomp/" + file + "" + fileExtension;
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 

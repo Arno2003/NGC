@@ -14,6 +14,11 @@ inline std::string getDirectoryName(const std::string& path) {
     return filePath.parent_path().string();
 }
 
+inline std::string getFileExtension(const std::string& path) {
+    std::filesystem::path filePath(path);
+    return filePath.extension().string();
+}
+
 // Function to detect file type based on extension
 inline std::string detectFileType(const std::string& filename) {
     size_t dotPos = filename.find_last_of('.');
