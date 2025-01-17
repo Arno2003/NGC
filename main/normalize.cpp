@@ -19,15 +19,22 @@ std::string detectFileType(const std::string& filename) {
 }
 
 // Function to clean and validate the sequence line
-std::string cleanSequence(const std::string& line) {
+std::string cleanSequence(const std::string& line, int nucleotideType) {
     std::string cleaned;
     cleaned.reserve(line.length());
     int invalidCount = 0;
     for (char nucleotide : line) {
         char upperNucleotide = std::toupper(static_cast<unsigned char>(nucleotide));
-        if (upperNucleotide == 'A' || upperNucleotide == 'C' ||
-            upperNucleotide == 'G' || upperNucleotide == 'T' ||
-            upperNucleotide == 'U') {
+        bool isValid = false;
+        if (upperNucleotide == 'A' || upperNucleotide == 'C' || upperNucleotide == 'G') {
+            isValid = true;
+        }
+        else if ((nucleotideType == 1 && upperNucleotide == 'T') || 
+                 (nucleotideType == 2 && upperNucleotide == 'U')) {
+            isValid = true;
+        }
+
+        if (isValid) {
             cleaned += upperNucleotide;
         }
         else {
@@ -50,20 +57,28 @@ struct EncodedResult {
 };
 
 // Function to convert a nucleotide to its 2-bit representation
-unsigned char nucleotideTo2Bit(char nucleotide) {
+unsigned char nucleotideTo2Bit(char nucleotide, int nucleotideType) {
     switch (nucleotide) {
         case 'A': return 0b00;
         case 'C': return 0b01;
         case 'G': return 0b10;
         case 'T':
-        case 'U': return 0b11;
+            if (nucleotideType == 1) {
+                return 0b11;
+            }
+            // Fall through for RNA
+        case 'U':
+            if (nucleotideType == 2) {
+                return 0b11;
+            }
+            // Fall through for invalid cases
         default:
             throw std::invalid_argument("Invalid nucleotide: " + std::string(1, nucleotide));
     }
 }
 
 // Function to encode the raw sequence into 2-bit encoding
-EncodedResult encodeSequenceTo2Bit(const std::string& sequence) {
+EncodedResult encodeSequenceTo2Bit(const std::string& sequence, int nucleotideType) {
     EncodedResult result;
     result.encodedBytes.reserve(sequence.length() / 4); // Reserve space for efficiency
     result.residualCount = 0;
@@ -74,7 +89,7 @@ EncodedResult encodeSequenceTo2Bit(const std::string& sequence) {
 
     for (size_t i = 0; i < sequence.length(); ++i) {
         char nucleotide = sequence[i];
-        unsigned char bits = nucleotideTo2Bit(nucleotide);
+        unsigned char bits = nucleotideTo2Bit(nucleotide, nucleotideType);
         currentByte |= (bits << (6 - bitPosition * 2));
         bitPosition++;
 
@@ -123,7 +138,7 @@ void writeEncodedSequence(const EncodedResult& encodedResult, const std::string&
 }
 
 // Function to extract raw sequence from a file
-std::string extractRawSequence(const std::string& filepath) {
+std::string extractRawSequence(const std::string& filepath, int nucleotideType) {
     std::ifstream infile(filepath);
     if (!infile.is_open()) {
         throw std::runtime_error("Unable to open file: " + filepath);
@@ -161,7 +176,7 @@ std::string extractRawSequence(const std::string& filepath) {
             }
             else {
                 std::cout << "Sequence line detected." << std::endl;
-                std::string cleaned = cleanSequence(line);
+                std::string cleaned = cleanSequence(line, nucleotideType);
                 rawSequence += cleaned;
             }
         }
@@ -177,13 +192,13 @@ std::string extractRawSequence(const std::string& filepath) {
             }
             else {
                 std::cout << "Sequence line detected." << std::endl;
-                std::string cleaned = cleanSequence(line);
+                std::string cleaned = cleanSequence(line, nucleotideType);
                 rawSequence += cleaned;
             }
         }
         else { // raw
             std::cout << "Assuming raw sequence data." << std::endl;
-            std::string cleaned = cleanSequence(line);
+            std::string cleaned = cleanSequence(line, nucleotideType);
             rawSequence += cleaned;
         }
     }
@@ -194,21 +209,33 @@ std::string extractRawSequence(const std::string& filepath) {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc < 3) {
-        std::cerr << "Usage: normalize <input_file> <output_file>" << std::endl;
+    if (argc < 4) { // Updated to require three arguments
+        std::cerr << "Usage: normalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
         return 1;
     }
 
     std::string inputFilePath = argv[1];
     std::string outputFilePath = argv[2];
+    int nucleotideType = 0;
+
+    try {
+        nucleotideType = std::stoi(argv[3]);
+        if (nucleotideType != 1 && nucleotideType != 2) {
+            throw std::invalid_argument("Nucleotide type must be 1 (DNA) or 2 (RNA).");
+        }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Invalid nucleotide type: " << e.what() << std::endl;
+        return 1;
+    }
 
     try {
         std::cout << "Starting raw sequence extraction from " << inputFilePath << std::endl;
-        std::string rawSequence = extractRawSequence(inputFilePath);
+        std::string rawSequence = extractRawSequence(inputFilePath, nucleotideType);
         std::cout << "Extracted Sequence Length: " << rawSequence.length() << " nucleotides" << std::endl;
 
         std::cout << "Starting 2-bit encoding of the sequence." << std::endl;
-        EncodedResult encodedResult = encodeSequenceTo2Bit(rawSequence);
+        EncodedResult encodedResult = encodeSequenceTo2Bit(rawSequence, nucleotideType);
         std::cout << "Encoded Bytes Length: " << encodedResult.encodedBytes.length() << " bytes" << std::endl;
         if (encodedResult.residualCount > 0) {
             std::cout << "Residual Nucleotides Length: " << static_cast<int>(encodedResult.residualCount) << " characters" << std::endl;
