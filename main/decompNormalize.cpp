@@ -148,7 +148,8 @@ void zstdDecomp(string str) {   // yet to implement - not complete // if ok modi
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/zstd -d -o ../dna/decomp/" + file + ".fa ../dna/comp/" + file + ".zst";
+        string fileExtension = getFileExtension(fileName);
+        string command = "../executables/zstd -d -o ../dna/decomp/" + file + "" + fileExtension + " ../dna/comp/" + file + ".zst";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
