@@ -126,7 +126,8 @@ void gzipDecomp(string str) { // Implemented GZIP decompression - test ok succes
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "gzip -d -k ../dna/comp/" + file + ".gz -c > ../dna/decomp/" + file + ".txt";
+        string fileExtension = getFileExtension(fileName);
+        string command = "gzip -d -k ../dna/comp/" + file + ".gz -c > ../dna/decomp/" + file + "" + fileExtension;
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
