@@ -101,16 +101,19 @@ void bscDecomp(string str) { // Implemented BSC decompression - test ok success
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
+        //string fileExtension = getFileExtension(fileName);
         string command1 = "../executables/bsc d ../dna/comp/" + file + ".bsc ../dna/decomp/" + file + ".tar -e2";
         string command2 = "tar -xvf ../dna/decomp/" + file + ".tar -C ../dna/decomp/";
-        cout << command1 << endl << command2 << endl;
+        string command3 = "rm ../dna/decomp/" + file + ".tar";
+        cout << command1 << endl << command2 << endl << command3<< endl;
         int retCode1 = system(command1.c_str()); // execute first command
         int retCode2 = system(command2.c_str()); // execute second command
+        int retCode3 = system(command3.c_str()); // remove extra .tar file
 
-        if (retCode1 == 0 && retCode2 == 0) {
+        if (retCode1 == 0 && retCode2 == 0 && retCode3 == 0) {
             cout << "BSC decompression executed successfully." << endl;
         } else {
-            cerr << "Error executing BSC decompression. Return codes: " << retCode1 << " " << retCode2 << endl;
+            cerr << "Error executing BSC decompression. Return codes: " << retCode1 << " : " << retCode2 << " : " << retCode3 << endl;
         }
     } catch (const std::exception& e) {
         cerr << "Exception in bscDecomp: " << e.what() << endl;

@@ -99,16 +99,19 @@ void bscComp(string str) { // Tested OK - BSC running successfully
         string fileName = str;  // full file path with name
         string file = getFileNameWithoutExtension(fileName);    // only name of file
         string filePath = getDirectoryName(fileName);   //only path of file
-        string command1 = "tar -cvf ../dna/raw/" + file + ".tar -C " + filePath + " " + file + ".txt";   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt
-        string command2 = "../executables/bsc e ../dna/raw/" + file + ".tar ../dna/comp/" + file + ".bsc -e2";
-        cout << command1 << endl << command2 << endl;
-        int retCode1 = system(command1.c_str()); // execute command
-        int retCode2 = system(command2.c_str()); // execute command
+        string fileExtension = getFileExtension(fileName); // only file extension like .bin or .txt
+        string command1 = "tar -cvf "+ filePath + "/" + file + ".tar -C " + filePath + " " + file + "" + fileExtension;   // tar -cvf ../dna/raw/seq.tar -C ../source file.txt
+        string command2 = "../executables/bsc e " + filePath + "/" + file + ".tar ../dna/comp/" + file + ".bsc -e2";
+        string command3 = "rm " + filePath + "/" + file + ".tar";
+        cout << command1 << endl << command2 << endl << command3 << endl;
+        int retCode1 = system(command1.c_str()); // create tar file
+        int retCode2 = system(command2.c_str()); // compress using bsc
+        int retCode3 = system(command3.c_str()); // remove extra .tar file
 
-        if (retCode1 == 0 && retCode2 == 0) {
+        if (retCode1 == 0 && retCode2 == 0 && retCode3 == 0) {
             cout << "Command executed successfully." << endl;
         } else {
-            cerr << "Error executing command. Return code: " << retCode1 << " " << retCode2 << endl;
+            cerr << "Error executing command. Return code: " << retCode1 << " : " << retCode2 << " : " << retCode3 << endl;
         }
     } catch (const std::exception& e) {
         cerr << "Exception in bscComp: " << e.what() << endl;
