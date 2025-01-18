@@ -60,7 +60,8 @@ void paq8Decomp(string str) { // Implemented PAQ8 decompression - test ok succes
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "../executables/paq8px -d ../dna/comp/" + file + ".txt.paq8px208fix1 ../dna/decomp/";
+        string fileExtension = getFileExtension(fileName);
+        string command = "../executables/paq8px -d ../dna/comp/" + file + "" + fileExtension + ".paq8px208fix1 ../dna/decomp/";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
