@@ -6,17 +6,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <cstdint> // For fixed-width integer types
-
-// Function to detect file type based on extension
-std::string detectFileType(const std::string& filename) {
-    size_t dotPos = filename.find_last_of('.');
-    if (dotPos == std::string::npos) return "raw";
-    std::string ext = filename.substr(dotPos + 1);
-    // Basic checks for known extensions
-    if (ext == "fasta" || ext == "fa")    return "fasta";
-    if (ext == "fastq" || ext == "fq")    return "fastq";
-    return "raw";
-}
+#include "defs.h"
 
 // Function to clean and validate the sequence line
 std::string cleanSequence(const std::string& line, int nucleotideType) {
@@ -208,14 +198,22 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
     return rawSequence;
 }
 
-int main(int argc, char* argv[]) {
+void normalize(int argc, char* argv[]) {
     if (argc < 4) { // Updated to require three arguments
         std::cerr << "Usage: normalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
-        return 1;
+        return;
     }
 
     std::string inputFilePath = argv[1];
-    std::string outputFilePath = argv[2];
+
+    std::string file = getFileNameWithoutExtension(inputFilePath);
+    std::string outputFilePath = "../dna/norm/" + file + ".bin";
+
+    std::cout << "checkpoint 1.1.1" << std::endl;
+    std::cout << inputFilePath <<" "<< file <<" " << outputFilePath << std::endl;
+
+    //std::string outputFilePath = argv[2];
+
     int nucleotideType = 0;
 
     try {
@@ -226,7 +224,7 @@ int main(int argc, char* argv[]) {
     }
     catch (const std::exception& e) {
         std::cerr << "Invalid nucleotide type: " << e.what() << std::endl;
-        return 1;
+        return;
     }
 
     try {
@@ -246,8 +244,6 @@ int main(int argc, char* argv[]) {
     }
     catch (const std::exception& e) {
         std::cerr << "Error during normalization: " << e.what() << std::endl;
-        return 1;
+        return;
     }
-
-    return 0;
 }
