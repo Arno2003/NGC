@@ -110,6 +110,13 @@ void denormalize(int argc, char* argv[]) {
     std::string fileExtension = argv[2];
     std::string outputFilePath = "../dna/denorm/" + file + "" + fileExtension;
 
+    {
+        using std::cout;
+        using std::endl;
+        cout << "Input File Path: " << inputFilePath << endl;
+        cout << "Output File Path: " << outputFilePath << endl;
+    }
+
     int nucleotideType = 0;
 
     try {

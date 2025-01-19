@@ -29,10 +29,11 @@ int main(int argc, char* argv[]){
     cout << "Checkpoint2" << inputFilePath << endl;
     compressSequence(inputFilePath);
     decompressSequence(inputFilePath);
+    
 
     inputFilePath = "../dna/decomp/" + file + ".bin";
     char* arg4 = new char[inputFilePath.size() + 1];
-    strcpy(arg4, str.c_str());
+    strcpy(arg4, inputFilePath.c_str());
     char* argv3[] = {arg0, arg4, arg2, arg3};
     denormalize(4, argv3);
 
