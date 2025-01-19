@@ -4,6 +4,7 @@
 #include <exception>
 #include <vector>
 #include <cstdint> // For fixed-width integer types
+#include "defs.h"
 
 // Function to decode 2-bit representation to nucleotide
 char twoBitToNucleotide(unsigned char bits, int nucleotideType) {
@@ -96,14 +97,19 @@ std::string denormalizeSequence(const std::string& filepath, int nucleotideType)
     return reconstructed;
 }
 
-int main(int argc, char* argv[]) {
+void denormalize(int argc, char* argv[]) {
     if (argc < 4) { // Updated to require three arguments
         std::cerr << "Usage: denormalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
-        return 1;
+        return;
     }
 
     std::string inputFilePath = argv[1];
-    std::string outputFilePath = argv[2];
+
+    //std::string outputFilePath = argv[2];
+    std::string file = getFileNameWithoutExtension(inputFilePath);
+    std::string fileExtension = argv[2];
+    std::string outputFilePath = "../dna/denorm/" + file + "" + fileExtension;
+
     int nucleotideType = 0;
 
     try {
@@ -114,7 +120,7 @@ int main(int argc, char* argv[]) {
     }
     catch (const std::exception& e) {
         std::cerr << "Invalid nucleotide type: " << e.what() << std::endl;
-        return 1;
+        return;
     }
 
     try {
@@ -132,8 +138,8 @@ int main(int argc, char* argv[]) {
     }
     catch (const std::exception& e) {
         std::cerr << "Error during denormalization: " << e.what() << std::endl;
-        return 1;
+        return;
     }
 
-    return 0;
+    return;
 }
