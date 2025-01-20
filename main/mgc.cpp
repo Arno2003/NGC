@@ -9,8 +9,7 @@ extern void compressSequence(string);
 extern void normalize(int argc, char* argv[]);
 extern void denormalize(int argc, char* argv[]);
 
-
-int main(int argc, char* argv[]){
+void proposed(int argc, char* argv[]){
     string str = argv[1];
     cout << str << endl;
     string file = getFileNameWithoutExtension(str);
@@ -35,6 +34,26 @@ int main(int argc, char* argv[]){
     strcpy(arg4, inputFilePath.c_str());
     char* argv3[] = {arg0, arg4, arg2, arg3};
     denormalize(4, argv3);
+}
 
+void standard(int argc, char* argv[]){
+    string str = argv[1];
+    cout << str << endl;
+    compressSequence(str);
+    decompressSequence(str);
+}
+
+int main(int argc, char* argv[]){
+    int i = 9;
+    while(i){
+        cout << "1 for standard\n2 for proposed\n0 to exit : \n\nEnter your choice: ";
+        cin >> i;
+        if ( i == 1) {
+            standard(argc, argv);
+        }
+        else{
+            proposed(argc, argv);
+        }
+    }
     return 0;
 }
