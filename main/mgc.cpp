@@ -19,8 +19,7 @@ int main(int argc, char* argv[]){
     char* arg1 = new char[str.size() + 1];
     strcpy(arg1, str.c_str());
     cout << "ARG1: " << arg1 << endl;
-    char* arg2 = new char[fileExtension.size() + 1];
-    strcpy(arg2, fileExtension.c_str());
+    char arg2[] = "_";
     char arg3[] = "1";
     cout <<"Checkpoint 1" << endl;
     char* argv2[] = {arg0, arg1, arg2, arg3};
