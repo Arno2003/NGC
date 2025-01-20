@@ -9,6 +9,25 @@ extern void compressSequence(string);
 extern void normalize(int argc, char* argv[]);
 extern void denormalize(int argc, char* argv[]);
 
+
+void clean_residuals(string str, int i){
+    string file = getFileNameWithoutExtension(str);
+    string cmd1 = "rm ../dna/norm/" + file + "*";
+    string cmd2 = "rm ../dna/comp/" + file + "*";
+    string cmd3 = "rm ../dna/decomp/" + file + "*";
+    string cmd4 = "rm ../dna/denorm/" + file + "*";
+
+    int res1 = system(cmd1.c_str());
+    int res2 = system(cmd2.c_str());
+    int res3 = system(cmd3.c_str());
+    int res4 = system(cmd4.c_str());
+
+    cout << "cmd1 result: " << res1 << endl;
+    cout << "cmd2 result: " << res2 << endl;
+    cout << "cmd3 result: " << res3 << endl;
+    cout << "cmd4 result: " << res4 << endl;
+}
+
 void proposed(int argc, char* argv[]){
     string str = argv[1];
     cout << str << endl;
@@ -45,15 +64,22 @@ void standard(int argc, char* argv[]){
 
 int main(int argc, char* argv[]){
     int i = 9;
-    while(i){
-        cout << "1 for standard\n2 for proposed\n0 to exit : \n\nEnter your choice: ";
-        cin >> i;
-        if ( i == 1) {
-            standard(argc, argv);
+    try{
+        string str = argv[1];
+        while(i){
+            cout << "1 for standard\n2 for proposed\n0 to exit : \n\nEnter your choice: ";
+            cin >> i;
+            if ( i == 1) {
+                standard(argc, argv);
+            }
+            else{
+                proposed(argc, argv);
+            }
+            //clean_residuals(str, i);
         }
-        else{
-            proposed(argc, argv);
-        }
+    }
+    catch (exception& e){
+        cout << "Exception: " << e.what() << endl;
     }
     return 0;
 }
