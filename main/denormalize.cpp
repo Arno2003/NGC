@@ -107,8 +107,7 @@ void denormalize(int argc, char* argv[]) {
 
     //std::string outputFilePath = argv[2];
     std::string file = getFileNameWithoutExtension(inputFilePath);
-    std::string fileExtension = argv[2];
-    std::string outputFilePath = "../dna/denorm/" + file + "" + fileExtension;
+    std::string outputFilePath = "../dna/denorm/" + file + ".txt";
 
     {
         using std::cout;
