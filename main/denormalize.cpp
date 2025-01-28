@@ -4,7 +4,25 @@
 #include <exception>
 #include <vector>
 #include <cstdint> // For fixed-width integer types
+#include <pthread.h>
+#include <stdbool.h>
+#include <unistd.h>
+
 #include "defs.h"
+
+
+///////////////////////////////////////////////////////////
+/////////////////////// RAM USAGE /////////////////////////
+
+extern volatile bool keep_running;
+
+int mem_total_denorm, mem_free_beg_denorm, mem_free_end_denorm, mem_used_denorm;
+extern int cpu_avg, ram_avg;
+int ram_total_denorm;
+
+extern void* get_cpu_usage(void* arg);
+
+//////////////////////////////////////////////////////////
 
 // Function to decode 2-bit representation to nucleotide
 char twoBitToNucleotide(unsigned char bits, int nucleotideType) {
@@ -98,10 +116,28 @@ std::string denormalizeSequence(const std::string& filepath, int nucleotideType)
 }
 
 void denormalize(int argc, char* argv[]) {
+
+    
     if (argc < 4) { // Updated to require three arguments
         std::cerr << "Usage: denormalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
         return;
     }
+
+    ////////////////////////////////////////////////
+    /////////// CPU AND MEM USAGE //////////////////
+
+    pthread_t monitor_thread;
+    int pid = (int)getpid();
+
+    // Create a thread to monitor CPU usage
+    pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+
+    //////////////////////////////////////////
+    /////////   MEM USAGE CALCULATE //////////
+
+    get_memory_usage(&mem_total_denorm, &mem_free_beg_denorm);
+
+    //////////////////////////////////////////
 
     std::string inputFilePath = argv[1];
 
@@ -146,6 +182,25 @@ void denormalize(int argc, char* argv[]) {
         std::cerr << "Error during denormalization: " << e.what() << std::endl;
         return;
     }
+
+    ////////////////////////////////////////////////
+    /////////// CPU AND MEM USAGE //////////////////
+    keep_running = false;
+
+    // Wait for the monitoring thread to finish
+    pthread_join(monitor_thread, NULL);
+
+
+    get_memory_usage(&mem_total_denorm, &mem_free_end_denorm);
+    if(mem_free_beg_denorm > mem_free_end_denorm)
+        mem_used_denorm = mem_free_beg_denorm - mem_free_end_denorm;
+    ram_total_denorm = (int)(mem_total_denorm/1000);
+    if(ram_avg == 0) ram_avg = 1;
+    std::cout << "Memory used: " << mem_used_denorm << " kb out of " << mem_total_denorm << " kb" << std::endl;
+    std::cout << "CPU usage: " << cpu_avg << " %" << std::endl;
+    std::cout << "RAM usage: " << (ram_avg * ram_total_denorm / 100) << " mb out of " << ram_total_denorm << " mb" << std::endl;
+
+    ////////////////////////////////////////////////
 
     return;
 }

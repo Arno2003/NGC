@@ -235,6 +235,11 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
 
 void normalize(int argc, char* argv[]) {
 
+    if (argc < 4) { // Updated to require three arguments
+        std::cerr << "Usage: normalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
+        return;
+    }
+
     ////////////////////////////////////////////////
     /////////// CPU AND MEM USAGE //////////////////
 
@@ -250,11 +255,6 @@ void normalize(int argc, char* argv[]) {
     get_memory_usage(&mem_total_norm, &mem_free_beg_norm);
 
     //////////////////////////////////////////
-
-    if (argc < 4) { // Updated to require three arguments
-        std::cerr << "Usage: normalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
-        return;
-    }
 
     std::string inputFilePath = argv[1];
 
