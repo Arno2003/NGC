@@ -6,9 +6,9 @@
 #include <stdbool.h>
 
 
-extern int cpu_avg;
-extern int ram_avg;
-extern volatile bool keep_running;
+int cpu_avg;
+int ram_avg;
+volatile bool keep_running = true;
 
 int arr[60];
 int arr2[60];

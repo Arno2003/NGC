@@ -6,7 +6,42 @@
 #include <algorithm>
 #include <unordered_map>
 #include <cstdint> // For fixed-width integer types
+#include <pthread.h>
+#include <stdbool.h>
+#include <unistd.h>
+
 #include "defs.h"
+
+///////////////////////////////////////////////////////////
+/////////////////////// RAM USAGE /////////////////////////
+
+extern volatile bool keep_running;
+
+int mem_total_norm, mem_free_beg_norm, mem_free_end_norm, mem_used_norm;
+extern int cpu_avg, ram_avg;
+int ram_total_norm;
+
+extern void* get_cpu_usage(void* arg);
+
+// void get_memory_usage(int* total, int* free) {
+//     FILE* file = fopen("/proc/meminfo", "r");
+//     if (!file) {
+//         perror("fopen");
+//         exit(EXIT_FAILURE);
+//     }
+
+//     char buffer[256];
+//     while (fgets(buffer, sizeof(buffer), file)) {
+//         if (sscanf(buffer, "MemTotal: %d kB", total) == 1 ||
+//             sscanf(buffer, "MemFree: %d kB", free) == 1) {
+//             // Do nothing, just parsing
+//         }
+//     }
+
+//     fclose(file);
+// }
+
+//////////////////////////////////////////////////////////
 
 // Function to clean and validate the sequence line
 std::string cleanSequence(const std::string& line, int nucleotideType) {
@@ -199,6 +234,23 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
 }
 
 void normalize(int argc, char* argv[]) {
+
+    ////////////////////////////////////////////////
+    /////////// CPU AND MEM USAGE //////////////////
+
+    pthread_t monitor_thread;
+    int pid = (int)getpid();
+
+    // Create a thread to monitor CPU usage
+    pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+
+    //////////////////////////////////////////
+    /////////   MEM USAGE CALCULATE //////////
+
+    get_memory_usage(&mem_total_norm, &mem_free_beg_norm);
+
+    //////////////////////////////////////////
+
     if (argc < 4) { // Updated to require three arguments
         std::cerr << "Usage: normalize <input_file> <output_file> <1 (DNA) | 2 (RNA)>" << std::endl;
         return;
@@ -246,4 +298,23 @@ void normalize(int argc, char* argv[]) {
         std::cerr << "Error during normalization: " << e.what() << std::endl;
         return;
     }
+
+    ////////////////////////////////////////////////
+    /////////// CPU AND MEM USAGE //////////////////
+    keep_running = false;
+
+    // Wait for the monitoring thread to finish
+    pthread_join(monitor_thread, NULL);
+
+
+    get_memory_usage(&mem_total_norm, &mem_free_end_norm);
+    if(mem_free_beg_norm > mem_free_end_norm)
+        mem_used_norm = mem_free_beg_norm - mem_free_end_norm;
+    ram_total_norm = (int)(mem_total_norm/1000);
+    if(ram_avg == 0) ram_avg = 1;
+    std::cout << "Memory used: " << mem_used_norm << " kb out of " << mem_total_norm << " kb" << std::endl;
+    std::cout << "CPU usage: " << cpu_avg << " %" << std::endl;
+    std::cout << "RAM usage: " << (ram_avg * ram_total_norm / 100) << " mb out of " << ram_total_norm << " mb" << std::endl;
+
+    ////////////////////////////////////////////////
 }

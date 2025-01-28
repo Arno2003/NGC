@@ -73,6 +73,7 @@ int main(int argc, char* argv[]){
         while(i){
             cout << "1 for standard\n2 for proposed\n0 to exit : \n\nEnter your choice: ";
             cin >> i;
+            if (i == 0) break;
             if ( i == 1) {
                 standard(argc, argv);
             }

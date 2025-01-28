@@ -2,18 +2,44 @@
 #include <cstdlib> // For system()
 #include <string>
 #include <filesystem>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdbool.h>
+
 #include "defs.h"
 using namespace std;
 
-// string getFileNameWithoutExtension(const string& path) {
-//     std::filesystem::path filePath(path);
-//     return filePath.stem().string();
+///////////////////////////////////////////////////////////
+/////////////////////// RAM USAGE /////////////////////////
+
+extern volatile bool keep_running;
+
+int mem_total_comp, mem_free_beg_comp, mem_free_end_comp, mem_used_comp;
+extern int cpu_avg, ram_avg;
+int ram_total_comp;
+
+extern void* get_cpu_usage(void* arg);
+
+// void get_memory_usage(int* total, int* free) {
+//     FILE* file = fopen("/proc/meminfo", "r");
+//     if (!file) {
+//         perror("fopen");
+//         exit(EXIT_FAILURE);
+//     }
+
+//     char buffer[256];
+//     while (fgets(buffer, sizeof(buffer), file)) {
+//         if (sscanf(buffer, "MemTotal: %d kB", total) == 1 ||
+//             sscanf(buffer, "MemFree: %d kB", free) == 1) {
+//             // Do nothing, just parsing
+//         }
+//     }
+
+//     fclose(file);
 // }
 
-// string getDirectoryName(const string& path) {
-//     std::filesystem::path filePath(path);
-//     return filePath.parent_path().string();
-// }
+//////////////////////////////////////////////////////////
+
 
 void zpaqComp(string str) { // New zpaq compression method
     try {
@@ -173,6 +199,23 @@ void compressSequence(std::string sequence) {
         while(choice){
             cout << "Choose the compression method: \n1 for 7zip\n2 for PAQ8\n3 for BSC\n4 for GZIP\n5 for ZSTD\n6 for BZIP2\n7 for lpaq8\n8 for zpaq\n9 for Huffman\n0 to exit\n";
             cin >> choice;
+
+            ////////////////////////////////////////////////
+            /////////// CPU AND MEM USAGE //////////////////
+
+            pthread_t monitor_thread;
+            int pid = (int)getpid();
+
+            // Create a thread to monitor CPU usage
+            pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+
+            //////////////////////////////////////////
+            /////////   MEM USAGE CALCULATE //////////
+
+            get_memory_usage(&mem_total_comp, &mem_free_beg_comp);
+
+            //////////////////////////////////////////
+            
             switch (choice) {
                 case 1:
                     cout << "Compressing using 7zip..." << endl;
@@ -217,6 +260,25 @@ void compressSequence(std::string sequence) {
                     cout << "Invalid choice. Exiting..." << endl;
                     return;
             }
+
+            ////////////////////////////////////////////////
+            /////////// CPU AND MEM USAGE //////////////////
+            keep_running = false;
+
+            // Wait for the monitoring thread to finish
+            pthread_join(monitor_thread, NULL);
+
+
+            get_memory_usage(&mem_total_comp, &mem_free_end_comp);
+            if(mem_free_beg_comp > mem_free_end_comp)
+                mem_used_comp = mem_free_beg_comp - mem_free_end_comp;
+            ram_total_comp = (int)(mem_total_comp/1000);
+            if(ram_avg == 0) ram_avg = 1;
+            std::cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << std::endl;
+            std::cout << "CPU usage: " << cpu_avg << " %" << std::endl;
+            std::cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << std::endl;
+
+            ////////////////////////////////////////////////
         }
         
     } catch (const std::exception& e) {
