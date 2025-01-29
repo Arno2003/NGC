@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <fstream>
 
 #include "defs.h"
 using namespace std;
@@ -15,10 +16,64 @@ using namespace std;
 extern volatile bool keep_running;
 
 int mem_total_comp, mem_free_beg_comp, mem_free_end_comp, mem_used_comp;
-extern int cpu_avg, ram_avg;
+extern int cpu_avg, ram_avg, num_cpus;
 int ram_total_comp;
 
 extern void* get_cpu_usage(void* arg);
+
+void* get_pid_cpu_usage(void* arg) {
+    int* i = (int*)arg;
+    sleep(1);
+    string process = "";
+    switch(*i){
+        case 1:
+            process = "7z";
+            break;
+        case 2:
+            process = "paq8px";
+            break;
+        case 3:
+            process = "bsc";
+            break;
+        case 4:
+            process = "gzip";
+            break;
+        case 5:
+            process = "zstd";
+            break;
+        case 6:
+            process = "bzip2";
+            break;
+        case 7:
+            process = "lpaq8";
+            break;
+        case 8:
+            process = "zpaq";
+            break;
+        case 9:
+            process = "Huffman";
+            break;
+        default:
+            process = "unknown";
+            break;
+    }
+    string command = "pgrep " + process + " > /tmp/pid.txt";
+    int res = system(command.c_str());
+
+    int pid;
+    ifstream pidFile("/tmp/pid.txt");
+    if (pidFile.is_open()) {
+        while (pidFile >> pid) {
+            cout << "PID of " << process << ": " << pid << endl;
+        }
+        pidFile.close();
+    } else {
+        cerr << "Unable to open file to read PID." << endl;
+    }
+    cout << "\n\n\n: " << pid << "\n\n\n";
+    get_cpu_usage(&pid);
+    return nullptr;
+}
 
 // void get_memory_usage(int* total, int* free) {
 //     FILE* file = fopen("/proc/meminfo", "r");
@@ -200,21 +255,28 @@ void compressSequence(std::string sequence) {
             cout << "Choose the compression method: \n1 for 7zip\n2 for PAQ8\n3 for BSC\n4 for GZIP\n5 for ZSTD\n6 for BZIP2\n7 for lpaq8\n8 for zpaq\n9 for Huffman\n0 to exit\n";
             cin >> choice;
 
-            ////////////////////////////////////////////////
-            /////////// CPU AND MEM USAGE //////////////////
-
+            // RAM AND CPU USAGE
+            
             pthread_t monitor_thread;
-            int pid = (int)getpid();
+            if(choice != 0){
+                ////////////////////////////////////////////////
+                /////////// CPU AND MEM USAGE //////////////////
 
-            // Create a thread to monitor CPU usage
-            pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
 
-            //////////////////////////////////////////
-            /////////   MEM USAGE CALCULATE //////////
+                int pid = (int)getpid();
+                keep_running = true; // became false after normalization
 
-            get_memory_usage(&mem_total_comp, &mem_free_beg_comp);
+                // Create a thread to monitor CPU usage
+                // pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+                pthread_create(&monitor_thread, NULL, get_pid_cpu_usage, &choice);
 
-            //////////////////////////////////////////
+                //////////////////////////////////////////
+                /////////   MEM USAGE CALCULATE //////////
+
+                get_memory_usage(&mem_total_comp, &mem_free_beg_comp);
+
+                //////////////////////////////////////////
+            }
             
             switch (choice) {
                 case 1:
@@ -261,24 +323,27 @@ void compressSequence(std::string sequence) {
                     return;
             }
 
-            ////////////////////////////////////////////////
-            /////////// CPU AND MEM USAGE //////////////////
-            keep_running = false;
+            if(choice != 0){
 
-            // Wait for the monitoring thread to finish
-            pthread_join(monitor_thread, NULL);
+                ////////////////////////////////////////////////
+                /////////// CPU AND MEM USAGE //////////////////
+                keep_running = false;
+
+                // Wait for the monitoring thread to finish
+                pthread_join(monitor_thread, NULL);
 
 
-            get_memory_usage(&mem_total_comp, &mem_free_end_comp);
-            if(mem_free_beg_comp > mem_free_end_comp)
-                mem_used_comp = mem_free_beg_comp - mem_free_end_comp;
-            ram_total_comp = (int)(mem_total_comp/1000);
-            if(ram_avg == 0) ram_avg = 1;
-            std::cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << std::endl;
-            std::cout << "CPU usage: " << cpu_avg << " %" << std::endl;
-            std::cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << std::endl;
+                get_memory_usage(&mem_total_comp, &mem_free_end_comp);
+                if(mem_free_beg_comp > mem_free_end_comp)
+                    mem_used_comp = mem_free_beg_comp - mem_free_end_comp;
+                ram_total_comp = (int)(mem_total_comp/1000);
+                if(ram_avg == 0) ram_avg = 1;
+                std::cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << std::endl;
+                std::cout << "CPU usage: " << cpu_avg/num_cpus << " %" << std::endl;
+                std::cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << std::endl;
 
-            ////////////////////////////////////////////////
+                ////////////////////////////////////////////////
+            }
         }
         
     } catch (const std::exception& e) {

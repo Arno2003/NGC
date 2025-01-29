@@ -45,6 +45,7 @@ void* get_cpu_usage(void* arg) {
     FILE* fp;
     char pid[16];
     iniArr();
+    count = 0;
 
     sprintf(pid, "%d", (int)main_pid);
     num_cpus = sysconf(_SC_NPROCESSORS_ONLN); // Get the number of CPUs
@@ -94,7 +95,7 @@ void* get_cpu_usage(void* arg) {
 
         // Get the RAM usage
         if (fgets(buffer, sizeof(buffer), fp) != NULL) {
-            arr2[count++] = atoi(buffer);
+            arr2[count++] = atoi(buffer);   // seconds count incrementation
         } 
         else {
             fprintf(stdout ,"Failed to retrieve RAM usage\n");
