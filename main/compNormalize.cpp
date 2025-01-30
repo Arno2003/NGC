@@ -257,7 +257,7 @@ void compressSequence(std::string sequence) {
 
             // RAM AND CPU USAGE
             
-            pthread_t monitor_thread;
+            pthread_t monitor_thread_1;
             if(choice != 0){
                 ////////////////////////////////////////////////
                 /////////// CPU AND MEM USAGE //////////////////
@@ -268,15 +268,16 @@ void compressSequence(std::string sequence) {
 
                 // Create a thread to monitor CPU usage
                 // pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
-                pthread_create(&monitor_thread, NULL, get_pid_cpu_usage, &choice);
+                pthread_create(&monitor_thread_1, NULL, get_pid_cpu_usage, &choice);
 
                 //////////////////////////////////////////
                 /////////   MEM USAGE CALCULATE //////////
 
                 get_memory_usage(&mem_total_comp, &mem_free_beg_comp);
 
-                //////////////////////////////////////////
             }
+
+            //////////////////////////////////////////
             
             switch (choice) {
                 case 1:
@@ -322,15 +323,15 @@ void compressSequence(std::string sequence) {
                     cout << "Invalid choice. Exiting..." << endl;
                     return;
             }
+            
+            ////////////////////////////////////////////////
+            /////////// CPU AND MEM USAGE //////////////////
 
-            if(choice != 0){
-
-                ////////////////////////////////////////////////
-                /////////// CPU AND MEM USAGE //////////////////
+            if(choice != 0){                
                 keep_running = false;
 
                 // Wait for the monitoring thread to finish
-                pthread_join(monitor_thread, NULL);
+                pthread_join(monitor_thread_1, NULL);
 
 
                 get_memory_usage(&mem_total_comp, &mem_free_end_comp);
@@ -341,9 +342,10 @@ void compressSequence(std::string sequence) {
                 std::cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << std::endl;
                 std::cout << "CPU usage: " << cpu_avg/num_cpus << " %" << std::endl;
                 std::cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << std::endl;
-
-                ////////////////////////////////////////////////
+            
             }
+            ////////////////////////////////////////////////
+
         }
         
     } catch (const std::exception& e) {
