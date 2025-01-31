@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal
+CMAKE_SOURCE_DIR = /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build
+CMAKE_BINARY_DIR = /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build/CMakeFiles /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build/CMakeFiles /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -152,6 +152,30 @@ main/compNormalize.s: main/compNormalize.cpp.s
 main/compNormalize.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.s
 .PHONY : main/compNormalize.cpp.s
+
+main/cpuUsage.o: main/cpuUsage.c.o
+.PHONY : main/cpuUsage.o
+
+# target to build an object file
+main/cpuUsage.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/cpuUsage.c.o
+.PHONY : main/cpuUsage.c.o
+
+main/cpuUsage.i: main/cpuUsage.c.i
+.PHONY : main/cpuUsage.i
+
+# target to preprocess a source file
+main/cpuUsage.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/cpuUsage.c.i
+.PHONY : main/cpuUsage.c.i
+
+main/cpuUsage.s: main/cpuUsage.c.s
+.PHONY : main/cpuUsage.s
+
+# target to generate assembly for a file
+main/cpuUsage.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/cpuUsage.c.s
+.PHONY : main/cpuUsage.c.s
 
 main/decompNormalize.o: main/decompNormalize.cpp.o
 .PHONY : main/decompNormalize.o
@@ -261,6 +285,9 @@ help:
 	@echo "... main/compNormalize.o"
 	@echo "... main/compNormalize.i"
 	@echo "... main/compNormalize.s"
+	@echo "... main/cpuUsage.o"
+	@echo "... main/cpuUsage.i"
+	@echo "... main/cpuUsage.s"
 	@echo "... main/decompNormalize.o"
 	@echo "... main/decompNormalize.i"
 	@echo "... main/decompNormalize.s"
