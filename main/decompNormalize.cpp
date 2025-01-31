@@ -277,28 +277,28 @@ void decompressSequence(std::string sequence) {
                     cout << "Invalid choice. Exiting..." << endl;
                     return;
 
-                ////////////////////////////////////////////////
-                /////////// CPU AND MEM USAGE //////////////////
-
-                if(choice != 0){                
-                    keep_running = false;
-
-                    // Wait for the monitoring thread to finish
-                    pthread_join(monitor_thread_2, NULL);
-
-
-                    get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
-                    if(mem_free_beg_decomp > mem_free_end_decomp)
-                        mem_used_decomp = mem_free_beg_decomp - mem_free_end_decomp;
-                    ram_total_decomp = (int)(mem_total_decomp/1000);
-                    if(ram_avg == 0) ram_avg = 1;
-                    std::cout << "Memory used: " << mem_used_decomp << " kb out of " << mem_total_decomp << " kb" << std::endl;
-                    std::cout << "CPU usage: " << cpu_avg/num_cpus << " %" << std::endl;
-                    std::cout << "RAM usage: " << (ram_avg * ram_total_decomp / 100) << " mb out of " << ram_total_decomp << " mb" << std::endl;
-                
-                }
-                ////////////////////////////////////////////////
             }
+            ////////////////////////////////////////////////
+            /////////// CPU AND MEM USAGE //////////////////
+
+            if(choice != 0){                
+                keep_running = false;
+
+                // Wait for the monitoring thread to finish
+                pthread_join(monitor_thread_2, NULL);
+
+
+                get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
+                if(mem_free_beg_decomp > mem_free_end_decomp)
+                    mem_used_decomp = mem_free_beg_decomp - mem_free_end_decomp;
+                ram_total_decomp = (int)(mem_total_decomp/1000);
+                if(ram_avg == 0) ram_avg = 1;
+                std::cout << "Memory used: " << mem_used_decomp << " kb out of " << mem_total_decomp << " kb" << std::endl;
+                std::cout << "CPU usage: " << cpu_avg/num_cpus << " %" << std::endl;
+                std::cout << "RAM usage: " << (ram_avg * ram_total_decomp / 100) << " mb out of " << ram_total_decomp << " mb" << std::endl;
+            
+            }
+            ////////////////////////////////////////////////
         }
         
     } catch (const std::exception& e) {
