@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/sysinfo.h>
 #include <stdbool.h>
-
+#include "cpuUsage.h"
 
 int cpu_avg;
 int ram_avg;
@@ -12,30 +12,29 @@ volatile bool keep_running = true;
 
 int arr[60];
 int arr2[60];
-int i,count=0, count2=0;
+int i, count = 0, count2 = 0;
 int num_cpus;
 
-void iniArr(){
-    for(i=0;i<60;i++){
-        arr[i]=0;
-        arr2[i]=0;
+void iniArr() {
+    for (i = 0; i < 60; i++) {
+        arr[i] = 0;
+        arr2[i] = 0;
     }
 }
 
-
-void setUsage(){
-    if(count == 0){
+void setUsage() {
+    if (count == 0) {
         cpu_avg = 0;
         ram_avg = 0;
         return;
     }
-    int sum=0, sum2=0;
-    for(i=0;i<60;i++){
-        sum+=arr[i];
-        sum2+=arr2[i];
+    int sum = 0, sum2 = 0;
+    for (i = 0; i < 60; i++) {
+        sum += arr[i];
+        sum2 += arr2[i];
     }
-    cpu_avg = sum/count;
-    ram_avg = sum2/count;
+    cpu_avg = sum / count;
+    ram_avg = sum2 / count;
 }
 
 void* get_cpu_usage(void* arg) {
@@ -59,10 +58,10 @@ void* get_cpu_usage(void* arg) {
             perror("popen failed");
             return NULL;
         }
-        
+
         // Skip the header line
         if (fgets(buffer, sizeof(buffer), fp) == NULL) {
-            fprintf(stdout , "Failed to retrieve CPU usage\n");
+            fprintf(stdout, "Failed to retrieve CPU usage\n");
             pclose(fp);
             return NULL;
         }
@@ -71,9 +70,8 @@ void* get_cpu_usage(void* arg) {
         if (fgets(buffer, sizeof(buffer), fp) != NULL) {
             //printf("CPU usage of the process: %s%%\n", buffer);
             arr[count] = atoi(buffer);
-        } 
-        else {
-            fprintf(stdout , "Failed to retrieve CPU usage\n");
+        } else {
+            fprintf(stdout, "Failed to retrieve CPU usage\n");
         }
         pclose(fp);
 
@@ -85,10 +83,10 @@ void* get_cpu_usage(void* arg) {
             perror("popen failed");
             return NULL;
         }
-        
+
         // Skip the header line
         if (fgets(buffer, sizeof(buffer), fp) == NULL) {
-            fprintf(stdout , "Failed to retrieve RAM usage\n");
+            fprintf(stdout, "Failed to retrieve RAM usage\n");
             pclose(fp);
             return NULL;
         }
@@ -96,15 +94,14 @@ void* get_cpu_usage(void* arg) {
         // Get the RAM usage
         if (fgets(buffer, sizeof(buffer), fp) != NULL) {
             arr2[count++] = atoi(buffer);   // seconds count incrementation
-        } 
-        else {
-            fprintf(stdout ,"Failed to retrieve RAM usage\n");
+        } else {
+            fprintf(stdout, "Failed to retrieve RAM usage\n");
         }
-        
+
         pclose(fp);
 
         sleep(1);
-    }while(count < 60 && keep_running);
+    } while (count < 60 && keep_running);
     setUsage();
     return NULL;
 }

@@ -3,8 +3,10 @@
 
 #include <string>
 #include <filesystem>
+#include <fstream> // Added to support std::ifstream
 #include <stdbool.h>
 #include <unistd.h>
+#include "cpuUsage.h"
 
 inline std::string getFileNameWithoutExtension(const std::string& path) {
     std::filesystem::path filePath(path);
@@ -48,6 +50,60 @@ inline void get_memory_usage(int* total, int* free) {
     }
 
     fclose(file);
+}
+
+inline void* get_pid_cpu_usage(void* arg) {
+    int* i = (int*)arg;
+    sleep(1);
+    std::string process = "";
+    switch(*i){
+        case 1:
+            process = "7z";
+            break;
+        case 2:
+            process = "paq8px";
+            break;
+        case 3:
+            process = "bsc";
+            break;
+        case 4:
+            process = "gzip";
+            break;
+        case 5:
+            process = "zstd";
+            break;
+        case 6:
+            process = "bzip2";
+            break;
+        case 7:
+            process = "lpaq8";
+            break;
+        case 8:
+            process = "zpaq";
+            break;
+        case 9:
+            process = "Huffman";
+            break;
+        default:
+            process = "unknown";
+            break;
+    }
+    std::string command = "pgrep " + process + " > /tmp/pid.txt";
+    int res = system(command.c_str());
+
+    int pid;
+    std::ifstream pidFile("/tmp/pid.txt");
+    if (pidFile.is_open()) {
+        while (pidFile >> pid) {
+            std::cout << "PID of " << process << ": " << pid << std::endl;
+        }
+        pidFile.close();
+    } else {
+        std::cerr << "Unable to open file to read PID." << std::endl;
+    }
+    std::cout << "\n\n\n: " << pid << "\n\n\n";
+    get_cpu_usage(&pid);
+    return nullptr;
 }
 
 #endif // DEFS_H

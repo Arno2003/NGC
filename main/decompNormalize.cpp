@@ -21,60 +21,6 @@ int ram_total_decomp;
 
 extern void* get_cpu_usage(void* arg);
 
-void* get_pid_cpu_usage(void* arg) {
-    int* i = (int*)arg;
-    sleep(1);
-    string process = "";
-    switch(*i){
-        case 1:
-            process = "7z";
-            break;
-        case 2:
-            process = "paq8px";
-            break;
-        case 3:
-            process = "bsc";
-            break;
-        case 4:
-            process = "gzip";
-            break;
-        case 5:
-            process = "zstd";
-            break;
-        case 6:
-            process = "bzip2";
-            break;
-        case 7:
-            process = "lpaq8";
-            break;
-        case 8:
-            process = "zpaq";
-            break;
-        case 9:
-            process = "Huffman";
-            break;
-        default:
-            process = "unknown";
-            break;
-    }
-    string command = "pgrep " + process + " > /tmp/pid.txt";
-    int res = system(command.c_str());
-
-    int pid;
-    ifstream pidFile("/tmp/pid.txt");
-    if (pidFile.is_open()) {
-        while (pidFile >> pid) {
-            cout << "PID of " << process << ": " << pid << endl;
-        }
-        pidFile.close();
-    } else {
-        cerr << "Unable to open file to read PID." << endl;
-    }
-    cout << "\n\n\n: " << pid << "\n\n\n";
-    get_cpu_usage(&pid);
-    return nullptr;
-}
-
 // void get_memory_usage(int* total, int* free) {
 //     FILE* file = fopen("/proc/meminfo", "r");
 //     if (!file) {
