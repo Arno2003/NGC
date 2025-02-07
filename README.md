@@ -34,7 +34,16 @@ The project supports the following general-purpose algorithm:
 
 
 
-
+## Requirements
+1. Install 7zip using command
+    ```sh
+    $ sudo apt install 7zip
+    ```
+2. Install gzip using command
+    ```sh
+    $ sudo apt intall gzip
+    ```
+3. Other general purpose executables come with main repository
 
 
 ## Installation
@@ -50,18 +59,21 @@ The project supports the following general-purpose algorithm:
 
 ## Compilation & Run
 
-To compile, use the provided compile.sh script:
+To compile, use makefile
 
-```bash
- cd main
-./compile.sh
-
+```sh
+    $ cd build
+    $ cmake ..
+    $ make
 ```
+
 To run, use the below script:
 
 ```bash
- ./test <input_file_path>
+    cd build
+    ./compression <input_file_path>
 ```
+
 
 
     
