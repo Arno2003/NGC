@@ -2,44 +2,18 @@
 #include <cstdlib> // For system()
 #include <string>
 #include <filesystem>
-#include <pthread.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <fstream>
-
 #include "defs.h"
 using namespace std;
 
-///////////////////////////////////////////////////////////
-/////////////////////// RAM USAGE /////////////////////////
-
-extern volatile bool keep_running;
-
-int mem_total_decomp, mem_free_beg_decomp, mem_free_end_decomp, mem_used_decomp;
-extern int cpu_avg, ram_avg, num_cpus;
-int ram_total_decomp;
-
-extern void* get_cpu_usage(void* arg);
-
-// void get_memory_usage(int* total, int* free) {
-//     FILE* file = fopen("/proc/meminfo", "r");
-//     if (!file) {
-//         perror("fopen");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     char buffer[256];
-//     while (fgets(buffer, sizeof(buffer), file)) {
-//         if (sscanf(buffer, "MemTotal: %d kB", total) == 1 ||
-//             sscanf(buffer, "MemFree: %d kB", free) == 1) {
-//             // Do nothing, just parsing
-//         }
-//     }
-
-//     fclose(file);
+// string getFileNameWithoutExtension(const string& path) {
+//     std::filesystem::path filePath(path);
+//     return filePath.stem().string();
 // }
 
-//////////////////////////////////////////////////////////
+// string getDirectoryName(const string& path) {
+//     std::filesystem::path filePath(path);
+//     return filePath.parent_path().string();
+// }
 
 void zpaqDecomp(string str) { // Implemented ZPAQ decompression - test not complete
     try {
@@ -191,6 +165,35 @@ void zstdDecomp(string str) {   // yet to implement - not complete // if ok modi
     }
 }
 
+void huffmanDecomp(string str) {
+    try {
+        string fileName = str;
+        string file = getFileNameWithoutExtension(fileName);
+        // Assuming huffman_decode reads the input file and outputs the decompressed data to stdout
+        string command = "../executables/huffman_decode " + fileName + ".huffman";
+        cout << command << endl;
+        int retCode = system(command.c_str());
+        if (retCode == 0) {
+            cout << "Huffman decompression executed successfully." << endl;
+            std::string outputFile = file; // assuming the decompressed file is named after the base file name
+            std::string moveCommand = "mv " + outputFile + " ../dna/decomp/";
+            std::cout << "Executing move command: " << moveCommand << std::endl;
+            int moveCode = system(moveCommand.c_str());
+            if (moveCode == 0) {
+                std::cout << "File moved to dna/decomp successfully." << std::endl;
+            } else {
+                std::cerr << "Error moving file. Return code: " << moveCode << std::endl;
+            }
+        } else {
+            cerr << "Error executing Huffman decompression. Return code: " << retCode << endl;
+        }
+    } catch (const std::exception& e) {
+        cerr << "Exception in huffmanDecomp: " << e.what() << endl;
+    } catch (...) {
+        cerr << "Unknown exception in huffmanDecomp." << endl;
+    }
+}
+
 void decompressSequence(std::string sequence) {
     try {
         int choice = 10;
@@ -207,30 +210,6 @@ void decompressSequence(std::string sequence) {
                  << "9 for Huffman\n"
                  << "0 to exit\n";
             cin >> choice;
-
-            // RAM AND CPU USAGE
-            
-            pthread_t monitor_thread_2;
-            if(choice != 0){
-                ////////////////////////////////////////////////
-                /////////// CPU AND MEM USAGE //////////////////
-
-
-                int pid = (int)getpid();
-                keep_running = true; // became false after normalization
-
-                // Create a thread to monitor CPU usage
-                // pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
-                pthread_create(&monitor_thread_2, NULL, get_pid_cpu_usage, &choice);
-
-                //////////////////////////////////////////
-                /////////   MEM USAGE CALCULATE //////////
-
-                get_memory_usage(&mem_total_decomp, &mem_free_beg_decomp);
-
-                //////////////////////////////////////////
-            }
-
             switch (choice) {
                 case 1:
                     cout << "Decompressing using 7zip..." << endl;
@@ -276,29 +255,7 @@ void decompressSequence(std::string sequence) {
                 default:
                     cout << "Invalid choice. Exiting..." << endl;
                     return;
-
             }
-            ////////////////////////////////////////////////
-            /////////// CPU AND MEM USAGE //////////////////
-
-            if(choice != 0){                
-                keep_running = false;
-
-                // Wait for the monitoring thread to finish
-                pthread_join(monitor_thread_2, NULL);
-
-
-                get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
-                if(mem_free_beg_decomp > mem_free_end_decomp)
-                    mem_used_decomp = mem_free_beg_decomp - mem_free_end_decomp;
-                ram_total_decomp = (int)(mem_total_decomp/1000);
-                if(ram_avg == 0) ram_avg = 1;
-                std::cout << "Memory used: " << mem_used_decomp << " kb out of " << mem_total_decomp << " kb" << std::endl;
-                std::cout << "CPU usage: " << cpu_avg/num_cpus << " %" << std::endl;
-                std::cout << "RAM usage: " << (ram_avg * ram_total_decomp / 100) << " mb out of " << ram_total_decomp << " mb" << std::endl;
-            
-            }
-            ////////////////////////////////////////////////
         }
         
     } catch (const std::exception& e) {
