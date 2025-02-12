@@ -106,7 +106,7 @@ void zip7Comp(string str) { // Tested OK - Successfully compressed
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
+        string command = "time 7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 

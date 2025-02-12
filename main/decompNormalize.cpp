@@ -107,7 +107,7 @@ void zip7Decomp(string str) { // Implemented 7zip decompression - test OK succes
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "7z e ../dna/comp/" + file + ".7z -o../dna/decomp/ -y";
+        string command = "time 7z e ../dna/comp/" + file + ".7z -o../dna/decomp/ -y";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
