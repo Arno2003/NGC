@@ -237,7 +237,7 @@ void decompressSequence(std::string sequence) {
                  << "0 to exit\n";
             cin >> choice;
 
-// RAM AND CPU USAGE
+            // RAM AND CPU USAGE
             
             pthread_t monitor_thread_2;
             if(choice != 0){
@@ -297,7 +297,7 @@ void decompressSequence(std::string sequence) {
                 case 9:
                     cout << "Decompressing using Huffman..." << endl;
                     // Add Huffman decompression logic here
-                    cout << "Huffman decompression not implemented yet." << endl;
+                    huffmanDecomp(sequence); // Implemented
                     break;
                 case 0:
                     cout << "Exiting..." << endl;
@@ -316,7 +316,7 @@ void decompressSequence(std::string sequence) {
                 // Wait for the monitoring thread to finish
                 pthread_join(monitor_thread_2, NULL);
 
-get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
+                get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
                 if(mem_free_beg_decomp > mem_free_end_decomp)
                     mem_used_decomp = mem_free_beg_decomp - mem_free_end_decomp;
                 ram_total_decomp = (int)(mem_total_decomp/1000);
@@ -327,78 +327,6 @@ get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
             
             }
             ////////////////////////////////////////////////
-        }
-        
-    } catch (const std::exception& e) {
-        cerr << "Exception in decompressSequence: " << e.what() << endl;
-    } catch (...) {
-        cerr << "Unknown exception in decompressSequence." << endl;
-    }
-}
-
-
-void decompressSequence(std::string sequence) {
-    try {
-        int choice = 10;
-        while(choice){
-            cout << "Choose the decompression method: \n"
-                 << "1 for 7zip\n"
-                 << "2 for PAQ8\n"
-                 << "3 for BSC\n"
-                 << "4 for GZIP\n"
-                 << "5 for ZSTD\n"
-                 << "6 for BZIP2\n"
-                 << "7 for lpaq8\n"
-                 << "8 for zpaq\n"
-                 << "9 for Huffman\n"
-                 << "0 to exit\n";
-            cin >> choice;
-            switch (choice) {
-                case 1:
-                    cout << "Decompressing using 7zip..." << endl;
-                    zip7Decomp(sequence); // Implemented
-                    break;
-                case 2:
-                    cout << "Decompressing using PAQ8..." << endl;
-                    paq8Decomp(sequence); // Implemented
-                    break;
-                case 3:
-                    cout << "Decompressing using BSC..." << endl;
-                    bscDecomp(sequence); // Implemented
-                    break;
-                case 4:
-                    cout << "Decompressing using GZIP..." << endl;
-                    gzipDecomp(sequence); // Implemented
-                    break;
-                case 5:
-                    cout << "Decompressing using ZSTD..." << endl;
-                    zstdDecomp(sequence); // Implemented ZSTD decompression
-                    break;
-                case 6:
-                    cout << "Decompressing using BZIP2..." << endl;
-                    bzip2Decomp(sequence); // Implemented
-                    break;
-                case 7:
-                    cout << "Decompressing using lpaq8..." << endl;
-                    // Add lpaq8 decompression logic here
-                    cout << "lpaq8 decompression not implemented yet." << endl;
-                    break;
-                case 8:
-                    cout << "Decompressing using ZPAQ..." << endl;
-                    zpaqDecomp(sequence); // Implemented
-                    break;
-                case 9:
-                    cout << "Decompressing using Huffman..." << endl;
-                    // Add Huffman decompression logic here
-                    cout << "Huffman decompression not implemented yet." << endl;
-                    break;
-                case 0:
-                    cout << "Exiting..." << endl;
-                    return;
-                default:
-                    cout << "Invalid choice. Exiting..." << endl;
-                    return;
-            }
         }
         
     } catch (const std::exception& e) {

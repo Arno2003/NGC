@@ -279,6 +279,7 @@ void compressSequence(std::string sequence) {
                 case 9:
                     cout << "Compressing using Huffman..." << endl;
                     // Add Huffman compression logic here
+                    huffmanComp(sequence);
                     break;
                 case 0:
                     cout << "Exiting..." << endl;
@@ -303,9 +304,9 @@ void compressSequence(std::string sequence) {
                     mem_used_comp = mem_free_beg_comp - mem_free_end_comp;
                 ram_total_comp = (int)(mem_total_comp/1000);
                 if(ram_avg == 0) ram_avg = 1;
-                std::cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << std::endl;
-                std::cout << "CPU usage: " << cpu_avg/num_cpus << " %" << std::endl;
-                std::cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << std::endl;
+                cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << endl;
+                cout << "CPU usage: " << cpu_avg/num_cpus << " %" << endl;
+                cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << endl;
             
             }
             ////////////////////////////////////////////////
