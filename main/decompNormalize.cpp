@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <fstream>
+#include <chrono>  // Added for time measurement
 
 #include "defs.h"
 using namespace std;
@@ -260,6 +261,9 @@ void decompressSequence(std::string sequence) {
                 //////////////////////////////////////////
             }
 
+            // Start timer before switch-case
+            auto start = std::chrono::steady_clock::now();
+
             switch (choice) {
                 case 1:
                     cout << "Decompressing using 7zip..." << endl;
@@ -307,6 +311,12 @@ void decompressSequence(std::string sequence) {
                     return;
 
             }
+            
+            // End timer after switch-case and print duration
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            cout << "Decompression time: " << elapsed/1000 << " s" << endl;
+
             ////////////////////////////////////////////////
             /////////// CPU AND MEM USAGE //////////////////
 

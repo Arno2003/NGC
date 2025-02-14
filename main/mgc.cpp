@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <chrono>
 #include "defs.h"
 using namespace std;
 
@@ -34,15 +35,21 @@ void proposed(int argc, char* argv[]){
     char arg0[] = "_";
     char* arg1 = new char[str.size() + 1];
     strcpy(arg1, str.c_str());
-    cout << "ARG1: " << arg1 << endl;
+    //cout << "ARG1: " << arg1 << endl;
     char arg2[] = "_";
     char arg3[] = "1";
-    cout <<"Checkpoint 1" << endl;
+    //cout <<"Checkpoint 1" << endl;
     char* argv2[] = {arg0, arg1, arg2, arg3};
     ////////////////////////////////////////
 
     ////////////////////////////////////////
+    auto start = std::chrono::steady_clock::now();
     normalize(4, argv2);
+    // End timer after switch-case and print duration
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    cout << "Normalization time: " << elapsed/1000 << " s" << endl;
+    /////////////////////////////////////////
     string inputFilePath = "../dna/norm/" + file + ".bin";
     cout << "Checkpoint2" << inputFilePath << endl;
     compressSequence(inputFilePath);
@@ -56,7 +63,12 @@ void proposed(int argc, char* argv[]){
     ///////////////////////////////////////////
 
     ///////////////////////////////////////////
+    start = std::chrono::steady_clock::now();
     denormalize(4, argv3);
+    end = std::chrono::steady_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    cout << "Normalization time: " << elapsed/1000 << " s" << endl;
+    /////////////////////////////////////////
 }
 
 void standard(int argc, char* argv[]){

@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <fstream>
+#include <chrono>  // Added for time measurement
 
 #include "defs.h"
 using namespace std;
@@ -106,7 +107,7 @@ void zip7Comp(string str) { // Tested OK - Successfully compressed
     try {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "time 7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
+        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -241,6 +242,9 @@ void compressSequence(std::string sequence) {
 
             }
 
+            // Start timer before switch-case
+            auto start = std::chrono::steady_clock::now();
+            
             //////////////////////////////////////////
             
             switch (choice) {
@@ -288,6 +292,11 @@ void compressSequence(std::string sequence) {
                     cout << "Invalid choice. Exiting..." << endl;
                     return;
             }
+            
+            // End timer after switch-case and print duration
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            cout << "Compression time: " << elapsed/1000 << " s" << endl;
             
             ////////////////////////////////////////////////
             /////////// CPU AND MEM USAGE //////////////////
