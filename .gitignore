@@ -11,3 +11,4 @@ dna/denorm/seq*
 dna/norm/seq*
 dna/raw/f1.py
 dna/raw/dna*
+build/clean.sh

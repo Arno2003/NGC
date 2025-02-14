@@ -11,6 +11,8 @@
 #include "defs.h"
 using namespace std;
 
+
+extern string originalFile;
 ///////////////////////////////////////////////////////////
 /////////////////////// RAM USAGE /////////////////////////
 
@@ -213,6 +215,58 @@ void huffmanComp(string str) {
     }
 }
 
+void showCompressionRatio(int i, string str){
+    string rawFile = originalFile;
+    string fileName = str;
+    string file = getFileNameWithoutExtension(fileName);
+    string compressedFile = "../dna/comp/" + file + ".";
+    string fileExtension;
+    switch (i){
+    case 1:
+        fileExtension = "7z";
+        break;
+    case 2:
+        fileExtension = "paq8px208fix1";
+        break;
+    case 3:
+        fileExtension = "bsc";
+        break;
+    case 4:
+        fileExtension = "gz";
+        break;
+    case 5:
+        fileExtension = "zst";
+        break;
+    case 6:
+        fileExtension = "bz2";
+        break;
+    case 7:
+        fileExtension = "lpaq8";
+        break;
+    case 8:
+        fileExtension = "zpaq";
+        break;
+    case 9:
+        fileExtension = "huffman";
+        break;
+    case 0:
+        return;
+    default:
+        break;
+    }
+    compressedFile += fileExtension;
+    
+    // Calculate and print the compression ratio using std::filesystem
+    try {
+        auto rawSize = std::filesystem::file_size(rawFile);
+        auto compSize = std::filesystem::file_size(compressedFile);
+        double ratio = (double)(rawSize/compSize);
+        cout << "Compression ratio: " << ratio << endl;
+    } catch (std::filesystem::filesystem_error& e) {
+        cerr << "Filesystem error in showCompressionRatio: " << e.what() << endl;
+    }
+}
+
 void compressSequence(std::string sequence) {
     try {
         int choice = 10;
@@ -319,6 +373,8 @@ void compressSequence(std::string sequence) {
             
             }
             ////////////////////////////////////////////////
+
+            showCompressionRatio(choice, sequence);
 
         }
         

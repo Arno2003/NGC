@@ -9,7 +9,7 @@ extern void decompressSequence(string);
 extern void compressSequence(string);
 extern void normalize(int argc, char* argv[]);
 extern void denormalize(int argc, char* argv[]);
-
+string originalFile = "";
 
 void clean_residuals(string str, int i){
     string file = getFileNameWithoutExtension(str);
@@ -29,6 +29,7 @@ void clean_residuals(string str, int i){
 
 void proposed(int argc, char* argv[]){
     string str = argv[1];
+    originalFile = str;
     cout << str << endl;
     string file = getFileNameWithoutExtension(str);
     string fileExtension = getFileExtension(str);
@@ -51,7 +52,7 @@ void proposed(int argc, char* argv[]){
     cout << "Normalization time: " << elapsed/1000 << " s" << endl;
     /////////////////////////////////////////
     string inputFilePath = "../dna/norm/" + file + ".bin";
-    cout << "Checkpoint2" << inputFilePath << endl;
+    //cout << "Checkpoint2" << inputFilePath << endl;
     compressSequence(inputFilePath);
     decompressSequence(inputFilePath);
     
