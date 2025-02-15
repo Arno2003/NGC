@@ -49,7 +49,9 @@ void zpaqComp(string str)
     {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "cd ../dna/norm/ && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + ".bin" + " -method 5";
+        string filePath = getDirectoryName(fileName);
+        string fileExtension = getFileExtension(fileName);
+        string command = "cd " + filePath + " && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + "" + fileExtension + " -method 5";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
