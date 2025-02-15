@@ -323,40 +323,41 @@ void showCompressionRatio(int i, string str)
 {
     string rawFile = originalFile;
     string fileName = str;
+    string extension = getFileExtension(fileName);
     string file = getFileNameWithoutExtension(fileName);
-    string compressedFile = "../dna/comp/" + file + ".";
+    string compressedFile = "../dna/comp/" + file + "";
     string fileExtension;
     switch (i)
     {
     case 1:
-        fileExtension = "7z";
+        fileExtension = ".7z";
         break;
     case 2:
-        fileExtension = "paq8px208fix1";
+        fileExtension = extension + ".paq8px208fix1";
         break;
     case 3:
-        fileExtension = "bsc";
+        fileExtension = ".bsc";
         break;
     case 4:
-        fileExtension = "gz";
+        fileExtension = ".gz";
         break;
     case 5:
-        fileExtension = "zst";
+        fileExtension = ".zst";
         break;
     case 6:
-        fileExtension = "bz2";
+        fileExtension = ".bz2";
         break;
     case 7:
-        fileExtension = "lpaq8";
+        fileExtension = ".lpaq8";
         break;
     case 8:
-        fileExtension = "zpaq";
+        fileExtension = ".zpaq";
         break;
     case 9:
-        fileExtension = "huffman";
+        fileExtension = ".huffman";
         break;
     case 10:
-        fileExtension = "cmix";
+        fileExtension = ".cmix";
     case 0:
         return;
     default:
@@ -367,9 +368,9 @@ void showCompressionRatio(int i, string str)
     // Calculate and print the compression ratio using std::filesystem
     try
     {
-        auto rawSize = std::filesystem::file_size(rawFile);
-        auto compSize = std::filesystem::file_size(compressedFile);
-        double ratio = (double)(rawSize / compSize);
+        double rawSize = std::filesystem::file_size(rawFile);
+        double compSize = std::filesystem::file_size(compressedFile);
+        double ratio = (rawSize / compSize);
         cout << "Compression ratio: " << ratio << endl;
     }
     catch (std::filesystem::filesystem_error &e)

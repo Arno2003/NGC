@@ -137,7 +137,7 @@ void zip7Decomp(string str)
     {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "time 7z e ../dna/comp/" + file + ".7z -o../dna/decomp/ -y";
+        string command = "7z e ../dna/comp/" + file + ".7z -o../dna/decomp/ -y";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 

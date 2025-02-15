@@ -74,6 +74,7 @@ void proposed(int argc, char* argv[]){
 
 void standard(int argc, char* argv[]){
     string str = argv[1];
+    originalFile = str;
     cout << str << endl;
     compressSequence(str);
     decompressSequence(str);
