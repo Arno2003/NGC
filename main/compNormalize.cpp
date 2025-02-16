@@ -373,6 +373,8 @@ void showCompressionRatio(int i, string str)
         double rawSize = std::filesystem::file_size(rawFile);
         double compSize = std::filesystem::file_size(compressedFile);
         double ratio = (rawSize / compSize);
+        cout << "compressed size: "<< compSize << endl;
+        cout << "raw size: "<< rawSize << endl;
         cout << "Compression ratio: " << ratio << endl;
     }
     catch (std::filesystem::filesystem_error &e)
