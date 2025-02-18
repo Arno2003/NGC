@@ -40,7 +40,7 @@ The project supports the following general-purpose algorithm:
     ```
 2. Install gzip using command
     ```sh
-    $ sudo apt intall gzip
+    $ sudo apt install gzip
     ```
 3. Other general purpose executables come with main repository
 
