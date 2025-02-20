@@ -22,24 +22,6 @@ int ram_total_decomp;
 
 extern void *get_cpu_usage(void *arg);
 
-// void get_memory_usage(int* total, int* free) {
-//     FILE* file = fopen("/proc/meminfo", "r");
-//     if (!file) {
-//         perror("fopen");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     char buffer[256];
-//     while (fgets(buffer, sizeof(buffer), file)) {
-//         if (sscanf(buffer, "MemTotal: %d kB", total) == 1 ||
-//             sscanf(buffer, "MemFree: %d kB", free) == 1) {
-//             // Do nothing, just parsing
-//         }
-//     }
-
-//     fclose(file);
-// }
-
 //////////////////////////////////////////////////////////
 
 void zpaqDecomp(string str)
@@ -343,10 +325,8 @@ void decompressSequence(std::string sequence)
                  << "4 for GZIP\n"
                  << "5 for ZSTD\n"
                  << "6 for BZIP2\n"
-                 << "7 for lpaq8\n"
-                 << "8 for zpaq\n"
-                 << "9 for Huffman\n"
-                 << "10 for Cmix\n"
+                 << "7 for zpaq\n"
+                 << "8 for Cmix\n"
                  << "0 to exit\n";
             cin >> choice;
 
@@ -403,20 +383,10 @@ void decompressSequence(std::string sequence)
                 bzip2Decomp(sequence); // Implemented
                 break;
             case 7:
-                cout << "Decompressing using lpaq8..." << endl;
-                // Add lpaq8 decompression logic here
-                cout << "lpaq8 decompression not implemented yet." << endl;
-                break;
-            case 8:
                 cout << "Decompressing using ZPAQ..." << endl;
                 zpaqDecomp(sequence); // Implemented
                 break;
-            case 9:
-                cout << "Decompressing using Huffman..." << endl;
-                // Add Huffman decompression logic here
-                huffmanDecomp(sequence); // Implemented
-                break;
-            case 10:
+            case 8:
                 cout << "Decompressing using CMIX..." << endl;
                 cmixDecomp(sequence); // Implemented
                 break;

@@ -89,15 +89,9 @@ inline void *get_pid_cpu_usage(void *arg)
         process = "bzip2";
         break;
     case 7:
-        process = "lpaq8";
-        break;
-    case 8:
         process = "zpaq";
         break;
-    case 9:
-        process = "Huffman";
-        break;
-    case 10:
+    case 8:
         process = "cmix";
         break;
     default:

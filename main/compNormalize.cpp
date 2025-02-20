@@ -23,24 +23,6 @@ int ram_total_comp;
 
 extern void *get_cpu_usage(void *arg);
 
-// void get_memory_usage(int* total, int* free) {
-//     FILE* file = fopen("/proc/meminfo", "r");
-//     if (!file) {
-//         perror("fopen");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     char buffer[256];
-//     while (fgets(buffer, sizeof(buffer), file)) {
-//         if (sscanf(buffer, "MemTotal: %d kB", total) == 1 ||
-//             sscanf(buffer, "MemFree: %d kB", free) == 1) {
-//             // Do nothing, just parsing
-//         }
-//     }
-
-//     fclose(file);
-// }
-
 //////////////////////////////////////////////////////////
 
 void zpaqComp(string str)
@@ -260,35 +242,6 @@ void zstdComp(string str)
     }
 }
 
-void huffmanComp(string str)
-{
-    try
-    {
-        string fileName = str;
-        string file = getFileNameWithoutExtension(fileName);
-        string command = std::string("../executables/huffman_encode ") + fileName;
-        cout << command << endl;
-        int retCode = system(command.c_str());
-        if (retCode == 0)
-        {
-            cout << "Huffman compression executed successfully." << endl;
-        }
-        else
-        {
-            cerr << "Error executing Huffman compression. Return code: " << retCode << endl;
-        }
-    }
-    catch (const std::exception &e)
-    {
-        cerr << "Exception in huffmanComp: " << e.what() << endl;
-    }
-    catch (...)
-    {
-        cerr << "Unknown exception in huffmanComp." << endl;
-    }
-}
-
-// CMIX Compression and Decompression functions
 
 void cmixComp(string str)
 {
@@ -350,15 +303,9 @@ void showCompressionRatio(int i, string str)
         fileExtension = ".bz2";
         break;
     case 7:
-        fileExtension = ".lpaq8";
-        break;
-    case 8:
         fileExtension = ".zpaq";
         break;
-    case 9:
-        fileExtension = ".huffman";
-        break;
-    case 10:
+    case 8:
         fileExtension = ".cmix";
     case 0:
         return;
@@ -446,19 +393,10 @@ void compressSequence(std::string sequence)
                 bzip2Comp(sequence); // Tested OK - successfully
                 break;
             case 7:
-                cout << "Compressing using lpaq8..." << endl;
-                // Add lpaq8 compression logic here
-                break;
-            case 8:
                 cout << "Compressing using zpaq..." << endl;
                 zpaqComp(sequence); // Call the new zpaqComp method
                 break;
-            case 9:
-                cout << "Compressing using Huffman..." << endl;
-                // Add Huffman compression logic here
-                huffmanComp(sequence);
-                break;
-            case 10:
+            case 8:
                 cout << "Compressing using CMIX..." << endl;
                 cmixComp(sequence); // Call the new cmixComp method
                 break;
@@ -509,7 +447,3 @@ void compressSequence(std::string sequence)
         cerr << "Unknown exception in compressSequence." << endl;
     }
 }
-
-/*
-    Dis .
-*/
