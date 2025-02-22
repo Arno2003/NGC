@@ -33,7 +33,7 @@ void zpaqComp(string str)
         string file = getFileNameWithoutExtension(fileName);
         string filePath = getDirectoryName(fileName);
         string fileExtension = getFileExtension(fileName);
-        string command = "cd " + filePath + " && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + "" + fileExtension + " -method 5";
+        string command = "cd " + filePath + " && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + "" + fileExtension + " -method 5  -threads " + num_cpus*2;
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -90,7 +90,7 @@ void paq8Comp(string str)
     try
     {
         string fileName = str;
-        string command = "../executables/paq8px " + fileName + " ../dna/comp/ -8";
+        string command = "../executables/paq8px " + fileName + " ../dna/comp/ -12";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
