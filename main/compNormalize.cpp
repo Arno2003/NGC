@@ -33,7 +33,7 @@ void zpaqComp(string str)
         string file = getFileNameWithoutExtension(fileName);
         string filePath = getDirectoryName(fileName);
         string fileExtension = getFileExtension(fileName);
-        string command = "cd " + filePath + " && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + "" + fileExtension + " -method 5  -threads " + num_cpus*2;
+        string command = "cd " + filePath + " && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + "" + fileExtension + " -method 5  -threads " + to_string(num_cpus*2);
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -119,7 +119,7 @@ void zip7Comp(string str)
     {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=PPMD";
+        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=lzma2 -mx=9 -m0:dict=8g -mmt=on -m0:fb=273";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
