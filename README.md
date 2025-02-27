@@ -1,4 +1,3 @@
-
 #  MGC GENOME COMPRESSION
 MGC maps ACGT sequences to respective 2-bit ASCII encoding values and then applies a general-purpose compression algorithm for further size reduction. The decompression process reverses this transformation to restore the original sequence.
 
@@ -44,6 +43,12 @@ The project supports the following general-purpose algorithm:
     ```
 3. Other general purpose executables come with main repository
 
+4. GCC compiler version: 13 (works with >=9.0)
+
+5. To compress DNA files place original files in dna/raw/ folder.
+
+6. bzip2, 7zip and some other compressors requires large system memory (~48gb RAM).
+
 
 ## Installation
 
@@ -76,3 +81,16 @@ To run, use the below script:
 
 
     
+## Test system specification:
+
+ubuntu-linux (32C, 128gb RAM). 
+
+## Compression Methods Details:
+1. 7zip: Uses LZMA2 with maximum compression (-mx=9), an 8GB dictionary, and multithreading enabled.
+2. PAQ8: Applies PAQ8 compression (e.g., using -12 flag) for high compression ratios.
+3. BSC: Creates a tar archive and then compresses it with BSC using the -e2 option.
+4. GZIP: Uses gzip with maximum compression (-9).
+5. ZSTD: Uses ZSTD with the -k flag to keep the source file.
+6. BZIP2: Uses bzip2 with maximum compression (-9).
+7. ZPAQ: Uses zpaq at method level 5 with threads set to twice the number of CPUs.
+8. CMIX: Uses CMIX compression.
