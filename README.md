@@ -47,7 +47,7 @@ The project supports the following general-purpose algorithm:
 
 5. To compress DNA files place original files in dna/raw/ folder.
 
-6. bzip2, 7zip and some other compressors requires large system memory (~48gb RAM).
+6. bzip2, 7zip and some other compressors requires large system memory (~48 GB RAM).
 
 
 ## Installation
@@ -83,9 +83,9 @@ To run, use the below script:
     
 ## Test system specification:
 
-ubuntu-linux (32C, 128gb RAM). 
+ubuntu-linux (32C, 128 GB RAM). 
 
-## Compression Methods Details:
+## Compression Methods Settings for Best Compression Ratio:
 1. 7zip: Uses LZMA2 with maximum compression (-mx=9), an 8GB dictionary, and multithreading enabled.
 2. PAQ8: Applies PAQ8 compression (e.g., using -12 flag) for high compression ratios.
 3. BSC: Creates a tar archive and then compresses it with BSC using the -e2 option.
