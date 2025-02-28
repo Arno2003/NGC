@@ -21,14 +21,14 @@ MGC maps ACGT sequences to respective 2-bit ASCII encoding values and then appli
 
 The project supports the following general-purpose algorithm:
 
-- 7zip
-- paq8
-- bsc
-- gzip
-- zstd
-- bzip2
-- zpaq
-- cmix
+- 7zip (https://www.7-zip.org)
+- Paq8 (https://github.com/hxim/paq8px)
+- Bsc (https://github.com/IlyaGrebnov/libbsc)
+- Gzip (https://www.gnu.org/software/gzip/)
+- Zstd (https://github.com/facebook/zstd.git)
+- Bzip2 (http://sourceware.org/bzip2)
+- Zpaq (http://mattmahoney.net/dc/zpaq.html)
+- Cmix (https://github.com/byronknoll/cmix)
 
 
 
