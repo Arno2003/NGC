@@ -47,7 +47,7 @@ The project supports the following general-purpose algorithm:
 
 5. To compress DNA files place original files in dna/raw/ folder.
 
-6. bzip2, 7zip and some other compressors requires large system memory (~48 GB RAM).
+6. bzip2, 7zip and some other compressors requires large system memory (~30 GB RAM).
 
 
 ## Installation
