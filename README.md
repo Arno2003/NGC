@@ -19,16 +19,16 @@ MGC maps ACGT sequences to respective 2-bit ASCII encoding values and then appli
 
 ## Compression Methods and Decompression Method
 
-The project supports the following general-purpose algorithm:
+The general-purpose compressors:
 
-- 7zip (https://www.7-zip.org)
-- Paq8 (https://github.com/hxim/paq8px)
-- Bsc (https://github.com/IlyaGrebnov/libbsc)
-- Gzip (https://www.gnu.org/software/gzip/)
-- Zstd (https://github.com/facebook/zstd.git)
-- Bzip2 (http://sourceware.org/bzip2)
-- Zpaq (http://mattmahoney.net/dc/zpaq.html)
-- Cmix (https://github.com/byronknoll/cmix)
+- 7-zip (https://www.7-zip.org)
+- paq8 (https://github.com/hxim/paq8px)
+- bsc (https://github.com/IlyaGrebnov/libbsc)
+- gzip (https://www.gnu.org/software/gzip/)
+- zstd (https://github.com/facebook/zstd.git)
+- bzip2 (http://sourceware.org/bzip2)
+- zpaq (http://mattmahoney.net/dc/zpaq.html)
+- cmix (https://github.com/byronknoll/cmix)
 
 
 
@@ -81,16 +81,16 @@ To run, use the below script:
 
 
     
-## Test system specification:
+## Tested system specification:
 
-ubuntu-linux (32C, 128 GB RAM). 
+Ubuntu 18.04.1 LTS (64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 128 GB RAM 
 
 ## Compression Methods Settings for Best Compression Ratio:
-1. 7zip: Uses LZMA2 with maximum compression (-mx=9), an 8GB dictionary, and multithreading enabled.
-2. PAQ8: Applies PAQ8 compression (e.g., using -12 flag) for high compression ratios.
-3. BSC: Creates a tar archive and then compresses it with BSC using the -e2 option.
-4. GZIP: Uses gzip with maximum compression (-9).
-5. ZSTD: Uses ZSTD with the -k flag to keep the source file.
-6. BZIP2: Uses bzip2 with maximum compression (-9).
-7. ZPAQ: Uses zpaq at method level 5 with threads set to twice the number of CPUs.
-8. CMIX: Uses CMIX compression.
+1. 7-zip: Uses LZMA2 with maximum compression (-mx = 9), an 8 GB dictionary, and multithreading enabled.
+2. paq8: Applies paq8 compression (e.g., using -12 flag) for high compression ratios.
+3. bsc: Creates a tar archive and then compresses it with BSC using the -e2 option.
+4. gzip: Uses gzip with maximum compression (-9).
+5. zstd: Uses zstd with the -k flag to keep the source file.
+6. bzip2: Uses bzip2 with maximum compression (-9).
+7. zpaq: Uses zpaq at method level 5 with threads set to twice the number of CPUs.
+8. cmix: Uses cmix compression.
