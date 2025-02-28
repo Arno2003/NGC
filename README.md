@@ -88,7 +88,7 @@ Ubuntu 18.04.1 LTS (64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 128 
 ## Compression Methods Settings for Best Compression Ratio
 1. 7-zip: Uses LZMA2 with maximum compression (-mx = 9), an 8 GB dictionary, and multithreading enabled.
 2. paq8: Applies paq8 compression (e.g., using -12 flag) for high compression ratios.
-3. bsc: Creates a tar archive and then compresses it with BSC using the -e2 option.
+3. bsc: Creates a tar archive and then compresses it with bsc using the -e2 option.
 4. gzip: Uses gzip with maximum compression (-9).
 5. zstd: Uses zstd with the -k flag to keep the source file.
 6. bzip2: Uses bzip2 with maximum compression (-9).
