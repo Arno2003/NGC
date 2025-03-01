@@ -215,10 +215,11 @@ void zstdComp(string str)
     {
         string fileName = str;                               // Full input file path
         string file = getFileNameWithoutExtension(fileName); // File name without extension
-        string outputPath = "../dna/comp/" + file + ".zst";  // Output file path
+        string outputPath = "../dna/comp/" + file + ".zst";    // Output file path
 
-        // Correct command syntax
-        string command = "../executables/zstd -k " + fileName + " -o " + outputPath;
+        // New command with maximum compression options:
+        // -19: highest compression level, -T0: use all available threads, -k: keep original file.
+        string command = "../executables/zstd -19 -T0 -k " + fileName + " -o " + outputPath;
         cout << command << endl;
 
         int retCode = system(command.c_str()); // Execute the command
