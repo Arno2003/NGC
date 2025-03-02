@@ -195,7 +195,7 @@ void gzipComp(string str)
     {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "gzip -9 -c " + fileName + " > ../dna/comp/" + file + ".gz";
+        string command = "gzip -9 --best --rsyncable -c " + fileName + " > ../dna/comp/" + file + ".gz";
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -341,6 +341,7 @@ void showCompressionRatio(int i, string str)
         cerr << "Filesystem error in showCompressionRatio: " << e.what() << endl;
     }
 }
+
 
 void compressSequence(std::string sequence)
 {
