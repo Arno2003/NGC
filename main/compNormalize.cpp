@@ -143,30 +143,40 @@ void zip7Comp(string str)
 }
 
 void bscComp(string str)
-{ // Tested OK - BSC running successfully
+{ // Updated for maximum compression using BSC
     try
     {
-        string fileName = str;                                                                                           // full file path with name
-        string file = getFileNameWithoutExtension(fileName);                                                             // only name of file
-        string filePath = getDirectoryName(fileName);                                                                    // only path of file
-        string fileExtension = getFileExtension(fileName);                                                               // only file extension like .bin or .txt
-        string command1 = "tar -cvf " + filePath + "/" + file + ".tar -C " + filePath + " " + file + "" + fileExtension; // tar -cvf ../dna/raw/seq.tar -C ../source file.txt
-        string command2 = "../executables/bsc e " + filePath + "/" + file + ".tar ../dna/comp/" + file + ".bsc -e2";
+        string fileName = str;                           // Full file path with name
+        string file = getFileNameWithoutExtension(fileName); // File name without extension
+        string filePath = getDirectoryName(fileName);    // Only path of file
+        string fileExtension = getFileExtension(fileName); // e.g. ".txt" or ".bin"
+        
+        // Create a tar archive of the input file
+        string command1 = "tar -cvf " + filePath + "/" + file + ".tar -C " + filePath + " " + file + fileExtension;
+        
+        // Run BSC with maximum compression options:
+        // -e2: Best adaptive entropy encoding.
+        // -b2047: Set block size to the maximum value.
+        string command2 = "../executables/bsc e " + filePath + "/" + file + ".tar ../dna/comp/" + file + ".bsc -e2 -b2047";
+        
+        // Remove the temporary tar file after compression.
         string command3 = "rm " + filePath + "/" + file + ".tar";
-        cout << command1 << endl
-             << command2 << endl
-             << command3 << endl;
-        int retCode1 = system(command1.c_str()); // create tar file
-        int retCode2 = system(command2.c_str()); // compress using bsc
-        int retCode3 = system(command3.c_str()); // remove extra .tar file
-
+        
+        cout << command1 << endl;
+        cout << command2 << endl;
+        cout << command3 << endl;
+        
+        int retCode1 = system(command1.c_str()); // Create tar file.
+        int retCode2 = system(command2.c_str()); // Compress using BSC.
+        int retCode3 = system(command3.c_str()); // Remove the tar file.
+        
         if (retCode1 == 0 && retCode2 == 0 && retCode3 == 0)
         {
-            cout << "Command executed successfully." << endl;
+            cout << "BSC maximum compression executed successfully." << endl;
         }
         else
         {
-            cerr << "Error executing command. Return code: " << retCode1 << " : " << retCode2 << " : " << retCode3 << endl;
+            cerr << "Error executing BSC compression. Return codes: " << retCode1 << " : " << retCode2 << " : " << retCode3 << endl;
         }
     }
     catch (const std::exception &e)
@@ -217,20 +227,21 @@ void zstdComp(string str)
         string file = getFileNameWithoutExtension(fileName); // File name without extension
         string outputPath = "../dna/comp/" + file + ".zst";    // Output file path
 
-        // New command with maximum compression options:
-        // -19: highest compression level, -T0: use all available threads, -k: keep original file.
-        string command = "../executables/zstd -19 -T0 -k " + fileName + " -o " + outputPath;
+        // New command with ultra compression options:
+        // --ultra: enable ultra compression (levels beyond 19, up to 22)
+        // -22: highest compression level, -T0: use all available threads, -k: keep original file.
+        string command = "../executables/zstd --ultra -22 -T0 -k " + fileName + " -o " + outputPath;
         cout << command << endl;
 
         int retCode = system(command.c_str()); // Execute the command
 
         if (retCode == 0)
         {
-            cout << "ZSTD compression executed successfully." << endl;
+            cout << "ZSTD ultra compression executed successfully." << endl;
         }
         else
         {
-            cerr << "Error executing ZSTD compression. Return code: " << retCode << endl;
+            cerr << "Error executing ZSTD ultra compression. Return code: " << retCode << endl;
         }
     }
     catch (const std::exception &e)
