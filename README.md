@@ -54,9 +54,9 @@ The general-purpose compressors:
 
 1. Clone the repository:
     ```sh
-   $ git clone https://github.com/Arno2003/finalYear_journal
+   $ git clone https://github.com/Arno2003/MGC
 
-   $ cd finalYear_journal
+   $ cd MGC
     ```
 
 
