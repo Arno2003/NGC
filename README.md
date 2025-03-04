@@ -91,6 +91,6 @@ Ubuntu 18.04.1 LTS (64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 128 
 3. bsc: Creates a tar archive and then compresses it with bsc using the -e2 option.
 4. gzip: Uses gzip with maximum compression (-9).
 5. zstd: Uses zstd with the -k flag to keep the source file.
-6. bzip2: Uses bzip2 with maximum compression (-9).
+6. bzip2: Uses bzip2 with maximum compression level (-9).
 7. zpaq: Uses zpaq at method level 5 with threads set to twice the number of CPUs.
 8. cmix: Uses cmix compression.
