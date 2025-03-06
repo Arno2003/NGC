@@ -43,7 +43,7 @@ The general-purpose compressors:
     ```
 3. Other general purpose executables come with main repository
 
-4. GCC compiler version: 13 (works with >=9.0)
+4. GCC compiler version: 11 (works with >=9.0)
 
 5. To compress DNA files place original files in dna/raw/ folder.
 
