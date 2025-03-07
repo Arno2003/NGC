@@ -70,7 +70,7 @@ To compile, use makefile
 
 To run, use the below script:
 
-```bash
+```sh
     cd build
     ./compression <input_file_path>
 ```
