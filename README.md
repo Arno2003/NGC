@@ -17,7 +17,7 @@ MGC maps sequence of {A, C, G, T/U} to respective 2-bit ASCII encoding values an
 - FASTQ
 - Raw sequence files
 
-## Compression Methods and Decompression Method
+## Compression and Decompression Methods
 
 The general-purpose compressors:
 
