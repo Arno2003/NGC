@@ -71,8 +71,8 @@ To compile, use makefile
 To run, use the below script:
 
 ```sh
-    cd build
-    ./compression <input_file_path>
+    $ cd build
+    $ ./compression <input_file_path>
 ```
 
 
