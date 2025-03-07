@@ -78,7 +78,7 @@ To run, use the below script:
 
 
     
-## Tested system specification
+## Tested System Specification
 
 Ubuntu 18.04.1 LTS (64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 128 GB RAM 
 
