@@ -1,5 +1,5 @@
 #  MGC GENOME COMPRESSION
-MGC maps ACGT sequences to respective 2-bit ASCII encoding values and then applies a general-purpose compression algorithm for further size reduction. The decompression process reverses this transformation to restore the original sequence.
+MGC maps sequence of {A, C, G, T/U} to respective 2-bit ASCII encoding values and then applies a general-purpose compression algorithm for further size reduction. The decompression process reverses this transformation to restore the original sequence.
 
 ## Supporting Platform
 
@@ -46,9 +46,6 @@ The general-purpose compressors:
 4. GCC compiler version: 11 (works with >=9.0)
 
 5. To compress DNA files place original files in dna/raw/ folder.
-
-6. bzip2, 7zip and some other compressors requires large system memory (~30 GB RAM).
-
 
 ## Installation
 
