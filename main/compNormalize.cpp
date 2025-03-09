@@ -119,7 +119,7 @@ void zip7Comp(string str)
     {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
-        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=lzma2 -mx=9 -m0:dict=8g -mmt=on -m0:fb=273";
+        string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=lzma2 -mx=9 -mmt=on";    //-m0:dict=8g -m0:fb=273
         cout << command << endl;
         int retCode = system(command.c_str()); // execute command
 
@@ -350,7 +350,16 @@ void compressSequence(std::string sequence)
         int choice = 10;
         while (choice)
         {
-            cout << "Choose the compression method: \n1 for 7zip\n2 for PAQ8\n3 for BSC\n4 for GZIP\n5 for ZSTD\n6 for BZIP2\n7 for lpaq8\n8 for zpaq\n9 for Huffman\n10 for Cmix\n0 to exit\n";
+            cout << "Choose the compression method:" << endl;
+            cout << "1 for 7zip" << endl;
+            cout << "2 for PAQ8" << endl;
+            cout << "3 for BSC" << endl;
+            cout << "4 for GZIP" << endl;
+            cout << "5 for ZSTD" << endl;
+            cout << "6 for BZIP2" << endl;
+            cout << "7 for zpaq" << endl;
+            cout << "8 for Cmix" << endl;
+            cout << "0 to exit" << endl;
             cin >> choice;
 
             // RAM AND CPU USAGE
