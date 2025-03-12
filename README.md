@@ -31,6 +31,30 @@ The general-purpose compressors:
 - cmix (https://github.com/byronknoll/cmix)
 
 
+## Installation Process for Executables
+
+- paq8
+    git clone https://github.com/hxim/paq8px.git
+    cd paq8px/build
+    cmake ..
+    make
+
+- zstd
+    git clone https://github.com/facebook/zstd.git
+    cd zstd
+    make
+
+- bzip2
+    git clone git://sourceware.org/git/bzip2.git
+    cd bzip2
+    make
+
+- zpaq
+
+- cmix (clang++17 version required)
+    git clone https://github.com/byronknoll/cmix
+    cd cmix
+    make
 
 ## Requirements
 1. Install 7zip using command
@@ -51,7 +75,7 @@ The general-purpose compressors:
 
 1. Clone the repository:
     ```sh
-   $ git clone https://github.com/Arno2003/MGC
+   $ git clone https://github.com/Arno2003/MGC.git
 
    $ cd MGC
     ```
