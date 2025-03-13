@@ -49,7 +49,7 @@ The general-purpose compressors:
     cd bzip2
     make
 
-- zpaq
+- zpaq download using the link: https://www.mattmahoney.net/dc/zpaq.html
 
 - cmix (clang++17 version required)
     git clone https://github.com/byronknoll/cmix
