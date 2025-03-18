@@ -41,7 +41,7 @@ The general-purpose compressors:
 
 - zstd
     git clone https://github.com/facebook/zstd.git
-    cd zstd
+    cd zstd/programs
     make
 
 - bzip2
