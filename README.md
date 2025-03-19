@@ -82,7 +82,7 @@ The general-purpose compressors:
 1. Clone the repository:
     ```sh
    $ git clone https://github.com/Arno2003/MGC.git
-   $ cd MGC
+   $ cd MGC-main
     ```
 
 ## Compilation & Run
