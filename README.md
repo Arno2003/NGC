@@ -45,7 +45,7 @@ The general-purpose compressors:
 
 5. To compress DNA files place original files in dna/raw/ folder.
 
-## Installation Process for Executables
+## Installation Process for Executables (Please create/download executables as per the system specifications)
 
 - paq8
 ```sh
@@ -72,9 +72,9 @@ The general-purpose compressors:
 ```
 - cmix (clang++17 version required)
 ```sh
-    git clone https://github.com/byronknoll/cmix
-    cd cmix
-    make
+    $ git clone https://github.com/byronknoll/cmix
+    $ cd cmix
+    $ make
 ```
   
 ## Installation process of the proposed method (MGC)
@@ -82,7 +82,6 @@ The general-purpose compressors:
 1. Clone the repository:
     ```sh
    $ git clone https://github.com/Arno2003/MGC.git
-
    $ cd MGC
     ```
 
@@ -102,8 +101,6 @@ To run, use the below script:
     $ cd build
     $ ./compression <input_file_path>
 ```
-
-
 
     
 ## Tested System Specification
