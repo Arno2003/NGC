@@ -30,32 +30,6 @@ The general-purpose compressors:
 - zpaq (http://mattmahoney.net/dc/zpaq.html)
 - cmix (https://github.com/byronknoll/cmix)
 
-
-## Installation Process for Executables
-
-- paq8
-    git clone https://github.com/hxim/paq8px.git
-    cd paq8px/build
-    cmake ..
-    make
-
-- zstd
-    git clone https://github.com/facebook/zstd.git
-    cd zstd/programs
-    make
-
-- bzip2
-    git clone git://sourceware.org/git/bzip2.git
-    cd bzip2
-    make
-
-- zpaq download using the link: https://www.mattmahoney.net/dc/zpaq.html
-
-- cmix (clang++17 version required)
-    git clone https://github.com/byronknoll/cmix
-    cd cmix
-    make
-
 ## Requirements
 1. Install 7zip using command
     ```sh
@@ -71,7 +45,39 @@ The general-purpose compressors:
 
 5. To compress DNA files place original files in dna/raw/ folder.
 
-## Installation
+## Installation Process for Executables
+
+- paq8
+```sh
+    $ git clone https://github.com/hxim/paq8px.git
+    $ cd paq8px/build
+    $ cmake ..
+    $ make
+```
+- zstd
+```sh
+    $ git clone https://github.com/facebook/zstd.git
+    $ cd zstd/programs
+    $ make
+```
+- bzip2
+```sh
+   $ git clone git://sourceware.org/git/bzip2.git
+   $ cd bzip2
+   $ make
+```
+- zpaq download using the link
+```sh
+    https://www.mattmahoney.net/dc/zpaq.html
+```
+- cmix (clang++17 version required)
+```sh
+    git clone https://github.com/byronknoll/cmix
+    cd cmix
+    make
+```
+  
+## Installation process of the proposed method (MGC)
 
 1. Clone the repository:
     ```sh
@@ -79,8 +85,6 @@ The general-purpose compressors:
 
    $ cd MGC
     ```
-
-
 
 ## Compilation & Run
 
