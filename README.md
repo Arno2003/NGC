@@ -99,7 +99,7 @@ To run, use the below script:
 
 ```sh
     $ cd build
-    $ ./compression <input_file_path>
+    $ ./mgc <input_file_path>
 ```
 
     

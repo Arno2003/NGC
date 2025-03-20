@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project name
-project(compression)
+project(mgc)
 
 # Set the C++ standard 17 set.
 set(CMAKE_CXX_STANDARD 17)
@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
 
 # Add the executable by specifying the source files
-add_executable(compression
+add_executable(mgc
     main/normalize.cpp
     main/compNormalize.cpp
     main/denormalize.cpp
@@ -26,7 +26,7 @@ add_executable(compression
 )
 
 # Link pthread library
-target_link_libraries(compression pthread)
+target_link_libraries(mgc pthread)
 
 # Ensure C files are compiled with the C++ compiler
 set_source_files_properties(main/cpuUsage.c PROPERTIES LANGUAGE CXX)
