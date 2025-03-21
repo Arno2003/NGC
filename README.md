@@ -66,7 +66,7 @@ The general-purpose compressors:
    $ cd bzip2
    $ make
 ```
-- zpaq download using the link
+- zpaq: Download (zpaq v7.15) from the following link, then create an execution file for Linux using make.
 ```sh
     https://www.mattmahoney.net/dc/zpaq.html
 ```
