@@ -77,7 +77,7 @@ The general-purpose compressors:
     $ make
 ```
   
-## Installation process of the proposed method (MGC)
+## Installation process of the proposed method (NGC)
 
 1. Clone the repository:
     ```sh
@@ -99,7 +99,7 @@ To run, use the below script:
 
 ```sh
     $ cd build
-    $ ./mgc <input_file_path>
+    $ ./NGC <input_file_path>
 ```
 
     

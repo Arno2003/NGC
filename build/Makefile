@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal
+CMAKE_SOURCE_DIR = /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build
+CMAKE_BINARY_DIR = /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build/CMakeFiles /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build/CMakeFiles /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODING/CPP/pt3/finalYear_journal/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kali/RIKU/CODES/c_cpp/pt1/finalYear_journal/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named compression
+# Target rules for targets named NGC
 
 # Build rule for target.
-compression: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 compression
-.PHONY : compression
+NGC: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 NGC
+.PHONY : NGC
 
 # fast build rule for target.
-compression/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/build
-.PHONY : compression/fast
+NGC/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/build
+.PHONY : NGC/fast
 
 main/compNormalize.o: main/compNormalize.cpp.o
 .PHONY : main/compNormalize.o
 
 # target to build an object file
 main/compNormalize.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/compNormalize.cpp.o
 .PHONY : main/compNormalize.cpp.o
 
 main/compNormalize.i: main/compNormalize.cpp.i
@@ -142,7 +142,7 @@ main/compNormalize.i: main/compNormalize.cpp.i
 
 # target to preprocess a source file
 main/compNormalize.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/compNormalize.cpp.i
 .PHONY : main/compNormalize.cpp.i
 
 main/compNormalize.s: main/compNormalize.cpp.s
@@ -150,7 +150,7 @@ main/compNormalize.s: main/compNormalize.cpp.s
 
 # target to generate assembly for a file
 main/compNormalize.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/compNormalize.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/compNormalize.cpp.s
 .PHONY : main/compNormalize.cpp.s
 
 main/cpuUsage.o: main/cpuUsage.c.o
@@ -158,7 +158,7 @@ main/cpuUsage.o: main/cpuUsage.c.o
 
 # target to build an object file
 main/cpuUsage.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/cpuUsage.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/cpuUsage.c.o
 .PHONY : main/cpuUsage.c.o
 
 main/cpuUsage.i: main/cpuUsage.c.i
@@ -166,7 +166,7 @@ main/cpuUsage.i: main/cpuUsage.c.i
 
 # target to preprocess a source file
 main/cpuUsage.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/cpuUsage.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/cpuUsage.c.i
 .PHONY : main/cpuUsage.c.i
 
 main/cpuUsage.s: main/cpuUsage.c.s
@@ -174,7 +174,7 @@ main/cpuUsage.s: main/cpuUsage.c.s
 
 # target to generate assembly for a file
 main/cpuUsage.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/cpuUsage.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/cpuUsage.c.s
 .PHONY : main/cpuUsage.c.s
 
 main/decompNormalize.o: main/decompNormalize.cpp.o
@@ -182,7 +182,7 @@ main/decompNormalize.o: main/decompNormalize.cpp.o
 
 # target to build an object file
 main/decompNormalize.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/decompNormalize.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/decompNormalize.cpp.o
 .PHONY : main/decompNormalize.cpp.o
 
 main/decompNormalize.i: main/decompNormalize.cpp.i
@@ -190,7 +190,7 @@ main/decompNormalize.i: main/decompNormalize.cpp.i
 
 # target to preprocess a source file
 main/decompNormalize.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/decompNormalize.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/decompNormalize.cpp.i
 .PHONY : main/decompNormalize.cpp.i
 
 main/decompNormalize.s: main/decompNormalize.cpp.s
@@ -198,7 +198,7 @@ main/decompNormalize.s: main/decompNormalize.cpp.s
 
 # target to generate assembly for a file
 main/decompNormalize.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/decompNormalize.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/decompNormalize.cpp.s
 .PHONY : main/decompNormalize.cpp.s
 
 main/denormalize.o: main/denormalize.cpp.o
@@ -206,7 +206,7 @@ main/denormalize.o: main/denormalize.cpp.o
 
 # target to build an object file
 main/denormalize.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/denormalize.cpp.o
 .PHONY : main/denormalize.cpp.o
 
 main/denormalize.i: main/denormalize.cpp.i
@@ -214,7 +214,7 @@ main/denormalize.i: main/denormalize.cpp.i
 
 # target to preprocess a source file
 main/denormalize.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/denormalize.cpp.i
 .PHONY : main/denormalize.cpp.i
 
 main/denormalize.s: main/denormalize.cpp.s
@@ -222,7 +222,7 @@ main/denormalize.s: main/denormalize.cpp.s
 
 # target to generate assembly for a file
 main/denormalize.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/denormalize.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/denormalize.cpp.s
 .PHONY : main/denormalize.cpp.s
 
 main/mgc.o: main/mgc.cpp.o
@@ -230,7 +230,7 @@ main/mgc.o: main/mgc.cpp.o
 
 # target to build an object file
 main/mgc.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/mgc.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/mgc.cpp.o
 .PHONY : main/mgc.cpp.o
 
 main/mgc.i: main/mgc.cpp.i
@@ -238,7 +238,7 @@ main/mgc.i: main/mgc.cpp.i
 
 # target to preprocess a source file
 main/mgc.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/mgc.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/mgc.cpp.i
 .PHONY : main/mgc.cpp.i
 
 main/mgc.s: main/mgc.cpp.s
@@ -246,7 +246,7 @@ main/mgc.s: main/mgc.cpp.s
 
 # target to generate assembly for a file
 main/mgc.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/mgc.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/mgc.cpp.s
 .PHONY : main/mgc.cpp.s
 
 main/normalize.o: main/normalize.cpp.o
@@ -254,7 +254,7 @@ main/normalize.o: main/normalize.cpp.o
 
 # target to build an object file
 main/normalize.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/normalize.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/normalize.cpp.o
 .PHONY : main/normalize.cpp.o
 
 main/normalize.i: main/normalize.cpp.i
@@ -262,7 +262,7 @@ main/normalize.i: main/normalize.cpp.i
 
 # target to preprocess a source file
 main/normalize.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/normalize.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/normalize.cpp.i
 .PHONY : main/normalize.cpp.i
 
 main/normalize.s: main/normalize.cpp.s
@@ -270,7 +270,7 @@ main/normalize.s: main/normalize.cpp.s
 
 # target to generate assembly for a file
 main/normalize.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/compression.dir/build.make CMakeFiles/compression.dir/main/normalize.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/normalize.cpp.s
 .PHONY : main/normalize.cpp.s
 
 # Help Target
@@ -281,7 +281,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... compression"
+	@echo "... NGC"
 	@echo "... main/compNormalize.o"
 	@echo "... main/compNormalize.i"
 	@echo "... main/compNormalize.s"
