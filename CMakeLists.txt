@@ -20,7 +20,7 @@ add_executable(NGC
     main/normalize.cpp
     main/compNormalize.cpp
     main/denormalize.cpp
-    main/mgc.cpp 
+    main/ngc.cpp 
     main/decompNormalize.cpp
     main/cpuUsage.c
 )
