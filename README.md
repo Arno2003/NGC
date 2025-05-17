@@ -1,6 +1,11 @@
 #  NGC: Normalized Genome Compressor
 NGC maps sequence of {A, C, G, T/U} to respective 2-bit ASCII encoding values and then applies a general-purpose compression algorithm for further size reduction. The decompression process reverses this transformation to restore the original sequence.
 
+## Website
+
+The visualization and analysis of the compression results are available in a companion web application:  
+[NGC Website Repository](https://github.com/ChakrabortyDiya/ngc-website)
+
 ## Supporting Platform
 
 - Linux
