@@ -13,13 +13,13 @@ string originalFile = "";
 
 void clean_residuals(string str, int i){
     string file = getFileNameWithoutExtension(str);
-    string cmd1 = "rm ../dna/norm/" + file + "*";
+    //string cmd1 = "rm ../dna/norm/" + file + "*";
     //string cmd2 = "rm ../dna/comp/" + file + "*";
     string cmd3 = "rm ../dna/decomp/" + file + "*";
     //string cmd4 = "rm ../dna/denorm/" + file + "*";
 
     if (i == 2){
-        int res1 = system(cmd1.c_str());
+        //int res1 = system(cmd1.c_str());
         int res3 = system(cmd3.c_str());
     }
     else if (i == 1){
