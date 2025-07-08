@@ -4,3 +4,4 @@ compression
 CMakeCache.txt
 .cmake*
 compile_commands.json
+clean.sh
