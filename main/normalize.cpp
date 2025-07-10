@@ -58,6 +58,13 @@ std::string cleanSequence(const std::string& line, int nucleotideType) {
                  (nucleotideType == 2 && upperNucleotide == 'U')) {
             isValid = true;
         }
+        else if((int)upperNucleotide >= 65 && (int)upperNucleotide <= 90){
+            isValid == false; // Invalid nucleotide for both DNA and RNA
+        }
+        else{
+            continue; // Skip any non-alphabetic characters
+        }
+
 
         if (isValid) {
             cleaned += upperNucleotide;
