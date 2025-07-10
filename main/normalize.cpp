@@ -64,6 +64,8 @@ std::string cleanSequence(const std::string& line, int nucleotideType) {
         }
         else {
             invalidCount++;
+            std::cerr << "Invalid nucleotide '" << nucleotide << "' found in sequence." << std::endl << "Terminating process..." << std::endl;
+            std::exit(EXIT_FAILURE);
             // Optionally, log the invalid character
             // std::cerr << "Invalid character '" << nucleotide << "' skipped." << std::endl;
         }
@@ -259,7 +261,7 @@ void normalize(int argc, char* argv[]) {
     std::string inputFilePath = argv[1];
 
     std::string file = getFileNameWithoutExtension(inputFilePath);
-    std::string outputFilePath = "../dna/norm/" + file + ".bin";
+    std::string outputFilePath = "../dna/norm/" + file + ".nf";
 
     std::cout << "checkpoint 1.1.1" << std::endl;
     std::cout << inputFilePath <<" "<< file <<" " << outputFilePath << std::endl;
