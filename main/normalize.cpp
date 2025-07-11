@@ -71,7 +71,7 @@ std::string cleanSequence(const std::string& line, int nucleotideType) {
         }
         else {
             invalidCount++;
-            std::cerr << "Invalid nucleotide '" << nucleotide << "' found in sequence." << std::endl << "Terminating process..." << std::endl;
+            std::cerr << "Error: The sequence cannot be normalized because it includes non-primary genome characters like '" << nucleotide << "'." << std::endl << "Terminating process..." << std::endl;
             std::exit(EXIT_FAILURE);
             // Optionally, log the invalid character
             // std::cerr << "Invalid character '" << nucleotide << "' skipped." << std::endl;
@@ -284,7 +284,7 @@ void normalize(int argc, char* argv[]) {
         }
     }
     catch (const std::exception& e) {
-        std::cerr << "Invalid nucleotide type: " << e.what() << std::endl;
+        std::cerr << "Error: The sequence cannot be normalized because it includes non-primary genome characters like : " << e.what() << std::endl;
         return;
     }
 
@@ -302,6 +302,21 @@ void normalize(int argc, char* argv[]) {
 
         writeEncodedSequence(encodedResult, outputFilePath);
         std::cout << "Normalization process completed successfully." << std::endl;
+    }
+    catch (const std::runtime_error& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return;
+    }
+    catch (const std::invalid_argument& e) {
+        std::string errMsg = e.what(); // e.g., "Invalid nucleotide: N"
+        // Extract the character after ": " (assumes single character)
+        std::string invalidChar;
+        size_t pos = errMsg.find(":");
+        if (pos != std::string::npos && pos + 2 < errMsg.size()) {
+            invalidChar = errMsg.substr(pos + 2);
+        }
+        std::cerr << "Error: The sequence cannot be normalized because it includes non-primary genome characters like " << invalidChar << "." << std::endl;
+        return;
     }
     catch (const std::exception& e) {
         std::cerr << "Error during normalization: " << e.what() << std::endl;
