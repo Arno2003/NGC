@@ -179,6 +179,12 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
     }
 
     std::string fileType = detectFileType(filepath);
+    if (fileType == "fasta") {
+        std::cout << "Only the bases of the FASTA or multi-FASTA file can be compressed." << std::endl;
+    }
+    else if (fileType == "fasta") {
+        std::cout << "Only the bases of the FASTAQ file can be compressed." << std::endl;
+    }
     std::string line;
     std::string rawSequence;
     bool skipNext = false; // Flag to skip the next line (used for FASTQ quality scores)
@@ -186,7 +192,7 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
 
     while (std::getline(infile, line)) {
         lineCount++;
-        std::cout << "Processing line " << lineCount << std::endl;
+        // std::cout << "Processing line " << lineCount << std::endl;
         if (skipNext) {
             std::cout << "Skipping quality score line." << std::endl;
             skipNext = false;
@@ -194,6 +200,7 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
         }
 
         if (fileType == "fastq") {
+            // std::cout << "Only the bases of the FASTQ file can be compressed." << std::endl;
             if (line.empty()) {
                 std::cout << "Empty line encountered. Skipping." << std::endl;
                 continue; // Skip empty lines
@@ -215,6 +222,7 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
             }
         }
         else if (fileType == "fasta") {
+            // std::cout << "Only the bases of the FASTA or multi-FASTA file can be compressed." << std::endl;
             if (line.empty()) {
                 std::cout << "Empty line encountered. Skipping." << std::endl;
                 continue; // Skip empty lines
@@ -270,7 +278,7 @@ void normalize(int argc, char* argv[]) {
     std::string file = getFileNameWithoutExtension(inputFilePath);
     std::string outputFilePath = "../dna/norm/" + file + ".nf";
 
-    std::cout << "checkpoint 1.1.1" << std::endl;
+    // std::cout << "checkpoint 1.1.1" << std::endl;
     std::cout << inputFilePath <<" "<< file <<" " << outputFilePath << std::endl;
 
     //std::string outputFilePath = argv[2];
