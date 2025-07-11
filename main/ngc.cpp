@@ -51,13 +51,13 @@ void proposed(int argc, char* argv[]){
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     cout << "Normalization time: " << elapsed/1000 << " s" << endl;
     /////////////////////////////////////////
-    string inputFilePath = "../dna/norm/" + file + ".bin";
+    string inputFilePath = "../dna/norm/" + file + ".nf";
     //cout << "Checkpoint2" << inputFilePath << endl;
     compressSequence(inputFilePath);
     decompressSequence(inputFilePath);
     
 
-    inputFilePath = "../dna/decomp/" + file + ".bin";
+    inputFilePath = "../dna/decomp/" + file + ".nf";
     char* arg4 = new char[inputFilePath.size() + 1];
     strcpy(arg4, inputFilePath.c_str());
     char* argv3[] = {arg0, arg4, arg2, arg3};

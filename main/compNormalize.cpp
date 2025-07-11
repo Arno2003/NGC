@@ -149,7 +149,7 @@ void bscComp(string str)
         string fileName = str;                           // Full file path with name
         string file = getFileNameWithoutExtension(fileName); // File name without extension
         string filePath = getDirectoryName(fileName);    // Only path of file
-        string fileExtension = getFileExtension(fileName); // e.g. ".txt" or ".bin"
+        string fileExtension = getFileExtension(fileName); // e.g. ".txt" or ".bin" or ".nf"
         
         // Create a tar archive of the input file
         string command1 = "tar -cvf " + filePath + "/" + file + ".tar -C " + filePath + " " + file + fileExtension;
