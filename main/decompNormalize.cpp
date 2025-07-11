@@ -287,7 +287,7 @@ void cmixDecomp(string str)
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
         // Set the output file path for the decompressed file
-        string output = "../dna/decomp/" + file + ".bin";
+        string output = "../dna/decomp/" + file + ".nf";
         // Basic decompression command (without dictionary)
         string command = "../executables/cmix -d " + fileName + " " + output;
         cout << command << endl;
