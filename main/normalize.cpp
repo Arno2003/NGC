@@ -348,5 +348,9 @@ void normalize(int argc, char* argv[]) {
     std::cout << "CPU usage: " << cpu_avg << " %" << std::endl;
     std::cout << "RAM usage: " << (ram_avg * ram_total_norm / 100) << " mb out of " << ram_total_norm << " mb" << std::endl;
 
+    double originalSize = std::filesystem::file_size(inputFilePath);
+    double normalizedSize = std::filesystem::file_size(outputFilePath);
+    std::cout << "Normalization compression ratio: " << (originalSize / normalizedSize) << std::endl;
+
     ////////////////////////////////////////////////
 }
