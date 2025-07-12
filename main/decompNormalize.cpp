@@ -353,6 +353,15 @@ void decompressSequence(std::string sequence)
                 //////////////////////////////////////////
             }
 
+            // Cleanup previous decompression files
+            if(choice != 0)
+            {
+                string file = getFileNameWithoutExtension(sequence);
+                string fileExtension = getFileExtension(sequence);
+                string cleanupCommand = "rm -f ../dna/decomp/" + file + "" + fileExtension;
+                int retCodeCleanup = system(cleanupCommand.c_str());
+            }
+
             // Start timer before switch-case
             auto start = std::chrono::steady_clock::now();
 

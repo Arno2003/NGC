@@ -35,6 +35,11 @@ void zpaqComp(string str)
         string fileExtension = getFileExtension(fileName);
         string command = "cd " + filePath + " && ../../executables/zpaq add ../comp/" + file + ".zpaq " + file + "" + fileExtension + " -method 5  -threads " + to_string(num_cpus*2);
         cout << command << endl;
+
+        // Clean up previous zpaq files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".zpaq";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command
+
         int retCode = system(command.c_str()); // execute command
 
         if (retCode == 0)
@@ -64,6 +69,11 @@ void bzip2Comp(string str)
         string file = getFileNameWithoutExtension(fileName);
         string command = "../executables/bzip2 -c " + fileName + " -9 -k > ../dna/comp/" + file + ".bz2";
         cout << command << endl;
+
+        //Clean up previous bzip2 files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".bz2";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute commandcleanup 
+
         int retCode = system(command.c_str()); // execute command
 
         if (retCode == 0)
@@ -90,8 +100,16 @@ void paq8Comp(string str)
     try
     {
         string fileName = str;
+        string file = getFileNameWithoutExtension(fileName);
+        string fileExtension = getFileExtension(fileName);
         string command = "../executables/paq8px " + fileName + " ../dna/comp/ -12";
         cout << command << endl;
+
+        // Clean up previous PAQ8 files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + "" + fileExtension + ".paq8px208fix1";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command
+        cout<< cleanupCommand << cleanupRetCode << endl;
+
         int retCode = system(command.c_str()); // execute command
 
         if (retCode == 0)
@@ -121,6 +139,12 @@ void zip7Comp(string str)
         string file = getFileNameWithoutExtension(fileName);
         string command = "7z a ../dna/comp/" + file + ".7z " + fileName + " -m0=lzma2 -mx=9 -mmt=on";    //-m0:dict=8g -m0:fb=273
         cout << command << endl;
+
+        // Clean up previous 7zip files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".7z";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command
+
+        // Execute compression command
         int retCode = system(command.c_str()); // execute command
 
         if (retCode == 0)
@@ -154,6 +178,10 @@ void bscComp(string str)
         // Create a tar archive of the input file
         string command1 = "tar -cvf " + filePath + "/" + file + ".tar -C " + filePath + " " + file + fileExtension;
         
+        // Remove any previous BSC compressed files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".bsc";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command to clean
+
         // Run BSC with maximum compression options:
         // -e2: Best adaptive entropy encoding.
         // -b2047: Set block size to the maximum value.
@@ -197,6 +225,12 @@ void gzipComp(string str)
         string file = getFileNameWithoutExtension(fileName);
         string command = "gzip -9 --best --rsyncable -c " + fileName + " > ../dna/comp/" + file + ".gz";
         cout << command << endl;
+
+        // Clean up previous gzip files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".gz";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command
+
+        // Execute compression command
         int retCode = system(command.c_str()); // execute command
 
         if (retCode == 0)
@@ -233,6 +267,11 @@ void zstdComp(string str)
         string command = "../executables/zstd --ultra -22 -T0 -k " + fileName + " -o " + outputPath;
         cout << command << endl;
 
+        // Clean up previous ZSTD files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".zst";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command
+
+        // Execute compression command
         int retCode = system(command.c_str()); // Execute the command
 
         if (retCode == 0)
@@ -266,6 +305,12 @@ void cmixComp(string str)
         // Basic compression command (without dictionary)
         string command = "../executables/cmix -c " + fileName + " " + output;
         cout << command << endl;
+
+        // Clean up previous CMIX files
+        string cleanupCommand = "rm -f ../dna/comp/" + file + ".cmix";
+        int cleanupRetCode = system(cleanupCommand.c_str()); // execute command
+
+        // Execute the compression command
         int retCode = system(command.c_str());
         if (retCode == 0)
         {
