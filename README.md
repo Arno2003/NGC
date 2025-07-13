@@ -92,7 +92,7 @@ The general-purpose compressors:
 1. Clone the repository:
     ```sh
    $ git clone https://github.com/Arno2003/NGC.git
-   $ cd NGC-main
+   $ cd NGC
     ```
 
 ## Compilation & Run
@@ -108,7 +108,6 @@ To compile, use makefile
 To run, use the below script:
 
 ```sh
-    $ cd build
     $ ./NGC <input_file_path>
 ```
 
