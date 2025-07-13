@@ -179,12 +179,10 @@ std::string extractRawSequence(const std::string& filepath, int nucleotideType) 
     }
 
     std::string fileType = detectFileType(filepath);
-    if (fileType == "fasta") {
-        std::cout << "Only the bases of the FASTA or multi-FASTA file can be compressed." << std::endl;
+    if (fileType == "fasta" || fileType == "fastq") {
+        std::cout << "Only the bases of the FASTA/Q or multi-FASTA file can be compressed." << std::endl;
     }
-    else if (fileType == "fasta") {
-        std::cout << "Only the bases of the FASTAQ file can be compressed." << std::endl;
-    }
+
     std::string line;
     std::string rawSequence;
     bool skipNext = false; // Flag to skip the next line (used for FASTQ quality scores)
