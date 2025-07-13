@@ -115,7 +115,7 @@ To run, use the below script:
     
 ## Tested System Specification
 
-Ubuntu 18.04.1 LTS (64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 128 GB RAM 
+Ubuntu 24.04 LTS (HVM, 64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 128 GB RAM 
 
 ## Compression Methods Settings for Best Compression Ratio
 1. 7-zip: Uses LZMA2 with maximum compression level "-mx" = 9, an 8 GB dictionary, and multithreading enabled.
