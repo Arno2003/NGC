@@ -89,7 +89,7 @@ The general-purpose compressors:
   
 ## Installation process of the proposed method (NGC)
 
-1. Clone the repository:
+Clone the repository:
     ```sh
    $ git clone https://github.com/Arno2003/NGC.git
    $ cd NGC
