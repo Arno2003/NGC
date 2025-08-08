@@ -89,11 +89,12 @@ The general-purpose compressors:
   
 ## Installation process of the proposed method (NGC)
 
-Clone the repository:
-    ```sh
+Clone the repository
+
+```sh
    $ git clone https://github.com/Arno2003/NGC.git
    $ cd NGC
-    ```
+```
 
 ## Compilation & Run
 
