@@ -49,7 +49,7 @@ void proposed(int argc, char* argv[]){
     // End timer after switch-case and print duration
     auto end = std::chrono::steady_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    cout << "Normalization time: " << elapsed/1000 << " s" << endl;
+    cout << "Normalization time: " << (double)elapsed/1000 << " s" << endl;
     /////////////////////////////////////////
     string inputFilePath = "../dna/norm/" + file + ".nf";
     //cout << "Checkpoint2" << inputFilePath << endl;
@@ -68,7 +68,7 @@ void proposed(int argc, char* argv[]){
     denormalize(4, argv3);
     end = std::chrono::steady_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    cout << "Normalization time: " << elapsed/1000 << " s" << endl;
+    cout << "Normalization time: " << (double)elapsed/1000 << " s" << endl;
     /////////////////////////////////////////
 }
 

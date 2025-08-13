@@ -478,7 +478,7 @@ void compressSequence(std::string sequence)
             // End timer after switch-case and print duration
             auto end = std::chrono::steady_clock::now();
             auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-            cout << "Compression time: " << elapsed / 1000 << " s" << endl;
+            cout << "Compression time: " << (double)elapsed / 1000 << " s" << endl;
 
             ////////////////////////////////////////////////
             /////////// CPU AND MEM USAGE //////////////////
