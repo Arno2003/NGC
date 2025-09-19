@@ -17,10 +17,10 @@
 extern volatile bool keep_running;
 
 int mem_total_denorm, mem_free_beg_denorm, mem_free_end_denorm, mem_used_denorm;
-extern int cpu_avg, ram_avg;
+extern int pcu, pmu;
 int ram_total_denorm;
 
-extern void* get_cpu_usage(void* arg);
+extern void* getResourceUsage(void* arg);
 
 //////////////////////////////////////////////////////////
 
@@ -130,7 +130,7 @@ void denormalize(int argc, char* argv[]) {
     int pid = (int)getpid();
 
     // Create a thread to monitor CPU usage
-    pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+    pthread_create(&monitor_thread, NULL, getResourceUsage, &pid);
 
     //////////////////////////////////////////
     /////////   MEM USAGE CALCULATE //////////
@@ -195,10 +195,10 @@ void denormalize(int argc, char* argv[]) {
     if(mem_free_beg_denorm > mem_free_end_denorm)
         mem_used_denorm = mem_free_beg_denorm - mem_free_end_denorm;
     ram_total_denorm = (int)(mem_total_denorm/1000);
-    if(ram_avg == 0) ram_avg = 1;
+    if(pmu == 0) pmu = 1;
     std::cout << "Memory used: " << mem_used_denorm << " kb out of " << mem_total_denorm << " kb" << std::endl;
-    std::cout << "CPU usage: " << cpu_avg << " %" << std::endl;
-    std::cout << "RAM usage: " << (ram_avg * ram_total_denorm / 100) << " mb out of " << ram_total_denorm << " mb" << std::endl;
+    std::cout << "CPU usage: " << pcu << " %" << std::endl;
+    std::cout << "RAM usage: " << (pmu * ram_total_denorm / 100) << " mb out of " << ram_total_denorm << " mb" << std::endl;
 
     ////////////////////////////////////////////////
 

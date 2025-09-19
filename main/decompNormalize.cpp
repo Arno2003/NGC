@@ -17,10 +17,10 @@ using namespace std;
 extern volatile bool keep_running;
 
 int mem_total_decomp, mem_free_beg_decomp, mem_free_end_decomp, mem_used_decomp;
-extern int cpu_avg, ram_avg, num_cpus;
+extern int pcu, pmu, num_cpus;
 int ram_total_decomp;
 
-extern void *get_cpu_usage(void *arg);
+extern void *getResourceUsage(void *arg);
 
 //////////////////////////////////////////////////////////
 
@@ -342,7 +342,7 @@ void decompressSequence(std::string sequence)
                 keep_running = true; // became false after normalization
 
                 // Create a thread to monitor CPU usage
-                // pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+                // pthread_create(&monitor_thread, NULL, getResourceUsage, &pid);
                 pthread_create(&monitor_thread_2, NULL, get_pid_cpu_usage, &choice);
 
                 //////////////////////////////////////////
@@ -426,11 +426,11 @@ void decompressSequence(std::string sequence)
                 if (mem_free_beg_decomp > mem_free_end_decomp)
                     mem_used_decomp = mem_free_beg_decomp - mem_free_end_decomp;
                 ram_total_decomp = (int)(mem_total_decomp / 1000);
-                if (ram_avg == 0)
-                    ram_avg = 1;
+                if (pmu == 0)
+                    pmu = 1;
                 std::cout << "Memory used: " << mem_used_decomp << " kb out of " << mem_total_decomp << " kb" << std::endl;
-                std::cout << "CPU usage: " << cpu_avg / num_cpus << " %" << std::endl;
-                std::cout << "RAM usage: " << (ram_avg * ram_total_decomp / 100) << " mb out of " << ram_total_decomp << " mb" << std::endl;
+                std::cout << "CPU usage: " << pcu / num_cpus << " %" << std::endl;
+                std::cout << "RAM usage: " << (pmu * ram_total_decomp / 100) << " mb out of " << ram_total_decomp << " mb" << std::endl;
             }
             ////////////////////////////////////////////////
         }

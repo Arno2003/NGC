@@ -6,7 +6,7 @@
 #include <fstream> // Added to support std::ifstream
 #include <stdbool.h>
 #include <unistd.h>
-#include "cpuUsage.h"
+#include "resourceUsage.h"
 
 inline std::string getFileNameWithoutExtension(const std::string &path)
 {
@@ -116,7 +116,7 @@ inline void *get_pid_cpu_usage(void *arg)
         std::cerr << "Unable to open file to read PID." << std::endl;
     }
     std::cout << "\n\n\n: " << pid << "\n\n\n";
-    get_cpu_usage(&pid);
+    getResourceUsage(&pid);
     return nullptr;
 }
 

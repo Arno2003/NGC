@@ -22,11 +22,11 @@ add_executable(NGC
     main/denormalize.cpp
     main/ngc.cpp 
     main/decompNormalize.cpp
-    main/cpuUsage.c
+    main/resourceUsage.c
 )
 
 # Link pthread library
 target_link_libraries(NGC pthread)
 
 # Ensure C files are compiled with the C++ compiler
-set_source_files_properties(main/cpuUsage.c PROPERTIES LANGUAGE CXX)
+set_source_files_properties(main/resourceUsage.c PROPERTIES LANGUAGE CXX)

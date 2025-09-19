@@ -18,10 +18,10 @@ extern string originalFile;
 extern volatile bool keep_running;
 
 int mem_total_comp, mem_free_beg_comp, mem_free_end_comp, mem_used_comp;
-extern int cpu_avg, ram_avg, num_cpus;
+extern int pcu, pmu, num_cpus;
 int ram_total_comp;
 
-extern void *get_cpu_usage(void *arg);
+extern void *getResourceUsage(void *arg);
 
 //////////////////////////////////////////////////////////
 
@@ -419,7 +419,7 @@ void compressSequence(std::string sequence)
                 keep_running = true; // became false after normalization
 
                 // Create a thread to monitor CPU usage
-                // pthread_create(&monitor_thread, NULL, get_cpu_usage, &pid);
+                // pthread_create(&monitor_thread, NULL, getResourceUsage, &pid);
                 pthread_create(&monitor_thread_1, NULL, get_pid_cpu_usage, &choice);
 
                 //////////////////////////////////////////
@@ -494,11 +494,11 @@ void compressSequence(std::string sequence)
                 if (mem_free_beg_comp > mem_free_end_comp)
                     mem_used_comp = mem_free_beg_comp - mem_free_end_comp;
                 ram_total_comp = (int)(mem_total_comp / 1000);
-                if (ram_avg == 0)
-                    ram_avg = 1;
+                if (pmu == 0)
+                    pmu = 1;
                 cout << "Memory used: " << mem_used_comp << " kb out of " << mem_total_comp << " kb" << endl;
-                cout << "CPU usage: " << cpu_avg / num_cpus << " %" << endl;
-                cout << "RAM usage: " << (ram_avg * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << endl;
+                cout << "CPU usage: " << pcu / num_cpus << " %" << endl;
+                cout << "RAM usage: " << (pmu * ram_total_comp / 100) << " mb out of " << ram_total_comp << " mb" << endl;
             }
             ////////////////////////////////////////////////
 

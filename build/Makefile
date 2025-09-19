@@ -153,30 +153,6 @@ main/compNormalize.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/compNormalize.cpp.s
 .PHONY : main/compNormalize.cpp.s
 
-main/cpuUsage.o: main/cpuUsage.c.o
-.PHONY : main/cpuUsage.o
-
-# target to build an object file
-main/cpuUsage.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/cpuUsage.c.o
-.PHONY : main/cpuUsage.c.o
-
-main/cpuUsage.i: main/cpuUsage.c.i
-.PHONY : main/cpuUsage.i
-
-# target to preprocess a source file
-main/cpuUsage.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/cpuUsage.c.i
-.PHONY : main/cpuUsage.c.i
-
-main/cpuUsage.s: main/cpuUsage.c.s
-.PHONY : main/cpuUsage.s
-
-# target to generate assembly for a file
-main/cpuUsage.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/cpuUsage.c.s
-.PHONY : main/cpuUsage.c.s
-
 main/decompNormalize.o: main/decompNormalize.cpp.o
 .PHONY : main/decompNormalize.o
 
@@ -225,29 +201,29 @@ main/denormalize.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/denormalize.cpp.s
 .PHONY : main/denormalize.cpp.s
 
-main/mgc.o: main/mgc.cpp.o
-.PHONY : main/mgc.o
+main/ngc.o: main/ngc.cpp.o
+.PHONY : main/ngc.o
 
 # target to build an object file
-main/mgc.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/mgc.cpp.o
-.PHONY : main/mgc.cpp.o
+main/ngc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/ngc.cpp.o
+.PHONY : main/ngc.cpp.o
 
-main/mgc.i: main/mgc.cpp.i
-.PHONY : main/mgc.i
+main/ngc.i: main/ngc.cpp.i
+.PHONY : main/ngc.i
 
 # target to preprocess a source file
-main/mgc.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/mgc.cpp.i
-.PHONY : main/mgc.cpp.i
+main/ngc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/ngc.cpp.i
+.PHONY : main/ngc.cpp.i
 
-main/mgc.s: main/mgc.cpp.s
-.PHONY : main/mgc.s
+main/ngc.s: main/ngc.cpp.s
+.PHONY : main/ngc.s
 
 # target to generate assembly for a file
-main/mgc.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/mgc.cpp.s
-.PHONY : main/mgc.cpp.s
+main/ngc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/ngc.cpp.s
+.PHONY : main/ngc.cpp.s
 
 main/normalize.o: main/normalize.cpp.o
 .PHONY : main/normalize.o
@@ -273,6 +249,30 @@ main/normalize.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/normalize.cpp.s
 .PHONY : main/normalize.cpp.s
 
+main/resourceUsage.o: main/resourceUsage.c.o
+.PHONY : main/resourceUsage.o
+
+# target to build an object file
+main/resourceUsage.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/resourceUsage.c.o
+.PHONY : main/resourceUsage.c.o
+
+main/resourceUsage.i: main/resourceUsage.c.i
+.PHONY : main/resourceUsage.i
+
+# target to preprocess a source file
+main/resourceUsage.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/resourceUsage.c.i
+.PHONY : main/resourceUsage.c.i
+
+main/resourceUsage.s: main/resourceUsage.c.s
+.PHONY : main/resourceUsage.s
+
+# target to generate assembly for a file
+main/resourceUsage.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/NGC.dir/build.make CMakeFiles/NGC.dir/main/resourceUsage.c.s
+.PHONY : main/resourceUsage.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -285,21 +285,21 @@ help:
 	@echo "... main/compNormalize.o"
 	@echo "... main/compNormalize.i"
 	@echo "... main/compNormalize.s"
-	@echo "... main/cpuUsage.o"
-	@echo "... main/cpuUsage.i"
-	@echo "... main/cpuUsage.s"
 	@echo "... main/decompNormalize.o"
 	@echo "... main/decompNormalize.i"
 	@echo "... main/decompNormalize.s"
 	@echo "... main/denormalize.o"
 	@echo "... main/denormalize.i"
 	@echo "... main/denormalize.s"
-	@echo "... main/mgc.o"
-	@echo "... main/mgc.i"
-	@echo "... main/mgc.s"
+	@echo "... main/ngc.o"
+	@echo "... main/ngc.i"
+	@echo "... main/ngc.s"
 	@echo "... main/normalize.o"
 	@echo "... main/normalize.i"
 	@echo "... main/normalize.s"
+	@echo "... main/resourceUsage.o"
+	@echo "... main/resourceUsage.i"
+	@echo "... main/resourceUsage.s"
 .PHONY : help
 
 
