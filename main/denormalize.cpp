@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <cmath>
 
 #include "defs.h"
 
@@ -194,11 +195,13 @@ void denormalize(int argc, char* argv[]) {
     get_memory_usage(&mem_total_denorm, &mem_free_end_denorm);
     if(mem_free_beg_denorm > mem_free_end_denorm)
         mem_used_denorm = mem_free_beg_denorm - mem_free_end_denorm;
-    ram_total_denorm = (int)(mem_total_denorm/1000);
-    if(pmu == 0) pmu = 1;
-    std::cout << "Memory used: " << mem_used_denorm << " kb out of " << mem_total_denorm << " kb" << std::endl;
+    ram_total_denorm = std::round(mem_total_denorm/1024);
+    if(pmu == 0){
+		pmu = 1;
+    }
+    std::cout << "Memory used: " << std::round(mem_used_denorm/1024) << " MiB out of " << std::round(mem_total_denorm/1024) << " MiB" << std::endl;
     std::cout << "CPU usage: " << pcu << " %" << std::endl;
-    std::cout << "RAM usage: " << (pmu * ram_total_denorm / 100) << " mb out of " << ram_total_denorm << " mb" << std::endl;
+    std::cout << "RAM usage: " << std::round(pmu * ram_total_denorm / 100) << " MiB out of " << ram_total_denorm << " MiB" << std::endl;
 
     ////////////////////////////////////////////////
 

@@ -6,8 +6,8 @@
 #include <stdbool.h>
 #include "resourceUsage.h"
 
-int pcu = -1;
-int pmu = -1;
+int pcu = 0;
+int pmu = 0;
 volatile bool keep_running = true;
 
 // int arr[60];

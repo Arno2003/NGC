@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <cmath>
 
 #include "defs.h"
 
@@ -340,11 +341,13 @@ void normalize(int argc, char* argv[]) {
     get_memory_usage(&mem_total_norm, &mem_free_end_norm);
     if(mem_free_beg_norm > mem_free_end_norm)
         mem_used_norm = mem_free_beg_norm - mem_free_end_norm;
-    ram_total_norm = (int)(mem_total_norm/1000);
-    if(pmu == 0) pmu = 1;
-    std::cout << "Memory used: " << mem_used_norm << " kb out of " << mem_total_norm << " kb" << std::endl;
+    ram_total_norm = std::round(mem_total_norm/1024);
+    if(pmu == 0){
+        pmu = 1;
+    }
+    std::cout << "Memory used: " << std::round(mem_used_norm / 1024) << " MiB out of " << std::round(mem_total_norm / 1024) << " MiB" << std::endl;
     std::cout << "CPU usage: " << pcu << " %" << std::endl;
-    std::cout << "RAM usage: " << (pmu * ram_total_norm / 100) << " mb out of " << ram_total_norm << " mb" << std::endl;
+    std::cout << "RAM usage: " << std::round(pmu * ram_total_norm / 100) << " MiB out of " << ram_total_norm << " MiB" << std::endl;
 
     try{
         double originalSize = std::filesystem::file_size(inputFilePath);

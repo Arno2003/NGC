@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <fstream>
 #include <chrono> // Added for time measurement
+#include <cmath>
 
 #include "defs.h"
 using namespace std;
@@ -425,12 +426,13 @@ void decompressSequence(std::string sequence)
                 get_memory_usage(&mem_total_decomp, &mem_free_end_decomp);
                 if (mem_free_beg_decomp > mem_free_end_decomp)
                     mem_used_decomp = mem_free_beg_decomp - mem_free_end_decomp;
-                ram_total_decomp = (int)(mem_total_decomp / 1000);
-                if (pmu == 0)
+                ram_total_decomp = std::round(mem_total_decomp / 1024);
+                if (pmu == 0){
                     pmu = 1;
-                std::cout << "Memory used: " << mem_used_decomp << " kb out of " << mem_total_decomp << " kb" << std::endl;
+                }
+                std::cout << "Memory used: " << std::round(mem_used_decomp/1024) << " MiB out of " << std::round(mem_total_decomp/1024) << " MiB" << std::endl;
                 std::cout << "CPU usage: " << pcu / num_cpus << " %" << std::endl;
-                std::cout << "RAM usage: " << (pmu * ram_total_decomp / 100) << " mb out of " << ram_total_decomp << " mb" << std::endl;
+                std::cout << "RAM usage: " << std::round(pmu * ram_total_decomp / 100) << " MiB out of " << ram_total_decomp << " MiB" << std::endl;
             }
             ////////////////////////////////////////////////
         }
