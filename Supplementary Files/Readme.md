@@ -10,6 +10,6 @@
 
 • SF6: An Excel file containing the mean compression and decompression timings (s) and STDEV by the (S)P-paq8px/cmix for the second corpus.
 
-• SF7: An Excel file containing PCM and PDM (MiB) and STDEV by the (S)P-compressors for the first corpus.
+• SF7: An Excel file containing PCM and PDM (MiB) by the (S)P-compressors for the first corpus.
 
-• SF8: An Excel file containing PCM and PDM (MiB) and STDEV by the (S)P-paq8px/cmix for the second corpus.
+• SF8: An Excel file containing PCM and PDM (MiB) by the (S)P-paq8px/cmix for the second corpus.
