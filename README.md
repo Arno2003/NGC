@@ -18,9 +18,8 @@ The visualization and analysis of the compression results are available in a com
 
 ## Supported File Formats
 
-- FASTA / Multi-FASTA
-- FASTQ
-- Raw sequence files
+- Genome main domian of FASTA/Q and Multi-FASTA
+- Genome main domian raw sequence files
 
 ## Compression and Decompression Methods
 
