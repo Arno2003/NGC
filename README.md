@@ -125,3 +125,6 @@ Ubuntu 24.04 LTS (HVM, 64-bit) Intel Xeon CPUs (E5-2643 v3 @ 3.4 GHz, 6 cores) 1
 6. bzip2: Using maximum compression level 9.
 7. zpaq: Uses zpaq at method level 5 with threads set to twice the number of CPUs.
 8. cmix: Default settings.
+
+## If you use this paper please cite it as:
+Roy, S., Charit, A., Patra, M., Sadhukhan, A., Chakraborty, D., Ghosh, P., ... & Mukhopadhyay, A. (2025). A study of the cutting-edge general-purpose compressors’ performance on the normalized genome sequence. Gene Reports, 102358. https://doi.org/10.1016/j.genrep.2025.102358
