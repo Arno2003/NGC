@@ -240,57 +240,17 @@ void zstdDecomp(string str)
     }
 }
 
-void huffmanDecomp(string str)
-{
-    try
-    {
-        string fileName = str;
-        string file = getFileNameWithoutExtension(fileName);
-        // Assuming huffman_decode reads the input file and outputs the decompressed data to stdout
-        string command = "../executables/huffman_decode " + fileName + ".huffman";
-        cout << command << endl;
-        int retCode = system(command.c_str());
-        if (retCode == 0)
-        {
-            cout << "Huffman decompression executed successfully." << endl;
-            std::string outputFile = file; // assuming the decompressed file is named after the base file name
-            std::string moveCommand = "mv " + outputFile + " ../dna/decomp/";
-            std::cout << "Executing move command: " << moveCommand << std::endl;
-            int moveCode = system(moveCommand.c_str());
-            if (moveCode == 0)
-            {
-                std::cout << "File moved to dna/decomp successfully." << std::endl;
-            }
-            else
-            {
-                std::cerr << "Error moving file. Return code: " << moveCode << std::endl;
-            }
-        }
-        else
-        {
-            cerr << "Error executing Huffman decompression. Return code: " << retCode << endl;
-        }
-    }
-    catch (const std::exception &e)
-    {
-        cerr << "Exception in huffmanDecomp: " << e.what() << endl;
-    }
-    catch (...)
-    {
-        cerr << "Unknown exception in huffmanDecomp." << endl;
-    }
-}
-
 void cmixDecomp(string str)
 {
     try
     {
         string fileName = str;
         string file = getFileNameWithoutExtension(fileName);
+        string fileExtension = getFileExtension(fileName); 
         // Set the output file path for the decompressed file
-        string output = "../dna/decomp/" + file + ".nf";
+        string output = "../dna/decomp/" + file + "" + fileExtension;
         // Basic decompression command (without dictionary)
-        string command = "../executables/cmix -d " + fileName + " " + output;
+        string command = "../executables/cmix -d ../dna/comp/" + file + "" + ".cmix" + " " + output;
         cout << command << endl;
         int retCode = system(command.c_str());
         if (retCode == 0)
